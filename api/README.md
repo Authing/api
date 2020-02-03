@@ -28,6 +28,7 @@
 - [验证重置密码验证码 - verifyResetPasswordVerifyCode](./verifyResetPasswordVerifyCode/README.md)
 - [发送验证邮件 - sendVerifyEmail](./sendVerifyEmail/README.md)
 - [修改密码 - changePassword](./changePassword/README.md)
+- [解绑邮箱 - unbindEmail](./unbindEmail/README.md)
 
 
 ## Organizational Structure Management
