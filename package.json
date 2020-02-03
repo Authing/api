@@ -1,0 +1,11 @@
+{
+	"name": "api",
+	"version": "1.0.0",
+	"main": "index.js",
+	"license": "MIT",
+	"scripts": {
+		"print": "node ./bin/print.js",
+		"setup": "node ./bin/init.js",
+		"all": "node ./bin/list.js"
+	}
+}

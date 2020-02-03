@@ -1,0 +1,20 @@
+query QueryDefaultSAMLIdentityProviderSettingsList($page: Int, $count: Int){
+    QueryDefaultSAMLIdentityProviderSettingsList(page: $page, count: $count){
+        list{
+            _id
+            name
+            image
+            description
+            mappings{
+                username
+                nickname
+                photo
+                company
+                providerName
+                email
+            }
+            isDeleted
+        }
+        totalCount
+    }
+}

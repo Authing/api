@@ -1,0 +1,36 @@
+query ReadOrders($user: String, $page: Int, $count: Int){
+    ReadOrders(user: $user, page: $page, count: $count){
+        list{
+            _id
+            client
+            user
+            timeOfPurchase
+            flowNumber
+            price
+            pricing{
+                _id
+                type
+                startNumber
+                freeNumber
+                startPrice
+                maxNumber
+                d
+                features
+            }
+            createdAt
+            completed
+            payMethod
+            endAt
+            clientInfo{
+                _id
+                name
+                secret
+                descriptions
+                jwtExpired
+                createdAt
+                isDeleted
+            }
+        }
+        totalCount
+    }
+}
