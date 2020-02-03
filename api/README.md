@@ -10,6 +10,7 @@ Table of Contents
 - [用户池管理 - UserPool Management](#%e7%94%a8%e6%88%b7%e6%b1%a0%e7%ae%a1%e7%90%86---userpool-management)
 - [社会化登录 - Thard-Party Login](#%e7%a4%be%e4%bc%9a%e5%8c%96%e7%99%bb%e5%bd%95---thard-party-login)
 - [注册白名单 - Register Whitelist](#%e6%b3%a8%e5%86%8c%e7%99%bd%e5%90%8d%e5%8d%95---register-whitelist)
+- [MFA 多因素认证 - Multi-Factor Authentication](#mfa-%e5%a4%9a%e5%9b%a0%e7%b4%a0%e8%ae%a4%e8%af%81---multi-factor-authentication)
 - [组织机构管理 - Organizational Structure Management](#%e7%bb%84%e7%bb%87%e6%9c%ba%e6%9e%84%e7%ae%a1%e7%90%86---organizational-structure-management)
 - [完整列表 - Full List](#%e5%ae%8c%e6%95%b4%e5%88%97%e8%a1%a8---full-list)
 
@@ -66,6 +67,10 @@ Table of Contents
 - [增加手机号到白名单 - addToInvitation](./addToInvitation/README.md)
 - [从白名单中删除手机号 - removeFromInvitation](./removeFromInvitation/README.md)
 - [查看白名单中的手机号 - queryInvitation](./queryInvitation/README.md)
+
+# MFA 多因素认证 - Multi-Factor Authentication
+
+- [queryMFA](./queryMFA/README.md)
 
 
 # 组织机构管理 - Organizational Structure Management
