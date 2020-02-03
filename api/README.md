@@ -34,6 +34,7 @@
 - ***Deprecated** [创建用户角色 - createRole](./createRole/README.md)
 - ***Deprecated** [修改用户角色 - updateRole](./updateRole/README.md)
 - ***Deprecated** [指派用户到某角色 - assignUserToRole](./assignUserToRole/README.md)
+- ***Deprecated** [将用户从某角色中移除 - removeUserFromGroup](./removeUserFromGroup/README.md)
 
 
 ## Organizational Structure Management
