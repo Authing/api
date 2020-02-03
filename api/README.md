@@ -1,9 +1,6 @@
 
-# Authing API Index
-
 Table of Contents
 
-- [Authing API Index](#authing-api-index)
 - [用户池鉴权](#%e7%94%a8%e6%88%b7%e6%b1%a0%e9%89%b4%e6%9d%83)
 - [用户鉴权 - Authentication](#%e7%94%a8%e6%88%b7%e9%89%b4%e6%9d%83---authentication)
 - [用户管理 - User Management](#%e7%94%a8%e6%88%b7%e7%ae%a1%e7%90%86---user-management)
@@ -12,21 +9,22 @@ Table of Contents
 - [注册白名单 - Register Whitelist](#%e6%b3%a8%e5%86%8c%e7%99%bd%e5%90%8d%e5%8d%95---register-whitelist)
 - [MFA 多因素认证 - Multi-Factor Authentication](#mfa-%e5%a4%9a%e5%9b%a0%e7%b4%a0%e8%ae%a4%e8%af%81---multi-factor-authentication)
 - [Webhook API](#webhook-api)
+- [OAuth API](#oauth-api)
 - [组织机构管理 - Organizational Structure Management](#%e7%bb%84%e7%bb%87%e6%9c%ba%e6%9e%84%e7%ae%a1%e7%90%86---organizational-structure-management)
 - [完整列表 - Full List](#%e5%ae%8c%e6%95%b4%e5%88%97%e8%a1%a8---full-list)
 
-# 用户池鉴权
+### 用户池鉴权
 
 - [初始化 SDK - getClientWhenSdkInit](./getClientWhenSdkInit/)
 
-# 用户鉴权 - Authentication
+### 用户鉴权 - Authentication
 
 - [注册 - register](./register/)
 - [登录 - login](./login/)
 - [解析 JWT Token - decodeJwtToken](./decodeJwtToken/)
 - [刷新 Token - refreshToken](./refreshToken/)
 
-# 用户管理 - User Management
+### 用户管理 - User Management
 
 - [读取用户资料 - user](./user/)
 - [获取用户列表 - users](./users/)
@@ -46,7 +44,7 @@ Table of Contents
 - ***Deprecated** [将用户从某角色中移除 - removeUserFromGroup](./removeUserFromGroup/README.md)
 - ***Deprecated** [获取某角色下全部用户 - usersInGroup](./usersInGroup/README.md)
 
-# 用户池管理 - UserPool Management
+### 用户池管理 - UserPool Management
 
 - [用户池列表 - userClients](./userClients/README.md)
 - [用户池详情 - client](./client/README.md)
@@ -56,12 +54,12 @@ Table of Contents
 - [批量删除用户池 - removeUserClients](./removeUserClients/README.md)
 - [修改用户池 - updateUserClient](./updateUserClient/README.md)
 
-# 社会化登录 - Thard-Party Login
+### 社会化登录 - Thard-Party Login
 
 - [绑定社会化登录 - bindOtherOAuth](./bindOtherOAuth/README.md)
 - [解绑社会化登录 - unbindOtherOAuth](./unbindOtherOAuth/README.md)
 
-# 注册白名单 - Register Whitelist
+### 注册白名单 - Register Whitelist
 
 - [开启/关闭注册白名单限制 - setInvitationState](./setInvitationState/README.md)
 - [查看白名单机制开启状态 - queryInvitationState](./queryInvitationState/README.md)
@@ -69,12 +67,12 @@ Table of Contents
 - [从白名单中删除手机号 - removeFromInvitation](./removeFromInvitation/README.md)
 - [查看白名单中的手机号 - queryInvitation](./queryInvitation/README.md)
 
-# MFA 多因素认证 - Multi-Factor Authentication
+### MFA 多因素认证 - Multi-Factor Authentication
 
 - [查询 MFA 配置 - queryMFA](./queryMFA/README.md)
 - [修改 MFA 信息 - changeMFA](./changeMFA/README.md)
 
-# Webhook API
+### Webhook API
 
 - [添加 Webhook - addClientWebhook](./addClientWebhook/README.md)
 - [获取用户池 WebHook 列表 - getAllWebhooks](./getAllWebhooks/README.md)
@@ -85,8 +83,12 @@ Table of Contents
 - [删除 Webhook - deleteClientWebhook](./deleteClientWebhook/README.md)
 - [发送 Webhook 测试请求 - SendWebhookTest](./SendWebhookTest/README.md)
 
+### OAuth API
 
-# 组织机构管理 - Organizational Structure Management
+- [使用 LDAP 登录 - LoginByLDAP](./LoginByLDAP/README.md)
+
+
+### 组织机构管理 - Organizational Structure Management
 
 
 - [创建组织机构 - createOrg](./createOrg/)
@@ -99,7 +101,7 @@ Table of Contents
 - [判断某一节点是否为根节点 - isRootNodeOfOrg](./isRootNodeOfOrg/)
 - [查询组织结构根节点 - orgRootNode](./orgRootNode/)
 
-# 完整列表 - Full List
+### 完整列表 - Full List
 
 - [addClientWebhook](./addClientWebhook/)
 - [addCollaborator](./addCollaborator/)
