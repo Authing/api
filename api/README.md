@@ -33,6 +33,8 @@
 - ***Deprecated** [获取用户权限和角色 - queryRoleByUserId](./queryRoleByUserId/README.md)
 - ***Deprecated** [创建用户角色 - createRole](./createRole/README.md)
 - ***Deprecated** [修改用户角色 - updateRole](./updateRole/README.md)
+- ***Deprecated** [指派用户到某角色 - assignUserToRole](./assignUserToRole/README.md)
+
 
 ## Organizational Structure Management
 
