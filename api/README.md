@@ -10,12 +10,16 @@
 
 - [初始化 SDK - getClientWhenSdkInit](./getClientWhenSdkInit/)
 
-## 用户鉴权
+## 用户鉴权 - Authentication
 
 - [注册 - register](./register/)
 - [登录 - login](./login/)
 - [解析 JWT Token - decodeJwtToken](./decodeJwtToken/)
 - [刷新 Token - refreshToken](./refreshToken/)
+
+## 用户管理 - User Management
+
+- [读取用户资料 - user](./user/)
 
 ## Organizational Structure Management
 
