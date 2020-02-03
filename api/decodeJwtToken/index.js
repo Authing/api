@@ -8,6 +8,7 @@ const query = fs.readFileSync(path.join(__dirname, 'query.gql'), 'utf8')
 module.exports = {
   name: 'decodeJwtToken',
   type: 'query',
+  module: '用户鉴权',
   description: '',
   query,
   doc

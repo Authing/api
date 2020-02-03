@@ -14,6 +14,7 @@
 
 - [注册 - register](./register/)
 - [登录 - login](./login/)
+- [解析 JWT Token - decodeJwtToken](./decodeJwtToken/)
 
 ## Organizational Structure Management
 
