@@ -48,6 +48,8 @@ Table of Contents
 
 - [用户池列表 - userClients](./userClients/README.md)
 - [用户池详情 - client](./client/README.md)
+- [获取用户池类型 - userClientTypes](./userClientTypes/README.md)
+
 
 # 组织机构管理 - Organizational Structure Management
 
