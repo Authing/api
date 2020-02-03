@@ -22,6 +22,8 @@
 - [读取用户资料 - user](./user/)
 - [获取用户列表 - users](./users/)
 - [检查用户登录状态 - checkLoginStatus](./checkLoginStatus/)
+- [批量删除用户 - removeUsers](./removeUsers/)
+
 
 ## Organizational Structure Management
 
