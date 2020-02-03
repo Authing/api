@@ -9,7 +9,7 @@ module.exports = {
   name: 'decodeJwtToken',
   type: 'query',
   module: '用户鉴权',
-  description: '',
+  description: '解析 JWT Token',
   query,
   doc
 }

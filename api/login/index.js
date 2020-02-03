@@ -9,7 +9,7 @@ module.exports = {
   name: 'login',
   type: 'mutation',
   module: '用户鉴权',
-  description: '',
+  description: '登录',
   query,
   doc
 }

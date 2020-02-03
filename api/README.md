@@ -31,63 +31,63 @@ Table of Contents
 - [检查用户登录状态 - checkLoginStatus](./checkLoginStatus/)
 - [批量删除用户 - removeUsers](./removeUsers/)
 - [更新用户资料 - updateUser](./updateUser/)
-- [发送重置密码邮件 - sendResetPasswordEmail](./sendResetPasswordEmail/README.md)
-- [验证重置密码验证码 - verifyResetPasswordVerifyCode](./verifyResetPasswordVerifyCode/README.md)
-- [发送验证邮件 - sendVerifyEmail](./sendVerifyEmail/README.md)
-- [修改密码 - changePassword](./changePassword/README.md)
-- [解绑邮箱 - unbindEmail](./unbindEmail/README.md)
-- ***Deprecated** [获取应用下所有角色 - clientRoles](./clientRoles/README.md)
-- ***Deprecated** [获取用户权限和角色 - queryRoleByUserId](./queryRoleByUserId/README.md)
-- ***Deprecated** [创建用户角色 - createRole](./createRole/README.md)
-- ***Deprecated** [修改用户角色 - updateRole](./updateRole/README.md)
-- ***Deprecated** [指派用户到某角色 - assignUserToRole](./assignUserToRole/README.md)
-- ***Deprecated** [将用户从某角色中移除 - removeUserFromGroup](./removeUserFromGroup/README.md)
-- ***Deprecated** [获取某角色下全部用户 - usersInGroup](./usersInGroup/README.md)
+- [发送重置密码邮件 - sendResetPasswordEmail](./sendResetPasswordEmail/)
+- [验证重置密码验证码 - verifyResetPasswordVerifyCode](./verifyResetPasswordVerifyCode/)
+- [发送验证邮件 - sendVerifyEmail](./sendVerifyEmail/)
+- [修改密码 - changePassword](./changePassword/)
+- [解绑邮箱 - unbindEmail](./unbindEmail/)
+- ***Deprecated** [获取应用下所有角色 - clientRoles](./clientRoles/)
+- ***Deprecated** [获取用户权限和角色 - queryRoleByUserId](./queryRoleByUserId/)
+- ***Deprecated** [创建用户角色 - createRole](./createRole/)
+- ***Deprecated** [修改用户角色 - updateRole](./updateRole/)
+- ***Deprecated** [指派用户到某角色 - assignUserToRole](./assignUserToRole/)
+- ***Deprecated** [将用户从某角色中移除 - removeUserFromGroup](./removeUserFromGroup/)
+- ***Deprecated** [获取某角色下全部用户 - usersInGroup](./usersInGroup/)
 
 ### 用户池管理 - UserPool Management
 
-- [用户池列表 - userClients](./userClients/README.md)
-- [用户池详情 - client](./client/README.md)
-- [获取用户池类型 - userClientTypes](./userClientTypes/README.md)
-- [用户池权限列表 - queryPermissionList](./queryPermissionList/README.md)
-- [是否具备用户池相关权限 - isClientBelongToUser](./isClientBelongToUser/README.md)
-- [批量删除用户池 - removeUserClients](./removeUserClients/README.md)
-- [修改用户池 - updateUserClient](./updateUserClient/README.md)
+- [用户池列表 - userClients](./userClients/)
+- [用户池详情 - client](./client/)
+- [获取用户池类型 - userClientTypes](./userClientTypes/)
+- [用户池权限列表 - queryPermissionList](./queryPermissionList/)
+- [是否具备用户池相关权限 - isClientBelongToUser](./isClientBelongToUser/)
+- [批量删除用户池 - removeUserClients](./removeUserClients/)
+- [修改用户池 - updateUserClient](./updateUserClient/)
 
 ### 社会化登录 - Thard-Party Login
 
-- [绑定社会化登录 - bindOtherOAuth](./bindOtherOAuth/README.md)
-- [解绑社会化登录 - unbindOtherOAuth](./unbindOtherOAuth/README.md)
+- [绑定社会化登录 - bindOtherOAuth](./bindOtherOAuth/)
+- [解绑社会化登录 - unbindOtherOAuth](./unbindOtherOAuth/)
 
 ### 注册白名单 - Register Whitelist
 
-- [开启/关闭注册白名单限制 - setInvitationState](./setInvitationState/README.md)
-- [查看白名单机制开启状态 - queryInvitationState](./queryInvitationState/README.md)
-- [增加手机号到白名单 - addToInvitation](./addToInvitation/README.md)
-- [从白名单中删除手机号 - removeFromInvitation](./removeFromInvitation/README.md)
-- [查看白名单中的手机号 - queryInvitation](./queryInvitation/README.md)
+- [开启/关闭注册白名单限制 - setInvitationState](./setInvitationState/)
+- [查看白名单机制开启状态 - queryInvitationState](./queryInvitationState/)
+- [增加手机号到白名单 - addToInvitation](./addToInvitation/)
+- [从白名单中删除手机号 - removeFromInvitation](./removeFromInvitation/)
+- [查看白名单中的手机号 - queryInvitation](./queryInvitation/)
 
 ### MFA 多因素认证 - Multi-Factor Authentication
 
-- [查询 MFA 配置 - queryMFA](./queryMFA/README.md)
-- [修改 MFA 信息 - changeMFA](./changeMFA/README.md)
+- [查询 MFA 配置 - queryMFA](./queryMFA/)
+- [修改 MFA 信息 - changeMFA](./changeMFA/)
 
 ### Webhook API
 
-- [添加 Webhook - addClientWebhook](./addClientWebhook/README.md)
-- [获取用户池 WebHook 列表 - getAllWebhooks](./getAllWebhooks/README.md)
-- [获取 Webhook 日志列表 - getWebhookLogs](./getWebhookLogs/README.md)
-- [获取 Webhook 日志详情 - getWebhookLogDetail](./getWebhookLogDetail/README.md)
-- [获取 Webhook 配置项 - getWebhookSettingOptions](./getWebhookSettingOptions/README.md)
-- [修改 Webhook - updateClientWebhook](./updateClientWebhook/README.md)
-- [删除 Webhook - deleteClientWebhook](./deleteClientWebhook/README.md)
-- [发送 Webhook 测试请求 - SendWebhookTest](./SendWebhookTest/README.md)
+- [添加 Webhook - addClientWebhook](./addClientWebhook/)
+- [获取用户池 WebHook 列表 - getAllWebhooks](./getAllWebhooks/)
+- [获取 Webhook 日志列表 - getWebhookLogs](./getWebhookLogs/)
+- [获取 Webhook 日志详情 - getWebhookLogDetail](./getWebhookLogDetail/)
+- [获取 Webhook 配置项 - getWebhookSettingOptions](./getWebhookSettingOptions/)
+- [修改 Webhook - updateClientWebhook](./updateClientWebhook/)
+- [删除 Webhook - deleteClientWebhook](./deleteClientWebhook/)
+- [发送 Webhook 测试请求 - SendWebhookTest](./SendWebhookTest/)
 
 ### OAuth API
 
-- [使用 LDAP 登录 - LoginByLDAP](./LoginByLDAP/README.md)
-- [查询用户授权过的 SSO 应用列表 - GetUserAuthorizedApps](./GetUserAuthorizedApps/README.md)
-- [撤回用户对 SSO 应用的授权 - RevokeUserAuthorizedApp](./RevokeUserAuthorizedApp/README.md)
+- [使用 LDAP 登录 - LoginByLDAP](./LoginByLDAP/)
+- [查询用户授权过的 SSO 应用列表 - GetUserAuthorizedApps](./GetUserAuthorizedApps/)
+- [撤回用户对 SSO 应用的授权 - RevokeUserAuthorizedApp](./RevokeUserAuthorizedApp/)
 
 
 ### 组织机构管理 - Organizational Structure Management

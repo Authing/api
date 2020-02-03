@@ -9,7 +9,7 @@ module.exports = {
   name: 'getClientWhenSdkInit',
   type: 'query',
   module: '用户池鉴权',
-  description: '',
+  description: '初始化',
   query,
   doc
 }
