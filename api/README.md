@@ -24,6 +24,7 @@
 - [检查用户登录状态 - checkLoginStatus](./checkLoginStatus/)
 - [批量删除用户 - removeUsers](./removeUsers/)
 - [更新用户资料 - updateUser](./updateUser/)
+- [发送重置密码邮件 - sendResetPasswordEmail](./sendResetPasswordEmail/README.md)
 
 
 ## Organizational Structure Management
