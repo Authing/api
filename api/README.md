@@ -93,15 +93,15 @@ Table of Contents
 ### 组织机构管理 - Organizational Structure Management
 
 
-- [创建组织机构 - createOrg](./createOrg/)
-- [添加节点 - addOrgNode](./addOrgNode/)
-- [删除节点 - removeOrgNode](./removeOrgNode/)
-- [删除组织机构 - deleteOrg](./deleteOrg/)
-- [查询组织结构详情 - org](./org/)
-- [查询用户池组织结构列表 - orgs](./orgs/)
-- [查询某节点子节点 - orgChildrenNodes](./orgChildrenNodes/)
-- [判断某一节点是否为根节点 - isRootNodeOfOrg](./isRootNodeOfOrg/)
-- [查询组织结构根节点 - orgRootNode](./orgRootNode/)
+- [创建组织机构 - createOrg](./createOrg/README.md)
+- [添加节点 - addOrgNode](./addOrgNode/README.md)
+- [删除节点 - removeOrgNode](./removeOrgNode/README.md)
+- [删除组织机构 - deleteOrg](./deleteOrg/README.md)
+- [查询组织结构详情 - org](./org/README.md)
+- [查询用户池组织结构列表 - orgs](./orgs/README.md)
+- [查询某节点子节点 - orgChildrenNodes](./orgChildrenNodes/README.md)
+- [判断某一节点是否为根节点 - isRootNodeOfOrg](./isRootNodeOfOrg/README.md)
+- [查询组织结构根节点 - orgRootNode](./orgRootNode/README.md)
 
 ### 完整列表 - Full List
 
