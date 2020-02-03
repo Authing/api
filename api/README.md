@@ -32,6 +32,7 @@
 - ***Deprecated** [获取应用下所有角色 - clientRoles](./clientRoles/README.md)
 - ***Deprecated** [获取用户权限和角色 - queryRoleByUserId](./queryRoleByUserId/README.md)
 - ***Deprecated** [创建用户角色 - createRole](./createRole/README.md)
+- ***Deprecated** [修改用户角色 - updateRole](./updateRole/README.md)
 
 ## Organizational Structure Management
 
