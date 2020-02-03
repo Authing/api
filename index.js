@@ -1,7 +1,10 @@
 const express = require("express")
+const cors = require('cors')
 const API = require("./api")
 const app = express()
 const port = 5678
+
+app.use(cors())
 
 app.get('/list', function (req, res) {
   res.send(API)
