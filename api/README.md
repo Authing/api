@@ -51,6 +51,7 @@ Table of Contents
 - [获取用户池类型 - userClientTypes](./userClientTypes/README.md)
 - [用户池权限列表 - queryPermissionList](./queryPermissionList/README.md)
 - [是否具备用户池相关权限 - isClientBelongToUser](./isClientBelongToUser/README.md)
+- [批量删除用户池 - removeUserClients](./removeUserClients/README.md)
 
 
 # 组织机构管理 - Organizational Structure Management
