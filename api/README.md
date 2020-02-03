@@ -1,6 +1,25 @@
 
 # Authing API Index
 
+## Organizational Structure Management
+
+### Query
+
+- [创建组织机构 - createOrg](./createOrg/README.md)
+- [添加节点 - addOrgNode](./addOrgNode/README.md)
+- [删除节点 - removeOrgNode](./removeOrgNode/README.md)
+- [删除组织机构 - deleteOrg](./deleteOrg/README.md)
+
+### Mutation
+
+- [查询组织结构详情 - org](./org/README.md)
+- [查询用户池组织结构列表 - orgs](./orgs/README.md)
+- [查询某节点子节点 - orgChildrenNodes](./orgChildrenNodes/README.md)
+- [判断某一节点是否为根节点 - isRootNodeOfOrg](./isRootNodeOfOrg/README.md)
+- [查询组织结构根节点 - orgRootNode](./orgRootNode/README.md)
+
+## Full List
+
 - [addClientWebhook](./addClientWebhook/README.md)
 - [addCollaborator](./addCollaborator/README.md)
 - [AddEmailProvider](./AddEmailProvider/README.md)
