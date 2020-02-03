@@ -20,6 +20,7 @@
 ## 用户管理 - User Management
 
 - [读取用户资料 - user](./user/)
+- [获取用户列表 - users](./users/README.md)
 
 ## Organizational Structure Management
 
