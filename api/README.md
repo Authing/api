@@ -87,6 +87,7 @@ Table of Contents
 
 - [使用 LDAP 登录 - LoginByLDAP](./LoginByLDAP/README.md)
 - [查询用户授权过的 SSO 应用列表 - GetUserAuthorizedApps](./GetUserAuthorizedApps/README.md)
+- [撤回用户对 SSO 应用的授权 - RevokeUserAuthorizedApp](./RevokeUserAuthorizedApp/README.md)
 
 
 ### 组织机构管理 - Organizational Structure Management

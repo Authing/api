@@ -8,7 +8,8 @@ const query = fs.readFileSync(path.join(__dirname, 'query.gql'), 'utf8')
 module.exports = {
   name: 'RevokeUserAuthorizedApp',
   type: 'mutation',
-  description: '',
+  module: 'OAuth API',
+  description: '撤回用户对 SSO 应用的授权',
   query,
   doc
 }
