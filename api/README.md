@@ -29,6 +29,7 @@
 - [发送验证邮件 - sendVerifyEmail](./sendVerifyEmail/README.md)
 - [修改密码 - changePassword](./changePassword/README.md)
 - [解绑邮箱 - unbindEmail](./unbindEmail/README.md)
+-  ***Deprecated** [获取应用下所有角色 - clientRoles](./clientRoles/README.md)
 
 
 ## Organizational Structure Management
