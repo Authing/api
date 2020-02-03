@@ -31,6 +31,7 @@
 - [解绑邮箱 - unbindEmail](./unbindEmail/README.md)
 - ***Deprecated** [获取应用下所有角色 - clientRoles](./clientRoles/README.md)
 - ***Deprecated** [获取用户权限和角色 - queryRoleByUserId](./queryRoleByUserId/README.md)
+- ***Deprecated** [创建用户角色 - createRole](./createRole/README.md)
 
 ## Organizational Structure Management
 
