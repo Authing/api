@@ -58,6 +58,7 @@ Table of Contents
 # 社会化登录 - Thard-Party Login
 
 - [绑定社会化登录 - bindOtherOAuth](./bindOtherOAuth/README.md)
+- [解绑社会化登录 - unbindOtherOAuth](./unbindOtherOAuth/README.md)
 
 
 # 组织机构管理 - Organizational Structure Management
