@@ -8,7 +8,8 @@ const query = fs.readFileSync(path.join(__dirname, 'query.gql'), 'utf8')
 module.exports = {
   name: 'SendWebhookTest',
   type: 'mutation',
-  description: '',
+  module: 'WebHook API',
+  description: '发送 Webhook 测试请求',
   query,
   doc
 }
