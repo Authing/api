@@ -8,7 +8,8 @@ const query = fs.readFileSync(path.join(__dirname, 'query.gql'), 'utf8')
 module.exports = {
   name: 'bindOtherOAuth',
   type: 'mutation',
-  description: '',
+  module: '社会化登录',
+  description: '绑定社会化登录',
   query,
   doc
 }

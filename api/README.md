@@ -8,10 +8,11 @@ Table of Contents
 - [用户鉴权 - Authentication](#%e7%94%a8%e6%88%b7%e9%89%b4%e6%9d%83---authentication)
 - [用户管理 - User Management](#%e7%94%a8%e6%88%b7%e7%ae%a1%e7%90%86---user-management)
 - [用户池管理 - UserPool Management](#%e7%94%a8%e6%88%b7%e6%b1%a0%e7%ae%a1%e7%90%86---userpool-management)
+- [社会化登录 - Thard-Party Login](#%e7%a4%be%e4%bc%9a%e5%8c%96%e7%99%bb%e5%bd%95---thard-party-login)
 - [组织机构管理 - Organizational Structure Management](#%e7%bb%84%e7%bb%87%e6%9c%ba%e6%9e%84%e7%ae%a1%e7%90%86---organizational-structure-management)
   - [Query](#query)
   - [Mutation](#mutation)
-- [Full List](#full-list)
+- [完整列表 - Full List](#%e5%ae%8c%e6%95%b4%e5%88%97%e8%a1%a8---full-list)
 
 # 用户池鉴权
 
@@ -54,6 +55,10 @@ Table of Contents
 - [批量删除用户池 - removeUserClients](./removeUserClients/README.md)
 - [修改用户池 - updateUserClient](./updateUserClient/README.md)
 
+# 社会化登录 - Thard-Party Login
+
+- [绑定社会化登录 - bindOtherOAuth](./bindOtherOAuth/README.md)
+
 
 # 组织机构管理 - Organizational Structure Management
 
@@ -72,7 +77,7 @@ Table of Contents
 - [判断某一节点是否为根节点 - isRootNodeOfOrg](./isRootNodeOfOrg/)
 - [查询组织结构根节点 - orgRootNode](./orgRootNode/)
 
-# Full List
+# 完整列表 - Full List
 
 - [addClientWebhook](./addClientWebhook/)
 - [addCollaborator](./addCollaborator/)
