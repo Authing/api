@@ -1,6 +1,20 @@
 
 # Authing API Index
 
+# Table of Contents
+- [用户池鉴权](#用户池鉴权)
+- [用户鉴权](#用户鉴权)
+- [组织机构管理 - Organizational Structure Management](#Organizational-Structure-Management)
+
+## 用户池鉴权
+
+- [初始化 SDK - getClientWhenSdkInit](./getClientWhenSdkInit/README.md)
+
+## 用户鉴权
+
+- [注册 - register](./register/README.md)
+
+
 ## Organizational Structure Management
 
 ### Query
