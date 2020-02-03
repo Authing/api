@@ -1,23 +1,30 @@
 
 # Authing API Index
 
-# Table of Contents
-- [用户池鉴权](#用户池鉴权)
-- [用户鉴权](#用户鉴权)
-- [组织机构管理 - Organizational Structure Management](#Organizational-Structure-Management)
+Table of Contents
 
-## 用户池鉴权
+- [Authing API Index](#authing-api-index)
+- [用户池鉴权](#%e7%94%a8%e6%88%b7%e6%b1%a0%e9%89%b4%e6%9d%83)
+- [用户鉴权 - Authentication](#%e7%94%a8%e6%88%b7%e9%89%b4%e6%9d%83---authentication)
+- [用户管理 - User Management](#%e7%94%a8%e6%88%b7%e7%ae%a1%e7%90%86---user-management)
+- [用户池管理 - UserPool Management](#%e7%94%a8%e6%88%b7%e6%b1%a0%e7%ae%a1%e7%90%86---userpool-management)
+- [组织机构管理 - Organizational Structure Management](#%e7%bb%84%e7%bb%87%e6%9c%ba%e6%9e%84%e7%ae%a1%e7%90%86---organizational-structure-management)
+  - [Query](#query)
+  - [Mutation](#mutation)
+- [Full List](#full-list)
+
+# 用户池鉴权
 
 - [初始化 SDK - getClientWhenSdkInit](./getClientWhenSdkInit/)
 
-## 用户鉴权 - Authentication
+# 用户鉴权 - Authentication
 
 - [注册 - register](./register/)
 - [登录 - login](./login/)
 - [解析 JWT Token - decodeJwtToken](./decodeJwtToken/)
 - [刷新 Token - refreshToken](./refreshToken/)
 
-## 用户管理 - User Management
+# 用户管理 - User Management
 
 - [读取用户资料 - user](./user/)
 - [获取用户列表 - users](./users/)
@@ -35,19 +42,22 @@
 - ***Deprecated** [修改用户角色 - updateRole](./updateRole/README.md)
 - ***Deprecated** [指派用户到某角色 - assignUserToRole](./assignUserToRole/README.md)
 - ***Deprecated** [将用户从某角色中移除 - removeUserFromGroup](./removeUserFromGroup/README.md)
-- ***Deprecated** [usersInGroup](./usersInGroup/README.md)
+- ***Deprecated** [获取某角色下全部用户 - usersInGroup](./usersInGroup/README.md)
 
+# 用户池管理 - UserPool Management
 
-## Organizational Structure Management
+- [用户池列表 - userClients](./userClients/README.md)
 
-### Query
+# 组织机构管理 - Organizational Structure Management
+
+## Query
 
 - [创建组织机构 - createOrg](./createOrg/)
 - [添加节点 - addOrgNode](./addOrgNode/)
 - [删除节点 - removeOrgNode](./removeOrgNode/)
 - [删除组织机构 - deleteOrg](./deleteOrg/)
 
-### Mutation
+## Mutation
 
 - [查询组织结构详情 - org](./org/)
 - [查询用户池组织结构列表 - orgs](./orgs/)
@@ -55,7 +65,7 @@
 - [判断某一节点是否为根节点 - isRootNodeOfOrg](./isRootNodeOfOrg/)
 - [查询组织结构根节点 - orgRootNode](./orgRootNode/)
 
-## Full List
+# Full List
 
 - [addClientWebhook](./addClientWebhook/)
 - [addCollaborator](./addCollaborator/)
