@@ -26,6 +26,7 @@
 - [更新用户资料 - updateUser](./updateUser/)
 - [发送重置密码邮件 - sendResetPasswordEmail](./sendResetPasswordEmail/README.md)
 - [验证重置密码验证码 - verifyResetPasswordVerifyCode](./verifyResetPasswordVerifyCode/README.md)
+- [发送验证邮件 - sendVerifyEmail](./sendVerifyEmail/README.md)
 
 
 ## Organizational Structure Management
