@@ -8,7 +8,8 @@ const query = fs.readFileSync(path.join(__dirname, 'query.gql'), 'utf8')
 module.exports = {
   name: 'changeMFA',
   type: 'mutation',
-  description: '',
+  module: 'MFA 多因素认证',
+  description: '修改 MFA 信息',
   query,
   doc
 }

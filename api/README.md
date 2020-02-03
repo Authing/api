@@ -70,7 +70,8 @@ Table of Contents
 
 # MFA 多因素认证 - Multi-Factor Authentication
 
-- [queryMFA](./queryMFA/README.md)
+- [查询 MFA 配置 - queryMFA](./queryMFA/README.md)
+- [修改 MFA 信息 - changeMFA](./changeMFA/README.md)
 
 
 # 组织机构管理 - Organizational Structure Management
