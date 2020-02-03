@@ -20,7 +20,8 @@
 ## 用户管理 - User Management
 
 - [读取用户资料 - user](./user/)
-- [获取用户列表 - users](./users/README.md)
+- [获取用户列表 - users](./users/)
+- [检查用户登录状态 - checkLoginStatus](./checkLoginStatus/)
 
 ## Organizational Structure Management
 
