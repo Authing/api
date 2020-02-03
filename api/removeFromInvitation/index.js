@@ -8,7 +8,8 @@ const query = fs.readFileSync(path.join(__dirname, 'query.gql'), 'utf8')
 module.exports = {
   name: 'removeFromInvitation',
   type: 'mutation',
-  description: '',
+  module: '注册白名单',
+  description: '从白名单中删除手机号',
   query,
   doc
 }
