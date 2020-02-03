@@ -9,9 +9,8 @@ Table of Contents
 - [用户管理 - User Management](#%e7%94%a8%e6%88%b7%e7%ae%a1%e7%90%86---user-management)
 - [用户池管理 - UserPool Management](#%e7%94%a8%e6%88%b7%e6%b1%a0%e7%ae%a1%e7%90%86---userpool-management)
 - [社会化登录 - Thard-Party Login](#%e7%a4%be%e4%bc%9a%e5%8c%96%e7%99%bb%e5%bd%95---thard-party-login)
+- [注册白名单 - Register Whitelist](#%e6%b3%a8%e5%86%8c%e7%99%bd%e5%90%8d%e5%8d%95---register-whitelist)
 - [组织机构管理 - Organizational Structure Management](#%e7%bb%84%e7%bb%87%e6%9c%ba%e6%9e%84%e7%ae%a1%e7%90%86---organizational-structure-management)
-  - [Query](#query)
-  - [Mutation](#mutation)
 - [完整列表 - Full List](#%e5%ae%8c%e6%95%b4%e5%88%97%e8%a1%a8---full-list)
 
 # 用户池鉴权
@@ -60,18 +59,18 @@ Table of Contents
 - [绑定社会化登录 - bindOtherOAuth](./bindOtherOAuth/README.md)
 - [解绑社会化登录 - unbindOtherOAuth](./unbindOtherOAuth/README.md)
 
+# 注册白名单 - Register Whitelist
+
+- [开启/关闭注册白名单限制 - setInvitationState](./setInvitationState/README.md)
+
 
 # 组织机构管理 - Organizational Structure Management
 
-## Query
 
 - [创建组织机构 - createOrg](./createOrg/)
 - [添加节点 - addOrgNode](./addOrgNode/)
 - [删除节点 - removeOrgNode](./removeOrgNode/)
 - [删除组织机构 - deleteOrg](./deleteOrg/)
-
-## Mutation
-
 - [查询组织结构详情 - org](./org/)
 - [查询用户池组织结构列表 - orgs](./orgs/)
 - [查询某节点子节点 - orgChildrenNodes](./orgChildrenNodes/)
