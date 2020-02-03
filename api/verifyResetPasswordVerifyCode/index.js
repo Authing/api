@@ -8,7 +8,8 @@ const query = fs.readFileSync(path.join(__dirname, 'query.gql'), 'utf8')
 module.exports = {
   name: 'verifyResetPasswordVerifyCode',
   type: 'mutation',
-  description: '',
+  module: '用户管理',
+  description: '验证重置密码验证码',
   query,
   doc
 }

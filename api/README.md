@@ -25,6 +25,7 @@
 - [批量删除用户 - removeUsers](./removeUsers/)
 - [更新用户资料 - updateUser](./updateUser/)
 - [发送重置密码邮件 - sendResetPasswordEmail](./sendResetPasswordEmail/README.md)
+- [验证重置密码验证码 - verifyResetPasswordVerifyCode](./verifyResetPasswordVerifyCode/README.md)
 
 
 ## Organizational Structure Management
