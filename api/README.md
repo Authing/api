@@ -62,6 +62,7 @@ Table of Contents
 # 注册白名单 - Register Whitelist
 
 - [开启/关闭注册白名单限制 - setInvitationState](./setInvitationState/README.md)
+- [查看白名单机制开启状态 - queryInvitationState](./queryInvitationState/README.md)
 
 
 # 组织机构管理 - Organizational Structure Management

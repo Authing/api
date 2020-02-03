@@ -8,7 +8,8 @@ const query = fs.readFileSync(path.join(__dirname, 'query.gql'), 'utf8')
 module.exports = {
   name: 'queryInvitationState',
   type: 'query',
-  description: '',
+  module: '注册白名单',
+  description: '查看白名单机制开启状态',
   query,
   doc
 }
