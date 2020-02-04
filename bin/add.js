@@ -4,10 +4,10 @@ const path = require("path")
 
 const args = process.argv.slice(2);
 const name = args[0]
-
 const destFolder = path.join(__dirname, `../api/${name}`)
 if (fs.existsSync(destFolder)) {
-  throw Error(`${destFolder} allready exist!`)
+  const msg = `API ${name} allready exist!`
+  throw Error(msg)
 }
 fs.mkdirSync(destFolder)
 
@@ -32,3 +32,14 @@ module.exports = {
   doc
 }
 `)
+
+function insertLineAt(filename, lineno, content) {
+  let data = fs.readFileSync(filename).toString().split("\n");
+  data.splice(lineno, 0, content);
+  const text = data.join("\n")
+  fs.writeFileSync(filename, text)
+}
+
+const apiIndexFile = path.join(__dirname, "../api/index.js")
+insertLineAt(apiIndexFile, 0, `const ${name} = require('./${name}')`)
+insertLineAt(apiIndexFile, -2, `  ${name},`)

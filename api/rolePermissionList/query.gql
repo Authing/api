@@ -1,0 +1,14 @@
+query QueryRBACRolePermissionList($_id: String!) {
+	rbacRole(_id: $_id) {
+		permissions {
+			totalCount
+			list {
+				_id
+				name
+				description
+				createdAt
+				updatedAt
+			}
+		}
+	}
+}

@@ -1,4 +1,4 @@
-
+const rolePermissionList = require('./rolePermissionList')
 const GetOIDCAppInfo = require('./GetOIDCAppInfo')
 const GetOIDCAppList = require('./GetOIDCAppList')
 const GetSAMLIdentityProviderInfo = require('./GetSAMLIdentityProviderInfo')
@@ -236,6 +236,10 @@ const updateSuperAdminUser = require('./updateSuperAdminUser')
 const updateUser = require('./updateUser')
 const updateUserClient = require('./updateUserClient')
 const verifyResetPasswordVerifyCode = require('./verifyResetPasswordVerifyCode')
+const groupRoleList = require("./groupRoleList")
+const groupPermissionList = require("./groupPermissionList")
+const groupUserList = require("./groupUserList")
+const roleUserList = require("./roleUserList")
 module.exports = {
   GetOIDCAppInfo,
   GetOIDCAppList,
@@ -474,4 +478,9 @@ module.exports = {
   updateUser,
   updateUserClient,
   verifyResetPasswordVerifyCode,
+  groupRoleList,
+  groupPermissionList,
+  groupUserList,
+  roleUserList,
+  rolePermissionList,
 }
