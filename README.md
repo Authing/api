@@ -17,6 +17,12 @@ This will setup 2 apis:
 
 ## Command Line Usage
 
+### Add API
+
+```
+yarn add-api <API_NAME>
+```
+
 ### Print List
 
 ```
