@@ -119,69 +119,69 @@ Table of Contents
 
 #### 分组增删改查
 
-- [创建分组 - createRBACGroup](./createRBACGroup/README.md)
-- [更新分组- updateRBACGroup](./updateRBACGroup/README.md)
-- [删除分组- deleteRBACGroup](./deleteRBACGroup/README.md)
-- [批量删除分组- deleteRBACGroupBatch](./deleteRBACGroupBatch/README.md)
-- [查询分组 - rbacGroup](./rbacGroup/README.md)
-- [查询用户池分组列表 - rbacGroupList](./rbacGroupList/README.md)
+- [创建分组 - createRBACGroup](./createRBACGroup/)
+- [更新分组- updateRBACGroup](./updateRBACGroup/)
+- [删除分组- deleteRBACGroup](./deleteRBACGroup/)
+- [批量删除分组- deleteRBACGroupBatch](./deleteRBACGroupBatch/)
+- [查询分组 - rbacGroup](./rbacGroup/)
+- [查询用户池分组列表 - rbacGroupList](./rbacGroupList/)
 
 #### 角色增删改查
 
-- [创建角色- createRBACRole](./createRBACRole/README.md)
-- [更新角色- updateRBACRole](./updateRBACRole/README.md)
-- [删除角色- deleteRBACRole](./deleteRBACRole/README.md)
-- [批量删除角色- deleteRBACRoleBatch](./deleteRBACRoleBatch/README.md)
-- [查询角色详情 - rbacRole](./rbacRole/README.md)
-- [查询用户池角色列表 - rbacRoleList](./rbacRoleList/README.md)
+- [创建角色- createRBACRole](./createRBACRole/)
+- [更新角色- updateRBACRole](./updateRBACRole/)
+- [删除角色- deleteRBACRole](./deleteRBACRole/)
+- [批量删除角色- deleteRBACRoleBatch](./deleteRBACRoleBatch/)
+- [查询角色详情 - rbacRole](./rbacRole/)
+- [查询用户池角色列表 - rbacRoleList](./rbacRoleList/)
 
 #### 权限增删改查
 
-- [创建权限 - createRBACPermission](./createRBACPermission/README.md)
-- [更新权限 - updateRBACPermission](./updateRBACPermission/README.md)
-- [删除权限 - deleteRBACPermission](./deleteRBACPermission/README.md)
-- [批量删除权限 - deleteRBACPermissionBatch](./deleteRBACPermissionBatch/README.md)
-- [查询权限详情 - rbacPermission](./rbacPermission/README.md)
-- [查询用户池权限列表 - rbacPermissionList](./rbacPermissionList/README.md)
+- [创建权限 - createRBACPermission](./createRBACPermission/)
+- [更新权限 - updateRBACPermission](./updateRBACPermission/)
+- [删除权限 - deleteRBACPermission](./deleteRBACPermission/)
+- [批量删除权限 - deleteRBACPermissionBatch](./deleteRBACPermissionBatch/)
+- [查询权限详情 - rbacPermission](./rbacPermission/)
+- [查询用户池权限列表 - rbacPermissionList](./rbacPermissionList/)
 
 #### 分组配置角色
 
-- [查询分组中包含的角色 - rbacGroup](./groupRoleList/README.md)
-- [查询分组中包含的权限 - rbacGroup](./groupPermissionList/README.md)
-- [分组添加角色 - addRoleToRBACGroup](./addRoleToRBACGroup/README.md)
-- [分组批量添加角色 - addRoleToRBACGroupBatch](./addRoleToRBACGroupBatch/README.md)
-- [分组移除角色 - removeRoleFromRBACGroup](./removeRoleFromRBACGroup/README.md)
-- [分组批量移除角色 - removeRoleFromRBACGroupBatch](./removeRoleFromRBACGroupBatch/README.md)
+- [查询分组中包含的角色 - rbacGroup](./groupRoleList/)
+- [查询分组中包含的权限 - rbacGroup](./groupPermissionList/)
+- [分组添加角色 - addRoleToRBACGroup](./addRoleToRBACGroup/)
+- [分组批量添加角色 - addRoleToRBACGroupBatch](./addRoleToRBACGroupBatch/)
+- [分组移除角色 - removeRoleFromRBACGroup](./removeRoleFromRBACGroup/)
+- [分组批量移除角色 - removeRoleFromRBACGroupBatch](./removeRoleFromRBACGroupBatch/)
 
 #### 分组指派用户
 
-- [查询分组中包含的用户 - rbacGroup](./groupUserList/README.md)
-- [分组添加用户 - addUserToRBACGroup](./addUserToRBACGroup/README.md)
-- [分组批量添加用户 - addUserToRBACGroupBatch](./addUserToRBACGroupBatch/README.md)
-- [分组移除用户 - removeUserFromRBACGroup](./removeUserFromRBACGroup/README.md)
-- [分组批量移除用户 - removeUserFromRBACGroupBatch](./removeUserFromRBACGroupBatch/README.md)
+- [查询分组中包含的用户 - rbacGroup](./groupUserList/)
+- [分组添加用户 - addUserToRBACGroup](./addUserToRBACGroup/)
+- [分组批量添加用户 - addUserToRBACGroupBatch](./addUserToRBACGroupBatch/)
+- [分组移除用户 - removeUserFromRBACGroup](./removeUserFromRBACGroup/)
+- [分组批量移除用户 - removeUserFromRBACGroupBatch](./removeUserFromRBACGroupBatch/)
 
 #### 角色指派用户
 
-- [查询角色中包含的用户 - rbacRole](./roleUserList/README.md)
-- [赋予用户某角色 - assignRBACRoleToUser](./assignRBACRoleToUser/README.md)
-- [批量赋予用户角色 - assignRBACRoleToUserBatch](./assignRBACRoleToUserBatch/README.md)
-- [撤回用户某角色 - revokeRBACRoleFromUser](./revokeRBACRoleFromUser/README.md)
-- [批量撤回用户某角色 - revokeRBACRoleFromUserBatch](./revokeRBACRoleFromUserBatch/README.md)
+- [查询角色中包含的用户 - rbacRole](./roleUserList/)
+- [赋予用户某角色 - assignRBACRoleToUser](./assignRBACRoleToUser/)
+- [批量赋予用户角色 - assignRBACRoleToUserBatch](./assignRBACRoleToUserBatch/)
+- [撤回用户某角色 - revokeRBACRoleFromUser](./revokeRBACRoleFromUser/)
+- [批量撤回用户某角色 - revokeRBACRoleFromUserBatch](./revokeRBACRoleFromUserBatch/)
 
 #### 角色配置权限
 
-- [查询角色中包含的权限 - rbacRole](./rolePermissionList/README.md)
-- [角色添加权限 - addPermissionToRBACRole](./addPermissionToRBACRole/README.md)
-- [角色批量添加权限 - addPermissionToRBACRoleBatch](./addPermissionToRBACRoleBatch/README.md)
-- [角色移除权限 - removePermissionFromRBACRole](./removePermissionFromRBACRole/README.md)
-- [角色批量移除权限 - removePermissionFromRBACRoleBatch](./removePermissionFromRBACRoleBatch/README.md)
+- [查询角色中包含的权限 - rbacRole](./rolePermissionList/)
+- [角色添加权限 - addPermissionToRBACRole](./addPermissionToRBACRole/)
+- [角色批量添加权限 - addPermissionToRBACRoleBatch](./addPermissionToRBACRoleBatch/)
+- [角色移除权限 - removePermissionFromRBACRole](./removePermissionFromRBACRole/)
+- [角色批量移除权限 - removePermissionFromRBACRoleBatch](./removePermissionFromRBACRoleBatch/)
 
 #### 查询用户的分组、角色、权限
 
-- [查询用户拥有的权限列表 - userPermissionList](./userPermissionList/README.md)
-- [查询用户拥有的分组列表 - userGroupList](./userGroupList/README.md)
-- [查询用户拥有的角色列表 - userRoleList](./userRoleList/README.md)
+- [查询用户拥有的权限列表 - userPermissionList](./userPermissionList/)
+- [查询用户拥有的分组列表 - userGroupList](./userGroupList/)
+- [查询用户拥有的角色列表 - userRoleList](./userRoleList/)
 
 
 ### 完整列表 - Full List
