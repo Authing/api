@@ -11,6 +11,15 @@ Table of Contents
 - [Webhook API](#webhook-api)
 - [OAuth API](#oauth-api)
 - [组织机构管理 - Organizational Structure Management](#%e7%bb%84%e7%bb%87%e6%9c%ba%e6%9e%84%e7%ae%a1%e7%90%86---organizational-structure-management)
+- [权限控制 - Access Control](#%e6%9d%83%e9%99%90%e6%8e%a7%e5%88%b6---access-control)
+  - [分组增删改查](#%e5%88%86%e7%bb%84%e5%a2%9e%e5%88%a0%e6%94%b9%e6%9f%a5)
+  - [角色增删改查](#%e8%a7%92%e8%89%b2%e5%a2%9e%e5%88%a0%e6%94%b9%e6%9f%a5)
+  - [权限增删改查](#%e6%9d%83%e9%99%90%e5%a2%9e%e5%88%a0%e6%94%b9%e6%9f%a5)
+  - [分组配置角色](#%e5%88%86%e7%bb%84%e9%85%8d%e7%bd%ae%e8%a7%92%e8%89%b2)
+  - [分组指派用户](#%e5%88%86%e7%bb%84%e6%8c%87%e6%b4%be%e7%94%a8%e6%88%b7)
+  - [角色指派用户](#%e8%a7%92%e8%89%b2%e6%8c%87%e6%b4%be%e7%94%a8%e6%88%b7)
+  - [角色配置权限](#%e8%a7%92%e8%89%b2%e9%85%8d%e7%bd%ae%e6%9d%83%e9%99%90)
+  - [查询用户的分组、角色、权限](#%e6%9f%a5%e8%af%a2%e7%94%a8%e6%88%b7%e7%9a%84%e5%88%86%e7%bb%84%e8%a7%92%e8%89%b2%e6%9d%83%e9%99%90)
 - [完整列表 - Full List](#%e5%ae%8c%e6%95%b4%e5%88%97%e8%a1%a8---full-list)
 
 ### 用户池鉴权
@@ -92,6 +101,7 @@ Table of Contents
 
 ### 组织机构管理 - Organizational Structure Management
 
+> [点此了解](https://docs.authing.cn/authing/authorization/intergrate-organization-structure)如何接入组织机构管理。
 
 - [创建组织机构 - createOrg](./createOrg/)
 - [添加节点 - addOrgNode](./addOrgNode/)
@@ -102,6 +112,77 @@ Table of Contents
 - [查询某节点子节点 - orgChildrenNodes](./orgChildrenNodes/)
 - [判断某一节点是否为根节点 - isRootNodeOfOrg](./isRootNodeOfOrg/)
 - [查询组织结构根节点 - orgRootNode](./orgRootNode/)
+
+### 权限控制 - Access Control
+
+> Authing 支持基于角色的访问控制（RBAC），[点此了解如何接入](https://docs.authing.cn/authing/authorization/intergrate-rbac)。
+
+#### 分组增删改查
+
+- [创建分组 - createRBACGroup](./createRBACGroup/README.md)
+- [更新分组- updateRBACGroup](./updateRBACGroup/README.md)
+- [删除分组- deleteRBACGroup](./deleteRBACGroup/README.md)
+- [批量删除分组- deleteRBACGroupBatch](./deleteRBACGroupBatch/README.md)
+- [查询分组 - rbacGroup](./rbacGroup/README.md)
+- [查询用户池分组列表 - rbacGroupList](./rbacGroupList/README.md)
+
+#### 角色增删改查
+
+- [创建角色- createRBACRole](./createRBACRole/README.md)
+- [更新角色- updateRBACRole](./updateRBACRole/README.md)
+- [删除角色- deleteRBACRole](./deleteRBACRole/)
+- [批量删除角色- deleteRBACRoleBatch](./deleteRBACRoleBatch/)
+- [查询角色详情 - rbacRole](./rbacRole/README.md)
+- [查询用户池角色列表 - rbacRoleList](./rbacRoleList/)
+
+#### 权限增删改查
+
+- [创建权限 - createRBACPermission](./createRBACPermission/)
+- [更新权限 - updateRBACPermission](./updateRBACPermission/)
+- [删除权限 - deleteRBACPermission](./deleteRBACPermission/)
+- [批量删除权限 - deleteRBACPermissionBatch](./deleteRBACPermissionBatch/)
+- [查询权限详情 - rbacPermission](./rbacPermission/)
+- [查询用户池权限列表 - rbacPermissionList](./rbacPermissionList/)
+
+#### 分组配置角色
+
+- [查询分组中包含的角色 - rbacGroup](./rbacGroup/README.md)
+- [查询分组中包含的权限 - rbacGroup](./rbacGroup/README.md)
+- [分组添加角色 - addRoleToRBACGroup](./addRoleToRBACGroup/)
+- [分组批量添加角色 - addRoleToRBACGroupBatch](./addRoleToRBACGroupBatch/)
+- [分组移除角色 - removeRoleFromRBACGroup](./removeRoleFromRBACGroup/)
+- [分组批量移除角色 - removeRoleFromRBACGroupBatch](./removeRoleFromRBACGroupBatch/)
+
+#### 分组指派用户
+
+- [查询分组中包含的用户 - rbacGroup](./rbacGroup/README.md)
+- [分组添加用户 - addUserToRBACGroup](./addUserToRBACGroup/README.md)
+- [分组批量添加用户 - addUserToRBACGroupBatch](./addUserToRBACGroupBatch/)
+- [分组移除用户 - removeUserFromRBACGroup](./removeUserFromRBACGroup/)
+- [分组批量移除用户 - removeUserFromRBACGroupBatch](./removeUserFromRBACGroupBatch/)
+
+#### 角色指派用户
+
+- [查询角色中包含的用户 - rbacRole](./rbacRole/README.md)
+- [授予用户某角色 - assignRBACRoleToUser](./assignRBACRoleToUser/)
+- [批量授予用户某角色 - assignRBACRoleToUserBatch](./assignRBACRoleToUserBatch/)
+- [撤回用户某角色 - revokeRBACRoleFromUser](./revokeRBACRoleFromUser/)
+- [批量撤回用户某角色 - revokeRBACRoleFromUserBatch](./revokeRBACRoleFromUserBatch/)
+
+#### 角色配置权限
+
+- [查询角色中包含的权限 - rbacRole](./rbacRole/README.md)
+- [角色添加权限 - addPermissionToRBACRole](./addPermissionToRBACRole/)
+- [角色批量添加权限 - addPermissionToRBACRoleBatch](./addPermissionToRBACRoleBatch/)
+- [角色移除权限 - removePermissionFromRBACRole](./removePermissionFromRBACRole/)
+- [角色批量移除权限 - removePermissionFromRBACRoleBatch](./removePermissionFromRBACRoleBatch/)
+
+#### 查询用户的分组、角色、权限
+
+- [查询用户包含的权限列表 - userPermissionList](./userPermissionList/)
+- [查询用户包含的分组列表 - userGroupList](./userGroupList/)
+- [查询用户包含的角色列表 - userRoleList](./userRoleList/)
+
 
 ### 完整列表 - Full List
 
