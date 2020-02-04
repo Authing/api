@@ -8,7 +8,7 @@ const query = fs.readFileSync(path.join(__dirname, 'query.gql'), 'utf8')
 module.exports = {
   name: 'addPermissionToRBACRoleBatch',
   type: 'mutation',
-  description: '',
+  description: '角色批量添加权限',
   query,
   doc
 }
