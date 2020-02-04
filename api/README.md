@@ -149,7 +149,7 @@ Table of Contents
 - [查询分组中包含的角色 - rbacGroup](./groupRoleList/README.md)
 - [查询分组中包含的权限 - rbacGroup](./groupPermissionList/README.md)
 - [分组添加角色 - addRoleToRBACGroup](./addRoleToRBACGroup/README.md)
-- [分组批量添加角色 - addRoleToRBACGroupBatch](./addRoleToRBACGroupBatch/)
+- [分组批量添加角色 - addRoleToRBACGroupBatch](./addRoleToRBACGroupBatch/README.md)
 - [分组移除角色 - removeRoleFromRBACGroup](./removeRoleFromRBACGroup/)
 - [分组批量移除角色 - removeRoleFromRBACGroupBatch](./removeRoleFromRBACGroupBatch/)
 

@@ -8,7 +8,7 @@ const query = fs.readFileSync(path.join(__dirname, 'query.gql'), 'utf8')
 module.exports = {
   name: 'addRoleToRBACGroupBatch',
   type: 'mutation',
-  description: '',
+  description: '分组批量添加角色',
   query,
   doc
 }
