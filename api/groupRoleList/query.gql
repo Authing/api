@@ -1,0 +1,15 @@
+query QueryRBACGroupRoleList($_id: String!) {
+	rbacGroup(_id: $_id) {
+		_id
+		roles {
+			totalCount
+			list {
+				_id
+				name
+				description
+				createdAt
+				updatedAt
+			}
+		}
+	}
+}

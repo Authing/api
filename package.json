@@ -6,7 +6,8 @@
 	"scripts": {
 		"print": "node ./bin/print.js",
 		"setup": "node ./bin/init.js",
-		"all": "node ./bin/list.js"
+		"all": "node ./bin/list.js",
+		"add-api": "node ./bin/add.js"
 	},
 	"dependencies": {
 		"cors": "^2.8.5",
