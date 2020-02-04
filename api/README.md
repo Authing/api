@@ -131,7 +131,7 @@ Table of Contents
 - [创建角色- createRBACRole](./createRBACRole/README.md)
 - [更新角色- updateRBACRole](./updateRBACRole/README.md)
 - [删除角色- deleteRBACRole](./deleteRBACRole/README.md)
-- [批量删除角色- deleteRBACRoleBatch](./deleteRBACRoleBatch/)
+- [批量删除角色- deleteRBACRoleBatch](./deleteRBACRoleBatch/README.md)
 - [查询角色详情 - rbacRole](./rbacRole/README.md)
 - [查询用户池角色列表 - rbacRoleList](./rbacRoleList/)
 
