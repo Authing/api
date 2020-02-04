@@ -167,7 +167,7 @@ Table of Contents
 - [赋予用户某角色 - assignRBACRoleToUser](./assignRBACRoleToUser/README.md)
 - [批量赋予用户角色 - assignRBACRoleToUserBatch](./assignRBACRoleToUserBatch/README.md)
 - [撤回用户某角色 - revokeRBACRoleFromUser](./revokeRBACRoleFromUser/README.md)
-- [批量撤回用户某角色 - revokeRBACRoleFromUserBatch](./revokeRBACRoleFromUserBatch/)
+- [批量撤回用户某角色 - revokeRBACRoleFromUserBatch](./revokeRBACRoleFromUserBatch/README.md)
 
 #### 角色配置权限
 
