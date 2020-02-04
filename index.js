@@ -20,7 +20,7 @@ app.get('/list', function (req, res) {
   const { groups, auth } = metadata
   const { admin: adminRequired, user: loginRequired, guest } = auth
   for (let group of groups) {
-    const { name, name_en, children } = group
+    const { name: groupName, name_en, children } = group
     for (let apiName of children) {
       let api = API[apiName]
       if (!api) {
@@ -34,7 +34,7 @@ app.get('/list', function (req, res) {
       } else {
         auth = "guest"
       }
-      apis.push(Object.assign({}, api, { name_en, auth }))
+      apis.push(Object.assign({}, api, { name_en, auth, group: groupName }))
     }
   }
   res.send({

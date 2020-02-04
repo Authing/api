@@ -8,7 +8,6 @@ const query = fs.readFileSync(path.join(__dirname, 'query.gql'), 'utf8')
 module.exports = {
   name: 'getWebhookLogDetail',
   type: 'query',
-  module: 'WebHook API',
   description: '获取 Webhook 日志详情',
   query,
   doc

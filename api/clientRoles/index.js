@@ -8,7 +8,6 @@ const query = fs.readFileSync(path.join(__dirname, 'query.gql'), 'utf8')
 module.exports = {
   name: 'clientRoles',
   type: 'query',
-  module: '用户管理',
   description: '获取应用下所有角色',
   query,
   doc

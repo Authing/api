@@ -8,7 +8,6 @@ const query = fs.readFileSync(path.join(__dirname, 'query.gql'), 'utf8')
 module.exports = {
   name: 'createRole',
   type: 'mutation',
-  module: '用户管理',
   description: '创建用户角色',
   query,
   doc

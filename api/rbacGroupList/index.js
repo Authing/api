@@ -8,7 +8,6 @@ const query = fs.readFileSync(path.join(__dirname, 'query.gql'), 'utf8')
 module.exports = {
   name: 'rbacGroupList',
   type: 'query',
-  module: '权限控制',
   description: '查询用户池分组列表',
   query,
   doc

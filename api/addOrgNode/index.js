@@ -8,7 +8,6 @@ const query = fs.readFileSync(path.join(__dirname, 'query.gql'), 'utf8')
 module.exports = {
   name: 'addOrgNode',
   type: 'mutation',
-  module: '组织机构管理',
   description: '添加节点',
   query,
   doc

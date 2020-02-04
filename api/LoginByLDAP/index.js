@@ -8,7 +8,6 @@ const query = fs.readFileSync(path.join(__dirname, 'query.gql'), 'utf8')
 module.exports = {
   name: 'LoginByLDAP',
   type: 'mutation',
-  module: 'OAuth API',
   description: '使用 LDAP 登录',
   query,
   doc

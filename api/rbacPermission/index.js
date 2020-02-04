@@ -9,7 +9,6 @@ module.exports = {
   name: 'rbacPermission',
   type: 'query',
   description: '查询权限详情',
-  module: '权限控制',
   query,
   doc
 }

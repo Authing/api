@@ -9,7 +9,6 @@ module.exports = {
   name: 'deleteRBACPermissionBatch',
   type: 'mutation',
   description: '批量删除权限',
-  module: '权限控制',
   query,
   doc
 }

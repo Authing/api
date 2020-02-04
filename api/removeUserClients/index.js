@@ -8,7 +8,6 @@ const query = fs.readFileSync(path.join(__dirname, 'query.gql'), 'utf8')
 module.exports = {
   name: 'removeUserClients',
   type: 'mutation',
-  module: '用户池管理',
   description: '批量删除用户池',
   query,
   doc

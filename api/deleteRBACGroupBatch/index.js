@@ -8,7 +8,6 @@ const query = fs.readFileSync(path.join(__dirname, 'query.gql'), 'utf8')
 module.exports = {
   name: 'deleteRBACGroupBatch',
   type: 'mutation',
-  module: '权限控制',
   description: '批量删除分组',
   query,
   doc

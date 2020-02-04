@@ -8,7 +8,6 @@ const query = fs.readFileSync(path.join(__dirname, 'query.gql'), 'utf8')
 module.exports = {
   name: 'getClientWhenSdkInit',
   type: 'query',
-  module: '用户池鉴权',
   description: '初始化',
   query,
   doc

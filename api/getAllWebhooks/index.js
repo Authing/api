@@ -9,7 +9,6 @@ module.exports = {
   name: 'getAllWebhooks',
   type: 'query',
   description: '获取用户池 WebHook 列表',
-  module: 'WebHook API',
   query,
   doc
 }

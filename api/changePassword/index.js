@@ -8,7 +8,6 @@ const query = fs.readFileSync(path.join(__dirname, 'query.gql'), 'utf8')
 module.exports = {
   name: 'changePassword',
   type: 'mutation',
-  module: '用户管理',
   description: '修改密码',
   query,
   doc

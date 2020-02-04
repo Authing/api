@@ -8,7 +8,6 @@ const query = fs.readFileSync(path.join(__dirname, 'query.gql'), 'utf8')
 module.exports = {
   name: 'sendVerifyEmail',
   type: 'mutation',
-  module: '用户管理',
   description: '发送验证邮件',
   query,
   doc
