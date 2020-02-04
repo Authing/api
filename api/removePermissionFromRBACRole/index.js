@@ -8,7 +8,7 @@ const query = fs.readFileSync(path.join(__dirname, 'query.gql'), 'utf8')
 module.exports = {
   name: 'removePermissionFromRBACRole',
   type: 'mutation',
-  description: '',
+  description: '角色删除权限',
   query,
   doc
 }
