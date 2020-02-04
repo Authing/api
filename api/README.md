@@ -133,7 +133,7 @@ Table of Contents
 - [删除角色- deleteRBACRole](./deleteRBACRole/README.md)
 - [批量删除角色- deleteRBACRoleBatch](./deleteRBACRoleBatch/README.md)
 - [查询角色详情 - rbacRole](./rbacRole/README.md)
-- [查询用户池角色列表 - rbacRoleList](./rbacRoleList/)
+- [查询用户池角色列表 - rbacRoleList](./rbacRoleList/README.md)
 
 #### 权限增删改查
 
