@@ -8,7 +8,7 @@ const query = fs.readFileSync(path.join(__dirname, 'query.gql'), 'utf8')
 module.exports = {
   name: 'userGroupList',
   type: 'query',
-  description: '',
+  description: '查询用户拥有的分组列表',
   query,
   doc
 }

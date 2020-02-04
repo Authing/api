@@ -180,8 +180,8 @@ Table of Contents
 #### 查询用户的分组、角色、权限
 
 - [查询用户拥有的权限列表 - userPermissionList](./userPermissionList/README.md)
-- [查询用户拥有的分组列表 - userGroupList](./userGroupList/)
-- [查询用户拥有的角色列表 - userRoleList](./userRoleList/)
+- [查询用户拥有的分组列表 - userGroupList](./userGroupList/README.md)
+- [查询用户拥有的角色列表 - userRoleList](./userRoleList/README.md)
 
 
 ### 完整列表 - Full List
