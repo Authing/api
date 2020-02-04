@@ -1,13 +1,46 @@
+const fs = require("fs")
+const path = require("path")
 const express = require("express")
 const cors = require('cors')
 const API = require("./api")
 const app = express()
 const port = 5678
 
+function loadMetadata() {
+  const file = path.join(__dirname, "api/meta.json")
+  const text = fs.readFileSync(file, 'utf-8')
+  return JSON.parse(text)
+}
+const metadata = loadMetadata()
+
 app.use(cors())
 
 app.get('/list', function (req, res) {
-  res.send(API)
+  let apis = []
+  const { groups, auth } = metadata
+  const { admin: adminRequired, user: loginRequired, guest } = auth
+  for (let group of groups) {
+    const { name, name_en, children } = group
+    for (let apiName of children) {
+      let api = API[apiName]
+      if (!api) {
+        continue
+      }
+      let auth = ""
+      if (adminRequired.indexOf(apiName) !== -1) {
+        auth = "admin"
+      } else if (loginRequired.indexOf(apiName) !== -1) {
+        auth = "user"
+      } else {
+        auth = "guest"
+      }
+      apis.push(Object.assign({}, api, { name_en, auth }))
+    }
+  }
+  res.send({
+    list: apis,
+    metadata
+  })
 })
 
 app.get('/api/:name', function (req, res) {
