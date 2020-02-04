@@ -139,7 +139,7 @@ Table of Contents
 
 - [创建权限 - createRBACPermission](./createRBACPermission/README.md)
 - [更新权限 - updateRBACPermission](./updateRBACPermission/README.md)
-- [删除权限 - deleteRBACPermission](./deleteRBACPermission/)
+- [删除权限 - deleteRBACPermission](./deleteRBACPermission/README.md)
 - [批量删除权限 - deleteRBACPermissionBatch](./deleteRBACPermissionBatch/)
 - [查询权限详情 - rbacPermission](./rbacPermission/)
 - [查询用户池权限列表 - rbacPermissionList](./rbacPermissionList/)
