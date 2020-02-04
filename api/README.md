@@ -164,7 +164,7 @@ Table of Contents
 #### 角色指派用户
 
 - [查询角色中包含的用户 - rbacRole](./roleUserList/README.md)
-- [授予用户某角色 - assignRBACRoleToUser](./assignRBACRoleToUser/)
+- [赋予用户某角色 - assignRBACRoleToUser](./assignRBACRoleToUser/README.md)
 - [批量授予用户某角色 - assignRBACRoleToUserBatch](./assignRBACRoleToUserBatch/)
 - [撤回用户某角色 - revokeRBACRoleFromUser](./revokeRBACRoleFromUser/)
 - [批量撤回用户某角色 - revokeRBACRoleFromUserBatch](./revokeRBACRoleFromUserBatch/)
