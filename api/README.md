@@ -147,7 +147,7 @@ Table of Contents
 #### 分组配置角色
 
 - [查询分组中包含的角色 - rbacGroup](./groupRoleList/README.md)
-- [查询分组中包含的权限 - rbacGroup](./rbacGroup/README.md)
+- [查询分组中包含的权限 - rbacGroup](./groupPermissionList/README.md)
 - [分组添加角色 - addRoleToRBACGroup](./addRoleToRBACGroup/)
 - [分组批量添加角色 - addRoleToRBACGroupBatch](./addRoleToRBACGroupBatch/)
 - [分组移除角色 - removeRoleFromRBACGroup](./removeRoleFromRBACGroup/)

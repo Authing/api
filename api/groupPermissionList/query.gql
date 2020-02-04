@@ -1,6 +1,6 @@
-query QueryRBACGroupRoleList($_id: String!) {
+query QueryRBACGroupPermissionList($_id: String!) {
 	rbacGroup(_id: $_id) {
-		roles {
+		permissions {
 			totalCount
 			list {
 				_id
