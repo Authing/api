@@ -8,7 +8,7 @@ const query = fs.readFileSync(path.join(__dirname, 'query.gql'), 'utf8')
 module.exports = {
   name: 'userPermissionList',
   type: 'query',
-  description: '',
+  description: '查询用户拥有的权限列表',
   query,
   doc
 }

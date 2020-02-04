@@ -179,9 +179,9 @@ Table of Contents
 
 #### 查询用户的分组、角色、权限
 
-- [查询用户包含的权限列表 - userPermissionList](./userPermissionList/)
-- [查询用户包含的分组列表 - userGroupList](./userGroupList/)
-- [查询用户包含的角色列表 - userRoleList](./userRoleList/)
+- [查询用户拥有的权限列表 - userPermissionList](./userPermissionList/README.md)
+- [查询用户拥有的分组列表 - userGroupList](./userGroupList/)
+- [查询用户拥有的角色列表 - userRoleList](./userRoleList/)
 
 
 ### 完整列表 - Full List
