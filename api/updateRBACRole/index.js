@@ -8,7 +8,7 @@ const query = fs.readFileSync(path.join(__dirname, 'query.gql'), 'utf8')
 module.exports = {
   name: 'updateRBACRole',
   type: 'mutation',
-  description: 'updateRBACRole',
+  description: '更新用户角色',
   query,
   doc
 }

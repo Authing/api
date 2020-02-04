@@ -8,7 +8,7 @@ const query = fs.readFileSync(path.join(__dirname, 'query.gql'), 'utf8')
 module.exports = {
   name: 'rbacRoleList',
   type: 'query',
-  description: '',
+  description: '查询用户池角色列表',
   query,
   doc
 }
