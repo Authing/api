@@ -1,0 +1,96 @@
+{
+	"groups": [
+		{
+			"name": "用户池鉴权",
+			"name-en": "init",
+			"children": [ "getClientWhenSdkInit" ]
+		},
+		{
+			"name": "用户鉴权",
+			"name-en": "auth",
+			"children": [ "register", "login", "decodeJwtToken", "refreshToken" ]
+		},
+		{
+			"name": "用户管理",
+			"name-en": "user",
+			"children": [
+				"user",
+				"users",
+				"checkLoginStatus",
+				"removeUsers",
+				"updateUser",
+				"sendResetPasswordEmail",
+				"verifyResetPasswordVerifyCode",
+				"sendVerifyEmail",
+				"changePassword",
+				"unbindEmail"
+			]
+		},
+		{
+			"name": "权限控制「废弃」",
+			"name-en": "role",
+			"children": [
+				"clientRoles",
+				"queryRoleByUserId",
+				"createRole",
+				"updateRole",
+				"assignUserToRole",
+				"removeUserFromGroup",
+				"usersInGroup"
+			]
+		},
+		{
+			"name": "用户池管理",
+			"name-en": "userpool",
+			"children": [
+				"userClients",
+				"client",
+				"userClientTypes",
+				"queryPermissionList",
+				"isClientBelongToUser",
+				"removeUserClients",
+				"updateUserClient"
+			]
+		},
+		{
+			"name": "社会化登录",
+			"name-en": "social",
+			"children": [ "bindOtherOAuth", "unbindOtherOAuth" ]
+		},
+		{
+			"name": "注册白名单",
+			"name-en": "invitation",
+			"children": [
+				"setInvitationState",
+				"queryInvitationState",
+				"addToInvitation",
+				"removeFromInvitation",
+				"queryInvitation"
+			]
+		},
+		{
+			"name": "MFA 多因素认证",
+			"name-en": "mfa",
+			"children": [ "queryMFA", "changeMFA" ]
+		},
+		{
+			"name": "WebHook API",
+			"name-en": "webhook",
+			"children": [
+				"addClientWebhook",
+				"getAllWebhooks",
+				"getWebhookLogs",
+				"getWebhookLogDetail",
+				"getWebhookSettingOptions",
+				"updateClientWebhook",
+				"deleteClientWebhook",
+				"SendWebhookTest"
+			]
+		},
+		{
+			"name": "OAuth API",
+			"name-en": "oauth",
+			"children": [ "LoginByLDAP", "GetUserAuthorizedApps", "RevokeUserAuthorizedApp" ]
+		}
+	]
+}
