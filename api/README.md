@@ -172,7 +172,7 @@ Table of Contents
 #### 角色配置权限
 
 - [查询角色中包含的权限 - rbacRole](./rolePermissionList/README.md)
-- [角色添加权限 - addPermissionToRBACRole](./addPermissionToRBACRole/)
+- [角色添加权限 - addPermissionToRBACRole](./addPermissionToRBACRole/README.md)
 - [角色批量添加权限 - addPermissionToRBACRoleBatch](./addPermissionToRBACRoleBatch/)
 - [角色移除权限 - removePermissionFromRBACRole](./removePermissionFromRBACRole/)
 - [角色批量移除权限 - removePermissionFromRBACRoleBatch](./removePermissionFromRBACRoleBatch/)
