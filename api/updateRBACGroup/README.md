@@ -9,6 +9,7 @@
 #### 2. 参数
 
 * input: UpdateRBACGroupInput
+  * _id: 必填，分组 ID。
   * name: 选填，名称。
   * description: 选填，描述。
 
