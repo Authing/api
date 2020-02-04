@@ -1,7 +1,6 @@
-mutation deleteRBACPermissionBatch($idList: [String!]!){
-    deleteRBACPermissionBatch(idList: $idList){
-        message
-        code
-        status
-    }
+mutation deleteRBACPermissionBatch($idList: [String!]!) {
+	deleteRBACPermissionBatch(idList: $idList) {
+		message
+		code
+	}
 }
