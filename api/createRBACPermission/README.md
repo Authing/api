@@ -23,7 +23,7 @@
 
 #### 3. 返回数据
 
-* _id: 角色 ID
+* _id: 权限 ID
 
 ```javascript
 {
