@@ -8,7 +8,8 @@ const query = fs.readFileSync(path.join(__dirname, 'query.gql'), 'utf8')
 module.exports = {
   name: 'rbacPermission',
   type: 'query',
-  description: '',
+  description: '查询权限详情',
+  module: '权限控制',
   query,
   doc
 }
