@@ -15,7 +15,7 @@ const metadata = loadMetadata()
 
 app.use(cors())
 
-app.get('/list', function (req, res) {
+app.get('/api/list', function (req, res) {
   let apis = []
   const { groups, auth } = metadata
   const { admin: adminRequired, user: loginRequired, guest } = auth
