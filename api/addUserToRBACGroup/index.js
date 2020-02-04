@@ -8,7 +8,7 @@ const query = fs.readFileSync(path.join(__dirname, 'query.gql'), 'utf8')
 module.exports = {
   name: 'addUserToRBACGroup',
   type: 'mutation',
-  description: '',
+  description: '分组添加用户',
   query,
   doc
 }
