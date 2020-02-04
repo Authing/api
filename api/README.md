@@ -157,7 +157,7 @@ Table of Contents
 
 - [查询分组中包含的用户 - rbacGroup](./groupUserList/README.md)
 - [分组添加用户 - addUserToRBACGroup](./addUserToRBACGroup/README.md)
-- [分组批量添加用户 - addUserToRBACGroupBatch](./addUserToRBACGroupBatch/)
+- [分组批量添加用户 - addUserToRBACGroupBatch](./addUserToRBACGroupBatch/README.md)
 - [分组移除用户 - removeUserFromRBACGroup](./removeUserFromRBACGroup/)
 - [分组批量移除用户 - removeUserFromRBACGroupBatch](./removeUserFromRBACGroupBatch/)
 
