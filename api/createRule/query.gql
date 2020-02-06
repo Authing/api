@@ -1,0 +1,12 @@
+mutation createRule($input: CreateRuleInput!) {
+	createRule(input: $input) {
+		name
+		description
+		type
+		enabled
+		faasUrl
+		code
+		createdAt
+		updatedAt
+	}
+}

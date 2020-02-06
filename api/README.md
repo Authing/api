@@ -20,6 +20,7 @@ Table of Contents
   - [角色指派用户](#%e8%a7%92%e8%89%b2%e6%8c%87%e6%b4%be%e7%94%a8%e6%88%b7)
   - [角色配置权限](#%e8%a7%92%e8%89%b2%e9%85%8d%e7%bd%ae%e6%9d%83%e9%99%90)
   - [查询用户的分组、角色、权限](#%e6%9f%a5%e8%af%a2%e7%94%a8%e6%88%b7%e7%9a%84%e5%88%86%e7%bb%84%e8%a7%92%e8%89%b2%e6%9d%83%e9%99%90)
+- [扩展能力 - Extensibility](#%e6%89%a9%e5%b1%95%e8%83%bd%e5%8a%9b---extensibility)
 - [完整列表 - Full List](#%e5%ae%8c%e6%95%b4%e5%88%97%e8%a1%a8---full-list)
 
 ### 用户池鉴权
@@ -183,6 +184,9 @@ Table of Contents
 - [查询用户拥有的分组列表 - userGroupList](./userGroupList/)
 - [查询用户拥有的角色列表 - userRoleList](./userRoleList/)
 
+### 扩展能力 - Extensibility
+
+- [创建 Rule - createRule](./createRule)
 
 ### 完整列表 - Full List
 

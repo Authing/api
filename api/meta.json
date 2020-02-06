@@ -121,6 +121,11 @@
 			"children": [ "bindOtherOAuth", "unbindOtherOAuth" ]
 		},
 		{
+			"name": "扩展能力",
+			"name-en": "extensibility",
+			"children": [ "createRule" ]
+		},
+		{
 			"name": "注册白名单",
 			"name-en": "invitation",
 			"children": [
@@ -232,7 +237,8 @@
 			"addPermissionToRBACRole",
 			"addPermissionToRBACRoleBatch",
 			"removePermissionFromRBACRole",
-			"removePermissionFromRBACRoleBatch"
+			"removePermissionFromRBACRoleBatch",
+			"createRule"
 		],
 		"user": [
 			"refreshToken",

@@ -1,3 +1,4 @@
+const createRule = require('./createRule')
 const rolePermissionList = require('./rolePermissionList')
 const GetOIDCAppInfo = require('./GetOIDCAppInfo')
 const GetOIDCAppList = require('./GetOIDCAppList')
@@ -483,4 +484,5 @@ module.exports = {
   groupUserList,
   roleUserList,
   rolePermissionList,
+  createRule,
 }
