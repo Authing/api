@@ -1,0 +1,13 @@
+mutation updateRule($input: UpdateRuleInput!) {
+	updateRule(input: $input) {
+		_id
+		name
+		description
+		type
+		enabled
+		code
+		faasUrl
+		createdAt
+		updatedAt
+	}
+}

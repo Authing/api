@@ -1,3 +1,4 @@
+const updateRule = require('./updateRule')
 const createRule = require('./createRule')
 const rolePermissionList = require('./rolePermissionList')
 const GetOIDCAppInfo = require('./GetOIDCAppInfo')
@@ -485,4 +486,5 @@ module.exports = {
   roleUserList,
   rolePermissionList,
   createRule,
+  updateRule,
 }
