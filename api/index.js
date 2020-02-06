@@ -1,3 +1,4 @@
+const rules = require('./rules')
 const ruleById = require('./ruleById')
 const deleteRule = require('./deleteRule')
 const updateRule = require('./updateRule')
@@ -491,4 +492,5 @@ module.exports = {
   updateRule,
   deleteRule,
   ruleById,
+  rules,
 }
