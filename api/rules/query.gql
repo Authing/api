@@ -1,0 +1,16 @@
+query rules($userPoolId: String!) {
+	rules(userPoolId: $userPoolId) {
+		totalCount
+		list {
+			_id
+			name
+			description
+			type
+			enabled
+			faasUrl
+			code
+			createdAt
+			updatedAt
+		}
+	}
+}
