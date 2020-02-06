@@ -1,3 +1,4 @@
+const deleteRule = require('./deleteRule')
 const updateRule = require('./updateRule')
 const createRule = require('./createRule')
 const rolePermissionList = require('./rolePermissionList')
@@ -487,4 +488,5 @@ module.exports = {
   rolePermissionList,
   createRule,
   updateRule,
+  deleteRule,
 }
