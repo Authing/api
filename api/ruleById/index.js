@@ -7,9 +7,9 @@ const doc = fs.readFileSync(path.join(__dirname, 'README.md'), 'utf8')
 const query = fs.readFileSync(path.join(__dirname, 'query.gql'), 'utf8')
 
 module.exports = {
-  name: 'deleteRule',
-  type: 'mutation',
-  description: '删除 Rule',
+  name: 'ruleById',
+  type: 'query',
+  description: '通过 ID 查询 Rule',
   query,
   doc
 }

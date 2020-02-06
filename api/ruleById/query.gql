@@ -1,0 +1,13 @@
+query ruleById($_id: String!) {
+	ruleById(_id: $_id) {
+		_id
+		name
+		description
+		type
+		enabled
+		faasUrl
+		code
+		createdAt
+		updatedAt
+	}
+}
