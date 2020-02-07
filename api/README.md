@@ -187,6 +187,10 @@ Table of Contents
 ### 扩展能力 - Extensibility
 
 - [创建 Rule - createRule](./createRule)
+- [更新 Rule - updateRule](./updateRule)
+- [删除 Rule - deleteRule](./deleteRule)
+- [查询 Rule - ruleById](./ruleById/)
+- [查询用户池 Rule 列表 - rules](./rules) 
 
 ### 完整列表 - Full List
 
