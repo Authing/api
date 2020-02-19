@@ -1,0 +1,15 @@
+query ruleById($_id: String!){
+    ruleById(_id: $_id){
+        _id
+        userPoolId
+        name
+        description
+        type
+        enabled
+        faasUrl
+        code
+        order
+        createdAt
+        updatedAt
+    }
+}

@@ -1,0 +1,15 @@
+mutation updateRule($input: UpdateRuleInput!){
+    updateRule(input: $input){
+        _id
+        userPoolId
+        name
+        description
+        type
+        enabled
+        faasUrl
+        code
+        order
+        createdAt
+        updatedAt
+    }
+}
