@@ -1,0 +1,1315 @@
+{
+  "list": [
+    {
+      "name": "getClientWhenSdkInit",
+      "type": "query",
+      "description": "初始化",
+      "query": "query getClientWhenSdkInit(\n\t$secret: String\n\t$clientId: String\n\t$retUserId: Boolean\n\t$timestamp: String\n\t$signature: String\n\t$nonce: Int\n) {\n\tgetClientWhenSdkInit(\n\t\tsecret: $secret\n\t\tclientId: $clientId\n\t\tretUserId: $retUserId\n\t\ttimestamp: $timestamp\n\t\tsignature: $signature\n\t\tnonce: $nonce\n\t) {\n\t\tclientInfo {\n\t\t\t_id\n\t\t\tuser {\n\t\t\t\t_id\n\t\t\t\tusername\n\t\t\t}\n\t\t\tclientType {\n\t\t\t\t_id\n\t\t\t\tname\n\t\t\t\tdescription\n\t\t\t\timage\n\t\t\t\texample\n\t\t\t}\n\t\t\tusersCount\n\t\t\tlogo\n\t\t\temailVerifiedDefault\n\t\t\tregisterDisabled\n\t\t\tshowWXMPQRCode\n\t\t\tuseMiniLogin\n\t\t\tallowedOrigins\n\t\t\tname\n\t\t\tsecret\n\t\t\ttoken\n\t\t\tdescriptions\n\t\t\tjwtExpired\n\t\t\tcreatedAt\n\t\t\tisDeleted\n\t\t\tfrequentRegisterCheck {\n\t\t\t\ttimeInterval\n\t\t\t\tlimit\n\t\t\t\tenable\n\t\t\t}\n\t\t\tloginFailCheck {\n\t\t\t\ttimeInterval\n\t\t\t\tlimit\n\t\t\t\tenable\n\t\t\t}\n\t\t\tenableEmail\n\t\t}\n\t\taccessToken\n\t}\n}\n",
+      "doc": "1. 为什么需要用户池鉴权？\n> 出于安全性考虑，进行删除用户、创建角色等操作前需要先获取 accessToken。  \n\n2. 如何获取 accessToken？\n需要两个参数\n- `clientId`\n- `secret`\n\n3. 如何获取 `clientId` 和 `secret` ?\n\n- 前往 [authing.cn](https://authing.cn/) 注册账号\n- [新建用户池](https://docs.authing.cn/authing/quickstart/hello-world)\n- 通过 **用户池** -> **基础配置** 找到 `clientId` 和 `secret`\n\n4. 返回数据字段\n\n- `accessToken`\n- `clientInfo`: 用户池的详细信息\n\n5. 如何使用 `accessToken` ?\n\n> 添加到 HTTP 请求的 [Authorization Header](https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Headers/Authorization) 中\n",
+      "auth": "guest",
+      "group": "用户池鉴权"
+    },
+    {
+      "name": "register",
+      "type": "mutation",
+      "description": "注册",
+      "query": "mutation register(\n\t$username: String\n\t$email: String\n\t$password: String!\n\t$lastIP: String\n\t$forceLogin: Boolean\n\t$registerInClient: String!\n\t$phone: String\n\t$invitationCode: String\n\t$browser: String\n) {\n\tregister(\n\t\tuserInfo: {\n\t\t\temail: $email\n\t\t\tpassword: $password\n\t\t\tlastIP: $lastIP\n\t\t\tforceLogin: $forceLogin\n\t\t\tregisterInClient: $registerInClient\n\t\t\tphone: $phone\n\t\t\tusername: $username\n\t\t\tbrowser: $browser\n\t\t}\n\t\tinvitationCode: $invitationCode\n\t) {\n\t\t_id\n\t\temail\n\t\temailVerified\n\t\tusername\n\t\tnickname\n\t\tcompany\n\t\tphoto\n\t\tphone\n\t\tbrowser\n\t\tpassword\n\t\ttoken\n\t\tloginsCount\n\t\tgroup {\n\t\t\tname\n\t\t}\n\t\tblocked\n\t}\n}\n",
+      "doc": "1. 注册分为多种方式\n- 使用用户名注册（username）\n- 使用邮箱注册（email）\n- 使用手机号注册（phone）\n- 社会化账号（微信、GitHub）注册(unionid)\n\n2. 部分请求参数说明\n    - userInfo\n        - 必填项\n            - `registerInClient`: 用户注册所在的用户池\n        - 可选项\n            - `registerMethod`:注册方式。开发者最好提供此字段，如未提供，Authing 将从其他是否提供 `unionid`，`email`, `phone`， `username` 四个字段推测注册方式（优先级递减，比如同时提供 `unionid` 和 `email`，会被视为 `unionid` 方式注册）。\n            - `unionid`\n            - `email`\n            - `phone`: 注：若管理员开启了注册白名单机制，此手机号需要在白名单之内。\n            - `password`: 加密过后的密码，加密方式见[Authing官方文档](https://docs.authing.cn/authing/v/master/sdk/open-graphql#zhu-yi-shi-xiang-2)。\n            - `forceLogin`: 默认为 false, 如果设置为 true, 用户不存在时会先自动创建。\n            - `photo`: 用户头像，如果域名不是 Authing 的 CDN，将会先被上传至 Authing CDN。\n            - `lastIP`: 用户注册时的 IP, 如果未提供，Authing 将会从请求中自动推断。\n    - invitationCode: 邀请码。可选。\n    - keepPassword: 是否直接将密码写入，内部不使用 Authing 的加密方式存储。\n\n3. 注册频率限制\n\n应用池管理员可以在后台开启频繁注册限制选项（**用户池** -> **基础配置**）。\n\n![](http://lcjim-img.oss-cn-beijing.aliyuncs.com/2019-10-23-40FB8474-08F1-4586-83CB-CFC96B5A56A1.png)\n\n如上图中，**同一 IP** 在 300 秒内，只能发起 3 次注册请求。\n\n4. 注册白名单机制\n\n> 目前只支持手机号白名单，\n\n开发者可以配置白名单（**用户中心** -> **注册白名单**），只运行白名单内的手机号注册。\n\n5. 一键关闭注册选项\n\nAuthing 提供给开发者“一键关闭注册”选项，可在后台 **基础配置** 中设置。\n\n![](http://lcjim-img.oss-cn-beijing.aliyuncs.com/2019-10-23-103351.png)\n",
+      "auth": "guest",
+      "group": "用户鉴权"
+    },
+    {
+      "name": "login",
+      "type": "mutation",
+      "description": "登录",
+      "query": "mutation login(\n\t$email: String\n\t$password: String\n\t$lastIP: String\n\t$registerInClient: String!\n\t$verifyCode: String\n\t$phone: String\n\t$username: String\n\t$browser: String\n) {\n\tlogin(\n\t\temail: $email\n\t\tpassword: $password\n\t\tlastIP: $lastIP\n\t\tregisterInClient: $registerInClient\n\t\tverifyCode: $verifyCode\n\t\tphone: $phone\n\t\tusername: $username\n\t\tbrowser: $browser\n\t) {\n\t\t_id\n\t\temail\n\t\temailVerified\n\t\tusername\n\t\tnickname\n\t\tcompany\n\t\tphoto\n\t\tbrowser\n\t\tpassword\n\t\ttoken\n\t\tloginsCount\n\t\tgroup {\n\t\t\tname\n\t\t}\n\t\tblocked\n\t}\n}\n",
+      "doc": "此接口用来执行用户登录操作。\n1. 登录场景：\n- 用户名登录\n- 邮箱登录\n- 手机号作为用户名登录\n- 手机号验证码\n\n2. 请求参数：\n- 必填参数\n    - registerInClient: 用户池 ID\n- 可选参数\n    - 用户名登录\n        - username\n        - password\n    - 邮箱登录\n        - email\n        - password\n    - 手机号作为用户名登录\n        - phone\n        - password\n    - 手机号验证码登录\n        - phone\n        - phoneCode\n",
+      "auth": "guest",
+      "group": "用户鉴权"
+    },
+    {
+      "name": "decodeJwtToken",
+      "type": "query",
+      "description": "解析 JWT Token",
+      "query": "query decodeJwtToken($token: String){\n    decodeJwtToken(token: $token){\n        data{\n            email\n            id\n            clientId\n            unionid\n        }\n        status{\n            message\n            code\n            status\n        }\n        iat\n        exp\n    }\n}",
+      "doc": "此接口用来解析 JWT Token。\n\n1. 点击 [Authing官方文档](https://learn.authing.cn/authing/advanced/authentication/jwt-token) 了解更多 JWT Token 相关内容。\n2. 解析成功示例\n```\n{\n    \"data\": {\n        \"decodeJwtToken\": {\n            \"data\": {\n                \"email\": \"1066983132@qq.com\",\n                \"id\": \"5da7ed9950396c1ad9623787\",\n                \"clientId\": \"59f86b4832eb28071bdd9214\",\n                \"unionid\": null\n            },\n            \"status\": {\n                \"message\": \"token 解析正常\",\n                \"code\": 200,\n                \"status\": null\n            },\n            \"iat\": \"1571801657\",\n            \"exp\": 1573097657\n        }\n    }\n}\n\n```\n部分字段说明：\n- email: 用户邮箱\n- id: 用户ID\n- clientId: 用户池ID\n- unionid\n- iat: 签名时间戳\n- exp: 签名过期时间戳\n\n3. 解析失败示例\n```\n{\n    \"data\": {\n        \"decodeJwtToken\": {\n        \"data\": null,\n        \"status\": {\n            \"message\": \"token 错误\",\n            \"code\": 2207,\n            \"status\": null\n        },\n        \"iat\": null,\n        \"exp\": null\n        }\n    }\n}\n```\n",
+      "auth": "guest",
+      "group": "用户鉴权"
+    },
+    {
+      "name": "refreshToken",
+      "type": "mutation",
+      "description": "",
+      "query": "mutation refreshToken($client: String!, $user: String!){\n    refreshToken(client: $client, user: $user){\n        token\n        iat\n        exp\n    }\n}",
+      "doc": "此接口用来刷新指定用户的 JWT token。\n1. 此 JWT token 有什么用？\n\n每个用户都有唯一对应的 JWT token, 作为登录凭证。\n\n2. 参数说明\n- client: 用户池 ID\n- user: 用户 ID\n\n3. 返回数据示例\n```\n{\n    \"data\": {\n      \"refreshToken\": {\n        \"token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7ImVtYWlsIjoidGVzdEB0ZXN0LmNvbSIsImlkIjoiNWRhN2VkYWI1MDM5NmMxYWQ5NjIzNzhjIn0sImlhdCI6MTU3MTgxMDY5MSwiZXhwIjoxNTczMTA2NjkxfQ.obN2YMjasbew8ORhd_IxALTVoFSs0PVm-JQH2ULhBP0\",\n        \"iat\": 1571810691,\n        \"exp\": 1573106691\n      }\n    }\n}\n```\n\n部分字段说明：\n- token: 刷新过后的 token\n- iat: 签名时间戳\n- exp: 签名过期时间戳（默认为签名时间过后15天）\n",
+      "auth": "user",
+      "group": "用户鉴权"
+    },
+    {
+      "name": "user",
+      "type": "query",
+      "description": "读取用户资料",
+      "query": "query user($id: String!, $registerInClient: String!, $userLoginHistoryPage: Int, $userLoginHistoryCount: Int) {\n\tuser(\n\t\tid: $id\n\t\tregisterInClient: $registerInClient\n\t\tuserLoginHistoryPage: $userLoginHistoryPage\n\t\tuserLoginHistoryCount: $userLoginHistoryCount\n\t) {\n\t\t_id\n\t\temail\n\t\tphone\n\t\temailVerified\n\t\tusername\n\t\tnickname\n\t\tunionid\n\t\topenid\n\t\tcompany\n\t\tphoto\n\t\tbrowser\n\t\tdevice\n\t\tregisterInClient\n\t\tregisterMethod\n\t\toauth\n\t\ttoken\n\t\ttokenExpiredAt\n\t\tloginsCount\n\t\tlastLogin\n\t\tlastIP\n\t\tsignedUp\n\t\tblocked\n\t\tisDeleted\n\t\tgroup {\n\t\t\t_id\n\t\t\tname\n\t\t\tdescriptions\n\t\t\tcreatedAt\n\t\t}\n\t\tclientType {\n\t\t\t_id\n\t\t\tname\n\t\t\tdescription\n\t\t\timage\n\t\t\texample\n\t\t}\n\t\tuserLocation {\n\t\t\t_id\n\t\t\twhen\n\t\t\twhere\n\t\t}\n\t\tuserLoginHistory {\n\t\t\ttotalCount\n\t\t\tlist {\n\t\t\t\t_id\n\t\t\t\twhen\n\t\t\t\tsuccess\n\t\t\t\tip\n\t\t\t\tresult\n\t\t\t\tdevice\n\t\t\t\tbrowser\n\t\t\t}\n\t\t}\n\t\tsystemApplicationType {\n\t\t\t_id\n\t\t\tname\n\t\t\tdescriptions\n\t\t\tprice\n\t\t}\n\t}\n}\n",
+      "doc": "此接口用来读取用户资料。同时支持用户 ID 和用户登录凭证读取。\n1. 部分请求参数说明\n- 可选参数：\n    - registerInClient: 用户池 ID。\n    - id: 用户 ID。\n    - token: 该用户（**非开发者**）的登录凭证，如果指定，将会忽略 ID 字段。\n    - auth: 布尔值\n    - userLoginHistoryPage: 用户登录记录分页数。\n    - userLoginHistoryCount: 用户登录记录每页数目。\n\n2. 返回结果部分字段说明\n- group: 所在群组\n- clientType: 用户池类型\n- userLocation: 用户地址\n- userLoginHistory: 用户历史登录记录。",
+      "auth": "user",
+      "group": "用户管理"
+    },
+    {
+      "name": "users",
+      "type": "query",
+      "description": "获取用户列表",
+      "query": "query users($registerInClient: String, $page: Int, $count: Int, $populate: Boolean) {\n\tusers(registerInClient: $registerInClient, page: $page, count: $count, populate: $populate) {\n\t\ttotalCount\n\t\tlist {\n\t\t\t_id\n\t\t\temail\n\t\t\tphone\n\t\t\temailVerified\n\t\t\tusername\n\t\t\tnickname\n\t\t\tunionid\n\t\t\topenid\n\t\t\tcompany\n\t\t\tphoto\n\t\t\tbrowser\n\t\t\tdevice\n\t\t\tregisterInClient\n\t\t\tregisterMethod\n\t\t\toauth\n\t\t\ttoken\n\t\t\ttokenExpiredAt\n\t\t\tloginsCount\n\t\t\tlastLogin\n\t\t\tlastIP\n\t\t\tsignedUp\n\t\t\tblocked\n\t\t\tisDeleted\n\t\t\tgroup {\n\t\t\t\t_id\n\t\t\t\tname\n\t\t\t\tdescriptions\n\t\t\t\tcreatedAt\n\t\t\t}\n\t\t\tclientType {\n\t\t\t\t_id\n\t\t\t\tname\n\t\t\t\tdescription\n\t\t\t\timage\n\t\t\t\texample\n\t\t\t}\n\t\t\tuserLocation {\n\t\t\t\t_id\n\t\t\t\twhen\n\t\t\t\twhere\n\t\t\t}\n\t\t\tuserLoginHistory {\n\t\t\t\ttotalCount\n\t\t\t\tlist {\n\t\t\t\t\t_id\n\t\t\t\t\twhen\n\t\t\t\t\tsuccess\n\t\t\t\t\tip\n\t\t\t\t\tresult\n\t\t\t\t\tdevice\n\t\t\t\t\tbrowser\n\t\t\t\t}\n\t\t\t}\n\t\t\tsystemApplicationType {\n\t\t\t\t_id\n\t\t\t\tname\n\t\t\t\tdescriptions\n\t\t\t\tprice\n\t\t\t}\n\t\t}\n\t}\n}\n",
+      "doc": "此接口用来获取用户列表，支持分页。用户信息支持基础信息和附带扩展字段两种模式。\n部分请求参数说明\n- registerInClient：用户池 ID\n- page: 第几页。\n- count：一页包含用户数目，默认为10，最大为200。\n- populate：布尔值。默认为 false, 如果为 true,将会返回用户的扩展字段：group、clientType、userLocation 、userLoginHistory、systemApplicationType（详情见”读取用户资料”接口）。",
+      "auth": "admin",
+      "group": "用户管理"
+    },
+    {
+      "name": "checkLoginStatus",
+      "type": "query",
+      "description": "检查用户登录状态",
+      "query": "query checkLoginStatus($token: String){\n    checkLoginStatus(token: $token){\n        message\n        code\n        status\n        token{\n            data{\n                email\n                id\n                clientId\n                unionid\n            }\n            iat\n            exp\n        }\n    }\n}",
+      "doc": "此接口用来检查用户登录状态。\n请求参数说明\n- 必填项\n    - token: 指定用户的登录凭证。",
+      "auth": "guest",
+      "group": "用户管理"
+    },
+    {
+      "name": "removeUsers",
+      "type": "mutation",
+      "description": "批量删除用户",
+      "query": "mutation removeUsers($ids: [String], $registerInClient: String, $operator: String) {\n\tremoveUsers(ids: $ids, registerInClient: $registerInClient, operator: $operator) {\n\t\t_id\n\t}\n}\n",
+      "doc": "此接口用来批量删除用户。\n只有用户池（或协作用户池）管理员才能执行此操作。\n参数说明\n- ids: 列表类型。\n- registerInClient: 用户池 ID\n- operator: 操作人ID, Authing 会记录，便于之后审计。 ",
+      "auth": "admin",
+      "group": "用户管理"
+    },
+    {
+      "name": "updateUser",
+      "type": "mutation",
+      "description": "更新用户资料",
+      "query": "mutation updateUser($options: UserUpdateInput!){\n    updateUser(options: $options){\n        _id\n        username\n        email\n        unionid\n        openid\n        emailVerified\n        phone\n        phoneVerified\n        nickname\n        company\n        photo\n        browser\n        password\n        registerInClient\n        registerMethod\n        oauth\n        token\n        tokenExpiredAt\n        loginsCount\n        lastLogin\n        lastIP\n        signedUp\n        blocked\n        isDeleted\n        device\n        name\n        givenName\n        familyName\n        middleName\n        profile\n        preferredUsername\n        website\n        gender\n        birthdate\n        zoneinfo\n        locale\n        address\n        formatted\n        streetAddress\n        locality\n        region\n        postalCode\n        country\n        updatedAt\n        oldPassword\n    }\n}",
+      "doc": "此接口用来更新用户资料。\n1. 部分参数说明\n- options\n    - 必填参数\n        - _id: 用户ID\n        - registerInClient: 用户池 ID\n    - 其他字段均可选，**只需要填你想要修改的字段**。",
+      "auth": "user",
+      "group": "用户管理"
+    },
+    {
+      "name": "sendResetPasswordEmail",
+      "type": "mutation",
+      "description": "发送重置密码邮件",
+      "query": "mutation sendResetPasswordEmail($client: String!, $email: String!){\n    sendResetPasswordEmail(client: $client, email: $email){\n        message\n        code\n        status\n    }\n}",
+      "doc": "此接口用来发送\"重置密码\"邮件。\nAuthing 提供开箱即用的邮件模块，开发者可以在 **消息服务** -> **邮件模版** 查看或修改邮件模板。\n详细内容请见 [Authing官方文档](https://docs.authing.cn/authing/messages/email)。",
+      "auth": "user",
+      "group": "用户管理"
+    },
+    {
+      "name": "verifyResetPasswordVerifyCode",
+      "type": "mutation",
+      "description": "验证重置密码验证码",
+      "query": "mutation verifyResetPasswordVerifyCode($verifyCode: String!, $email: String!, $client: String!){\n    verifyResetPasswordVerifyCode(verifyCode: $verifyCode, email: $email, client: $client){\n        message\n        code\n        status\n    }\n}",
+      "doc": "此接口用来发送“重置密码”邮件。   \n",
+      "auth": "guest",
+      "group": "用户管理"
+    },
+    {
+      "name": "sendVerifyEmail",
+      "type": "mutation",
+      "description": "发送验证邮件",
+      "query": "mutation sendVerifyEmail($email: String!, $client: String!, $token: String){\n    sendVerifyEmail(email: $email, client: $client, token: $token){\n        message\n        code\n        status\n    }\n}",
+      "doc": "此接口用来发送“验证邮箱”邮件。",
+      "auth": "guest",
+      "group": "用户管理"
+    },
+    {
+      "name": "changePassword",
+      "type": "mutation",
+      "description": "修改密码",
+      "query": "mutation ChangePassword($email: String!, $client: String!, $password: String!, $verifyCode: String!) {\n\tchangePassword(email: $email, client: $client, password: $password, verifyCode: $verifyCode) {\n\t\t_id\n\t\temail\n\t\temailVerified\n\t\tusername\n\t\tnickname\n\t\tcompany\n\t\tphoto\n\t\tbrowser\n\t\tregisterInClient\n\t\tregisterMethod\n\t\toauth\n\t\ttoken\n\t\ttokenExpiredAt\n\t\tloginsCount\n\t\tlastLogin\n\t\tlastIP\n\t\tsignedUp\n\t\tblocked\n\t\tisDeleted\n\t}\n}\n",
+      "doc": "此接口用来修改密码。只支持通过邮箱注册的账号的密码，不需要登录，但是需要使用验证码。\n1. 请求参数说明\n- password: 新密码，需要加密，加密方式见[Authing官方文档](https://docs.authing.cn/authing/v/master/sdk/open-graphql#zhu-yi-shi-xiang-2)。\n- client: 用户池 ID\n- email: 邮箱\n- verifyCode: 验证码\n2. 如何获取验证码？\n见“发送重置密码邮件”。",
+      "auth": "guest",
+      "group": "用户管理"
+    },
+    {
+      "name": "unbindEmail",
+      "type": "mutation",
+      "description": "解绑邮箱",
+      "query": "mutation unbindEmail($user: String, $client: String){\n    unbindEmail(user: $user, client: $client){\n        _id\n        username\n        email\n        unionid\n        openid\n        emailVerified\n        phone\n        phoneVerified\n        nickname\n        company\n        photo\n        browser\n        password\n        registerInClient\n        registerMethod\n        oauth\n        token\n        tokenExpiredAt\n        loginsCount\n        lastLogin\n        lastIP\n        signedUp\n        blocked\n        isDeleted\n        device\n        name\n        givenName\n        familyName\n        middleName\n        profile\n        preferredUsername\n        website\n        gender\n        birthdate\n        zoneinfo\n        locale\n        address\n        formatted\n        streetAddress\n        locality\n        region\n        postalCode\n        country\n        updatedAt\n        oldPassword\n    }\n}",
+      "doc": "此接口用来解绑邮箱。\n> 注：如果没有配置其他登录方式（手机号、OAuth），将无法解绑邮箱。如需解绑，请先配置另一个登录方式。\n\n请求参数说明\n- user: 用户ID\n- client: 用户池ID",
+      "auth": "user",
+      "group": "用户管理"
+    },
+    {
+      "name": "createRBACGroup",
+      "type": "mutation",
+      "description": "创建分组",
+      "query": "mutation createRBACGroup($input: CreateRBACGroupInput!) {\n\tcreateRBACGroup(input: $input) {\n\t\t_id\n\t\tname\n\t\tdescription\n\t\tcreatedAt\n\t\tupdatedAt\n\t}\n}\n",
+      "doc": "此接口用于创建分组。\n\n> Authing 支持基于角色的访问控制（RBAC），请先务必了解[分组和角色的区别](https://docs.authing.cn/authing/authorization/authorization/rbac#fen-zu-vs-quan-xian)，[点此了解如何接入](https://docs.authing.cn/authing/authorization/intergrate-rbac)。\n\n#### 1. 说明\n\n分组用于管理用户，角色用于配置权限；分组可以同时拥有一个或多个角色，加入到该分组中的用户会继承此分组内所有角色的权限。\n\n#### 2. 参数\n\n* input: CreateRBACGroupInput\n  * userPoolId: 必填，用户池 ID。\n  * name: 必填，名称。\n  * description: 选填，描述。\n\n#### 3. 返回数据\n\n* _id: 分组 ID\n\n```javascript\n{\n  _id: '5e3823671655601485c7f8a2',\n  name: '非凡科技有限公司',\n  description: '非凡科技有限公司',\n  createdAt: '2020-02-03T21:43:03+08:00',\n  updatedAt: '2020-02-03T21:43:03+08:00',\n},\n```\n",
+      "auth": "admin",
+      "group": "权限控制"
+    },
+    {
+      "name": "updateRBACGroup",
+      "type": "mutation",
+      "description": "更新分组",
+      "query": "mutation updateRBACGroup($input: UpdateRBACGroupInput!) {\n\tupdateRBACGroup(input: $input) {\n\t\t_id\n\t\tname\n\t\tdescription\n\t\tcreatedAt\n\t\tupdatedAt\n\t}\n}\n",
+      "doc": "此接口用于更新分组。\n\n> Authing 支持基于角色的访问控制（RBAC），请先务必了解[分组和角色的区别](https://docs.authing.cn/authing/authorization/authorization/rbac#fen-zu-vs-quan-xian)，[点此了解如何接入](https://docs.authing.cn/authing/authorization/intergrate-rbac)。\n\n#### 1. 说明\n\n分组用于管理用户，角色用于配置权限；分组可以同时拥有一个或多个角色，加入到该分组中的用户会继承此分组内所有角色的权限。\n\n#### 2. 参数\n\n* input: UpdateRBACGroupInput\n  * _id: 必填，分组 ID。\n  * name: 选填，名称。\n  * description: 选填，描述。\n\n#### 3. 返回数据\n\n* _id: 分组 ID\n\n```javascript\n{\n  _id: '5e3823671655601485c7f8a2',\n  name: '非凡科技有限公司',\n  description: '非凡科技有限公司',\n  createdAt: '2020-02-03T21:43:03+08:00',\n  updatedAt: '2020-02-03T21:43:03+08:00',\n},\n```\n",
+      "auth": "admin",
+      "group": "权限控制"
+    },
+    {
+      "name": "deleteRBACGroup",
+      "type": "mutation",
+      "description": "删除分组",
+      "query": "mutation deleteRBACGroup($_id: String!) {\n\tdeleteRBACGroup(_id: $_id) {\n\t\tmessage\n\t\tcode\n\t}\n}\n",
+      "doc": "此接口用于删除分组。\n\n> Authing 支持基于角色的访问控制（RBAC），请先务必了解[分组和角色的区别](https://docs.authing.cn/authing/authorization/authorization/rbac#fen-zu-vs-quan-xian)，[点此了解如何接入](https://docs.authing.cn/authing/authorization/intergrate-rbac)。\n\n#### 1. 说明\n\n分组用于管理用户，角色用于配置权限；分组可以同时拥有一个或多个角色，加入到该分组中的用户会继承此分组内所有角色的权限。\n\n#### 2. 参数\n\n* _id: 分组 ID\n\n#### 3. 返回数据\n\n* code: 200 表示成功。\n\n```javascript\n{\n  code: 200,\n  message: '操作成功'\n}\n```\n",
+      "auth": "admin",
+      "group": "权限控制"
+    },
+    {
+      "name": "deleteRBACGroupBatch",
+      "type": "mutation",
+      "description": "批量删除分组",
+      "query": "mutation deleteRBACGroupBatch($idList: [String!]!) {\n\tdeleteRBACGroupBatch(idList: $idList) {\n\t\tmessage\n\t\tcode\n\t}\n}\n",
+      "doc": "此接口用于批量删除分组。\n\n> Authing 支持基于角色的访问控制（RBAC），请先务必了解[分组和角色的区别](https://docs.authing.cn/authing/authorization/authorization/rbac#fen-zu-vs-quan-xian)，[点此了解如何接入](https://docs.authing.cn/authing/authorization/intergrate-rbac)。\n\n#### 1. 说明\n\n分组用于管理用户，角色用于配置权限；分组可以同时拥有一个或多个角色，加入到该分组中的用户会继承此分组内所有角色的权限。\n\n#### 2. 参数\n\n* idList: 分组 ID 列表\n\n#### 3. 返回数据\n\n* code: 200 表示成功。\n\n```javascript\n{\n  code: 200,\n  message: '操作成功'\n}\n```\n",
+      "auth": "admin",
+      "group": "权限控制"
+    },
+    {
+      "name": "rbacGroup",
+      "type": "query",
+      "description": "查询分组",
+      "query": "query rbacGroup($_id: String!) {\n\trbacGroup(_id: $_id) {\n\t\t_id\n\t\tname\n\t\tdescription\n\t\tcreatedAt\n\t\tupdatedAt\n\t}\n}\n",
+      "doc": "此接口用于查询分组详情。\n\n> Authing 支持基于角色的访问控制（RBAC），请先务必了解[分组和角色的区别](https://docs.authing.cn/authing/authorization/authorization/rbac#fen-zu-vs-quan-xian)，[点此了解如何接入](https://docs.authing.cn/authing/authorization/intergrate-rbac)。\n\n#### 1. 说明\n\n分组用于管理用户，角色用于配置权限；分组可以同时拥有一个或多个角色，加入到该分组中的用户会继承此分组内所有角色的权限。\n\n#### 2. 参数\n\n* _id: 分组 ID\n\n#### 3. 返回数据\n\n* _id: 分组 ID\n\n```javascript\n{\n  _id: '5e3823671655601485c7f8a2',\n  name: '非凡科技有限公司',\n  description: '非凡科技有限公司',\n  createdAt: '2020-02-03T21:43:03+08:00',\n  updatedAt: '2020-02-03T21:43:03+08:00',\n},\n```\n",
+      "auth": "admin",
+      "group": "权限控制"
+    },
+    {
+      "name": "rbacGroupList",
+      "type": "query",
+      "description": "查询用户池分组列表",
+      "query": "query rbacGroupList($sortBy: SortByEnum, $page: Int, $count: Int, $userPoolId: String!) {\n\trbacGroupList(userPoolId: $userPoolId, sortBy: $sortBy, page: $page, count: $count) {\n\t\ttotalCount\n\t\tlist {\n\t\t\t_id\n\t\t\tname\n\t\t\tdescription\n\t\t\tcreatedAt\n\t\t\tupdatedAt\n\t\t}\n\t}\n}\n",
+      "doc": "此接口用于查询用户池分组列表。\n\n> Authing 支持基于角色的访问控制（RBAC），请先务必了解[分组和角色的区别](https://docs.authing.cn/authing/authorization/authorization/rbac#fen-zu-vs-quan-xian)，[点此了解如何接入](https://docs.authing.cn/authing/authorization/intergrate-rbac)。\n\n#### 1. 说明\n\n分组用于管理用户，角色用于配置权限；分组可以同时拥有一个或多个角色，加入到该分组中的用户会继承此分组内所有角色的权限。\n该接口支持**分页、排序**。\n\n#### 2. 参数\n\n* userPoolId: 必填，用户池 ID。\n* sortBy: 选填，排序方式。默认为 CREATEDAT_DESC ，表示按照创建时间降序，即最新创建的排在最前面。全部的可选值为：\n  * CREATEDAT_DESC：按照创建时间降序。\n  * CREATEDAT_ASC ：按照创建时间升序。\n  * UPDATEDAT_DESC：按照修改时间降序。\n  * UPDATEDAT_ASC：按照修改时间排序。\n* page: 选填，页码数。默认为 0，**zero-based**。\n* count: 选填，每页数目，默认为 10。\n\n\n#### 3. 返回数据\n\n- totalCount: 总数目。\n- list: 当前页分组列表。\n\n```javascript\n{\n  totalCount: 1,\n  list: [\n    {\n      _id: '5e3823671655601485c7f8a2',\n      name: '非凡科技有限公司',\n      description: '非凡科技有限公司',\n      createdAt: '2020-02-03T21:43:03+08:00',\n      updatedAt: '2020-02-03T21:43:03+08:00',\n    }\n  ]\n}\n```\n",
+      "auth": "admin",
+      "group": "权限控制"
+    },
+    {
+      "name": "createRBACRole",
+      "type": "mutation",
+      "description": "创建角色",
+      "query": "mutation createRBACRole($input: CreateRBACRoleInput!) {\n\tcreateRBACRole(input: $input) {\n\t\t_id\n\t\tname\n\t\tdescription\n\t\tcreatedAt\n\t\tupdatedAt\n\t}\n}\n",
+      "doc": "此接口用于创建角色。\n\n> Authing 支持基于角色的访问控制（RBAC），请先务必了解[分组和角色的区别](https://docs.authing.cn/authing/authorization/authorization/rbac#fen-zu-vs-quan-xian)，[点此了解如何接入](https://docs.authing.cn/authing/authorization/intergrate-rbac)。\n\n#### 1. 说明\n\n分组用于管理用户，角色用于配置权限；分组可以同时拥有一个或多个角色，加入到该分组中的用户会继承此分组内所有角色的权限。\n\n<br/>\n\n一个角色是一组权限的集合，如：角色 **Invoice Submitter** 具备以下权限：\n- invoice:login\n- invoice:create\n- invoice:query\n- invoice:list\n- invoice:delete\n\n#### 2. 参数\n\n* input: CreateRBACRoleInput\n  * userPoolId: 必填，用户池 ID。\n  * name: 必填，名称。\n  * description: 选填，描述。\n\n#### 3. 返回数据\n\n* _id: 角色 ID\n\n```javascript\n{\n  _id: '5e3823671655601485c7f8a2',\n  name: 'Invoice Submitter',\n  description: '具备开具发票相关权限',\n  createdAt: '2020-02-03T21:43:03+08:00',\n  updatedAt: '2020-02-03T21:43:03+08:00',\n}\n```\n",
+      "auth": "admin",
+      "group": "权限控制"
+    },
+    {
+      "name": "updateRBACRole",
+      "type": "mutation",
+      "description": "更新用户角色",
+      "query": "mutation updateRBACRole($input: UpdateRBACRoleInput!) {\n\tupdateRBACRole(input: $input) {\n\t\t_id\n\t\tname\n\t\tdescription\n\t\tcreatedAt\n\t\tupdatedAt\n\t}\n}\n",
+      "doc": "此接口用于更新角色。\n\n> Authing 支持基于角色的访问控制（RBAC），请先务必了解[分组和角色的区别](https://docs.authing.cn/authing/authorization/authorization/rbac#fen-zu-vs-quan-xian)，[点此了解如何接入](https://docs.authing.cn/authing/authorization/intergrate-rbac)。\n\n#### 1. 说明\n\n分组用于管理用户，角色用于配置权限；分组可以同时拥有一个或多个角色，加入到该分组中的用户会继承此分组内所有角色的权限。\n\n<br/>\n\n一个角色是一组权限的集合，如：角色 **Invoice Submitter** 具备以下权限：\n- invoice:login\n- invoice:create\n- invoice:query\n- invoice:list\n- invoice:delete\n\n#### 2. 参数\n\n* input: UpdateRBACRoleInput\n  * _id: 必填，角色 ID。\n  * name: 必填，名称。\n  * description: 选填，描述。\n\n#### 3. 返回数据\n\n* _id: 角色 ID\n\n```javascript\n{\n  _id: '5e3823671655601485c7f8a2',\n  name: 'Invoice Submitter',\n  description: '具备开具发票相关权限',\n  createdAt: '2020-02-03T21:43:03+08:00',\n  updatedAt: '2020-02-03T21:43:03+08:00',\n},\n```\n",
+      "auth": "admin",
+      "group": "权限控制"
+    },
+    {
+      "name": "deleteRBACRole",
+      "type": "mutation",
+      "description": "删除角色",
+      "query": "mutation deleteRBACRole($_id: String!) {\n\tdeleteRBACRole(_id: $_id) {\n\t\tmessage\n\t\tcode\n\t}\n}\n",
+      "doc": "此接口用于删除角色。\n\n> Authing 支持基于角色的访问控制（RBAC），请先务必了解[分组和角色的区别](https://docs.authing.cn/authing/authorization/authorization/rbac#fen-zu-vs-quan-xian)，[点此了解如何接入](https://docs.authing.cn/authing/authorization/intergrate-rbac)。\n\n#### 1. 说明\n\n分组用于管理用户，角色用于配置权限；分组可以同时拥有一个或多个角色，加入到该分组中的用户会继承此分组内所有角色的权限。\n\n<br/>\n\n一个角色是一组权限的集合，如：角色 **Invoice Submitter** 具备以下权限：\n- invoice:login\n- invoice:create\n- invoice:query\n- invoice:list\n- invoice:delete\n\n#### 2. 参数\n\n* _id: 必填，角色 ID。\n\n\n#### 3. 返回数据\n\n* code: 200 表示成功。\n\n```javascript\n{\n  code: 200,\n  message: '操作成功！'\n}\n```\n",
+      "auth": "admin",
+      "group": "权限控制"
+    },
+    {
+      "name": "deleteRBACRoleBatch",
+      "type": "mutation",
+      "description": "批量删除角色",
+      "query": "mutation deleteRBACRoleBatch($idList: [String!]!) {\n\tdeleteRBACRoleBatch(idList: $idList) {\n\t\tmessage\n\t\tcode\n\t}\n}\n",
+      "doc": "此接口用于批量删除角色。\n\n> Authing 支持基于角色的访问控制（RBAC），请先务必了解[分组和角色的区别](https://docs.authing.cn/authing/authorization/authorization/rbac#fen-zu-vs-quan-xian)，[点此了解如何接入](https://docs.authing.cn/authing/authorization/intergrate-rbac)。\n\n#### 1. 说明\n\n分组用于管理用户，角色用于配置权限；分组可以同时拥有一个或多个角色，加入到该分组中的用户会继承此分组内所有角色的权限。\n\n<br/>\n\n一个角色是一组权限的集合，如：角色 **Invoice Submitter** 具备以下权限：\n- invoice:login\n- invoice:create\n- invoice:query\n- invoice:list\n- invoice:delete\n\n#### 2. 参数\n\n* idList: 必填，角色 ID 列表。\n\n\n#### 3. 返回数据\n\n* code: 200 表示成功。\n\n```javascript\n{\n  code: 200,\n  message: '操作成功！'\n}\n```\n",
+      "auth": "admin",
+      "group": "权限控制"
+    },
+    {
+      "name": "rbacRole",
+      "type": "query",
+      "description": "查询角色详情",
+      "query": "query rbacRole($_id: String!) {\n\trbacRole(_id: $_id) {\n\t\t_id\n\t\tname\n\t\tdescription\n\t\tcreatedAt\n\t\tupdatedAt\n\t}\n}\n",
+      "doc": "此接口用于查询角色。\n\n> Authing 支持基于角色的访问控制（RBAC），请先务必了解[分组和角色的区别](https://docs.authing.cn/authing/authorization/authorization/rbac#fen-zu-vs-quan-xian)，[点此了解如何接入](https://docs.authing.cn/authing/authorization/intergrate-rbac)。\n\n#### 1. 说明\n\n分组用于管理用户，角色用于配置权限；分组可以同时拥有一个或多个角色，加入到该分组中的用户会继承此分组内所有角色的权限。\n\n<br/>\n\n一个角色是一组权限的集合，如：角色 **Invoice Submitter** 具备以下权限：\n- invoice:login\n- invoice:create\n- invoice:query\n- invoice:list\n- invoice:delete\n\n#### 2. 参数\n\n* _id: 必填，角色 ID。\n\n\n#### 3. 返回数据\n\n* _id: 角色 ID\n\n```javascript\n{\n  _id: '5e3823671655601485c7f8a2',\n  name: 'Invoice Submitter',\n  description: '具备开具发票相关权限',\n  createdAt: '2020-02-03T21:43:03+08:00',\n  updatedAt: '2020-02-03T21:43:03+08:00',\n},\n```\n",
+      "auth": "admin",
+      "group": "权限控制"
+    },
+    {
+      "name": "rbacRoleList",
+      "type": "query",
+      "description": "查询用户池角色列表",
+      "query": "query rbacRoleList($sortBy: SortByEnum, $page: Int, $count: Int, $userPoolId: String!) {\n\trbacRoleList(userPoolId: $userPoolId, sortBy: $sortBy, page: $page, count: $count) {\n\t\ttotalCount\n\t\tlist {\n\t\t\t_id\n\t\t\tname\n\t\t\tdescription\n\t\t\tcreatedAt\n\t\t\tupdatedAt\n\t\t}\n\t}\n}\n",
+      "doc": "此接口用于查询用户池角色列表。\n\n> Authing 支持基于角色的访问控制（RBAC），请先务必了解[分组和角色的区别](https://docs.authing.cn/authing/authorization/authorization/rbac#fen-zu-vs-quan-xian)，[点此了解如何接入](https://docs.authing.cn/authing/authorization/intergrate-rbac)。\n\n#### 1. 说明\n\n分组用于管理用户，角色用于配置权限；分组可以同时拥有一个或多个角色，加入到该分组中的用户会继承此分组内所有角色的权限。\n\n<br/>\n\n一个角色是一组权限的集合，如：角色 **Invoice Submitter** 具备以下权限：\n- invoice:login\n- invoice:create\n- invoice:query\n- invoice:list\n- invoice:delete\n\n<br/>\n\n此接口支持**分页、排序**。\n\n#### 2. 参数\n\n* userPoolId: 必填，用户池 ID。\n* sortBy: 选填，排序方式。默认为 CREATEDAT_DESC ，表示按照创建时间降序，即最新创建的排在最前面。全部的可选值为：\n  * CREATEDAT_DESC：按照创建时间降序。\n  * CREATEDAT_ASC ：按照创建时间升序。\n  * UPDATEDAT_DESC：按照修改时间降序。\n  * UPDATEDAT_ASC：按照修改时间排序。\n* page: 选填，页码数。默认为 0，**zero-based**。\n* count: 选填，每页数目，默认为 10。\n\n#### 3. 返回数据\n\n- totalCount: 总数目。\n- list: 当前页角色列表。\n\n```javascript\n{\n  totalCount: 1,\n  list: [\n    {\n      _id: '5e3823671655601485c7f8a2',\n      name: 'Invoice Submitter',\n      description: '具备开具发票相关权限',\n      createdAt: '2020-02-03T21:43:03+08:00',\n      updatedAt: '2020-02-03T21:43:03+08:00',\n    }\n  ]\n}\n```\n",
+      "auth": "admin",
+      "group": "权限控制"
+    },
+    {
+      "name": "createRBACPermission",
+      "type": "mutation",
+      "description": "创建权限",
+      "query": "mutation createRBACPermission($input: CreateRBACPermissionInput!) {\n\tcreateRBACPermission(input: $input) {\n\t\t_id\n\t\tname\n\t\tcreatedAt\n\t\tupdatedAt\n\t\tdescription\n\t}\n}\n",
+      "doc": "此接口用于创建权限。\n\n> Authing 支持基于角色的访问控制（RBAC），请先务必了解[分组和角色的区别](https://docs.authing.cn/authing/authorization/authorization/rbac#fen-zu-vs-quan-xian)，[点此了解如何接入](https://docs.authing.cn/authing/authorization/intergrate-rbac)。\n\n#### 1. 说明\n\n权限应该尽量保持细粒度，将一组相关的权限用一个角色进行管理。\n\n<br/>\n\n推荐使用 **resource:action** 形式命名，如：\n- **email:login**\n- **email:list**\n- **email:detail**\n- **email:delete**\n\n#### 2. 参数\n\n* input: CreateRBACPermissionInput\n  * userPoolId: 必填，用户池 ID。\n  * name: 必填，名称。\n  * description: 选填，描述。\n\n#### 3. 返回数据\n\n* _id: 权限 ID\n\n```javascript\n{\n  _id: '5e3823671655601485c7f8a2',\n  name: 'email:login',\n  description: '登录邮箱权限',\n  createdAt: '2020-02-03T21:43:03+08:00',\n  updatedAt: '2020-02-03T21:43:03+08:00',\n}\n```\n",
+      "auth": "admin",
+      "group": "权限控制"
+    },
+    {
+      "name": "updateRBACPermission",
+      "type": "mutation",
+      "description": "更新权限",
+      "query": "mutation updateRBACPermission($input: UpdateRBACPermissionInput!) {\n\tupdateRBACPermission(input: $input) {\n\t\t_id\n\t\tname\n\t\tcreatedAt\n\t\tupdatedAt\n\t\tdescription\n\t}\n}\n",
+      "doc": "此接口用于更新权限。\n\n> Authing 支持基于角色的访问控制（RBAC），请先务必了解[分组和角色的区别](https://docs.authing.cn/authing/authorization/authorization/rbac#fen-zu-vs-quan-xian)，[点此了解如何接入](https://docs.authing.cn/authing/authorization/intergrate-rbac)。\n\n#### 1. 说明\n\n权限应该尽量保持细粒度，将一组相关的权限用一个角色进行管理。\n\n<br/>\n\n推荐使用 **resource:action** 形式命名，如：\n- **email:login**\n- **email:list**\n- **email:detail**\n- **email:delete**\n\n#### 2. 参数\n\n* input: UpdateRBACPermissionInput\n  * _id: 必填，权限 ID。\n  * name: 必填，名称。\n  * description: 选填，描述。\n\n#### 3. 返回数据\n\n* _id: 权限 ID\n\n```javascript\n{\n  _id: '5e3823671655601485c7f8a2',\n  name: 'email:login',\n  description: '登录邮箱权限',\n  createdAt: '2020-02-03T21:43:03+08:00',\n  updatedAt: '2020-02-03T21:43:03+08:00',\n},\n```\n",
+      "auth": "admin",
+      "group": "权限控制"
+    },
+    {
+      "name": "deleteRBACPermission",
+      "type": "mutation",
+      "description": "删除权限",
+      "query": "mutation deleteRBACPermission($_id: String!) {\n\tdeleteRBACPermission(_id: $_id) {\n\t\tmessage\n\t\tcode\n\t}\n}\n",
+      "doc": "此接口用于删除权限。\n\n> Authing 支持基于角色的访问控制（RBAC），请先务必了解[分组和角色的区别](https://docs.authing.cn/authing/authorization/authorization/rbac#fen-zu-vs-quan-xian)，[点此了解如何接入](https://docs.authing.cn/authing/authorization/intergrate-rbac)。\n\n#### 1. 说明\n\n权限应该尽量保持细粒度，将一组相关的权限用一个角色进行管理。\n\n<br/>\n\n推荐使用 **resource:action** 形式命名，如：\n- **email:login**\n- **email:list**\n- **email:detail**\n- **email:delete**\n\n#### 2. 参数\n\n* _id: 必填，权限 ID。\n\n\n#### 3. 返回数据\n\n* code: 200 表示成功。\n\n```javascript\n{\n  code: 200,\n  message: '操作成功'\n}\n```",
+      "auth": "admin",
+      "group": "权限控制"
+    },
+    {
+      "name": "deleteRBACPermissionBatch",
+      "type": "mutation",
+      "description": "批量删除权限",
+      "query": "mutation deleteRBACPermissionBatch($idList: [String!]!) {\n\tdeleteRBACPermissionBatch(idList: $idList) {\n\t\tmessage\n\t\tcode\n\t}\n}\n",
+      "doc": "此接口用于批量删除权限。\n\n> Authing 支持基于角色的访问控制（RBAC），请先务必了解[分组和角色的区别](https://docs.authing.cn/authing/authorization/authorization/rbac#fen-zu-vs-quan-xian)，[点此了解如何接入](https://docs.authing.cn/authing/authorization/intergrate-rbac)。\n\n#### 1. 说明\n\n权限应该尽量保持细粒度，将一组相关的权限用一个角色进行管理。\n\n<br/>\n\n推荐使用 **resource:action** 形式命名，如：\n- **email:login**\n- **email:list**\n- **email:detail**\n- **email:delete**\n\n#### 2. 参数\n\n* idList: 权限 ID 列表\n\n#### 3. 返回数据\n\n* code: 200 表示成功。\n\n```javascript\n{\n  code: 200,\n  message: '操作成功'\n}\n```",
+      "auth": "admin",
+      "group": "权限控制"
+    },
+    {
+      "name": "rbacPermission",
+      "type": "query",
+      "description": "查询权限详情",
+      "query": "query rbacPermission($_id: String!) {\n\trbacPermission(_id: $_id) {\n\t\t_id\n\t\tname\n\t\tcreatedAt\n\t\tupdatedAt\n\t\tdescription\n\t}\n}\n",
+      "doc": "此接口用于查询权限详情。\n\n> Authing 支持基于角色的访问控制（RBAC），请先务必了解[分组和角色的区别](https://docs.authing.cn/authing/authorization/authorization/rbac#fen-zu-vs-quan-xian)，[点此了解如何接入](https://docs.authing.cn/authing/authorization/intergrate-rbac)。\n\n#### 1. 说明\n\n权限应该尽量保持细粒度，将一组相关的权限用一个角色进行管理。\n\n<br/>\n\n推荐使用 **resource:action** 形式命名，如：\n- **email:login**\n- **email:list**\n- **email:detail**\n- **email:delete**\n\n#### 2. 参数\n\n* _id: 权限 ID\n\n#### 3. 返回数据\n\n* _id: 权限 ID\n\n```javascript\n{\n  _id: '5e3823671655601485c7f8a2',\n  name: 'email:login',\n  description: '登录邮箱权限',\n  createdAt: '2020-02-03T21:43:03+08:00',\n  updatedAt: '2020-02-03T21:43:03+08:00',\n}\n```\n",
+      "auth": "admin",
+      "group": "权限控制"
+    },
+    {
+      "name": "rbacPermissionList",
+      "type": "query",
+      "description": "查询角色中包含的权限列表",
+      "query": "query rbacPermissionList($userPoolId: String!, $sortBy: SortByEnum, $page: Int, $count: Int){\n    rbacPermissionList(userPoolId: $userPoolId, sortBy: $sortBy, page: $page, count: $count){\n        totalCount\n        list{\n            _id\n            name\n            userPoolId\n            createdAt\n            updatedAt\n            description\n        }\n    }\n}",
+      "doc": "此接口用于查询用户池权限列表。\n\n> Authing 支持基于角色的访问控制（RBAC），请先务必了解[分组和角色的区别](https://docs.authing.cn/authing/authorization/authorization/rbac#fen-zu-vs-quan-xian)，[点此了解如何接入](https://docs.authing.cn/authing/authorization/intergrate-rbac)。\n\n#### 1. 说明\n\n权限应该尽量保持细粒度，将一组相关的权限用一个角色进行管理。\n\n<br/>\n\n推荐使用 **resource:action** 形式命名，如：\n- **email:login**\n- **email:list**\n- **email:detail**\n- **email:delete**\n\n<br/>\n\n该接口支持**分页、排序**。\n\n#### 2. 参数\n\n* userPoolId: 必填，用户池 ID。\n* sortBy: 选填，排序方式。默认为 CREATEDAT_DESC ，表示按照创建时间降序，即最新创建的排在最前面。全部的可选值为：\n  * CREATEDAT_DESC：按照创建时间降序。\n  * CREATEDAT_ASC ：按照创建时间升序。\n  * UPDATEDAT_DESC：按照修改时间降序。\n  * UPDATEDAT_ASC：按照修改时间排序。\n* page: 选填，页码数。默认为 0，**zero-based**。\n* count: 选填，每页数目，默认为 10。\n\n\n#### 3. 返回数据\n\n- totalCount: 总数目。\n- list: 当前页权限列表。\n\n```javascript\n{\n  totalCount: 1,\n  list: [\n    {\n      _id: '5e3823671655601485c7f8a2',\n      name: 'email:login',\n      description: '登录邮箱权限',\n      createdAt: '2020-02-03T21:43:03+08:00',\n      updatedAt: '2020-02-03T21:43:03+08:00',\n    }\n  ]\n}\n```\n",
+      "auth": "admin",
+      "group": "权限控制"
+    },
+    {
+      "name": "groupRoleList",
+      "type": "query",
+      "description": "查询分组中包含的角色",
+      "query": "query QueryRBACGroupRoleList($_id: String!) {\n\trbacGroup(_id: $_id) {\n\t\troles {\n\t\t\ttotalCount\n\t\t\tlist {\n\t\t\t\t_id\n\t\t\t\tname\n\t\t\t\tdescription\n\t\t\t\tcreatedAt\n\t\t\t\tupdatedAt\n\t\t\t}\n\t\t}\n\t}\n}\n",
+      "doc": "此接口用于查询分组中包含的角色。\n\n> Authing 支持基于角色的访问控制（RBAC），请先务必了解[分组和角色的区别](https://docs.authing.cn/authing/authorization/authorization/rbac#fen-zu-vs-quan-xian)，[点此了解如何接入](https://docs.authing.cn/authing/authorization/intergrate-rbac)。\n\n#### 1. 说明\n\n分组用于管理用户，角色用于配置权限；分组可以同时拥有一个或多个角色，加入到该分组中的用户会继承此分组内所有角色的权限。\n\n#### 2. 参数\n\n* _id: 分组 ID\n\n#### 3. 返回数据\n\n* roles:\n  * totalCount: 角色总数\n  * list: 角色列表\n\n```javascript\n{\n  roles: {\n    totalCount: 1,\n    list: [\n      {\n        _id: '5e3823671655601485c7f8a2',\n        name: 'Invoice Submitter',\n        description: '具备开具发票相关权限',\n        createdAt: '2020-02-03T21:43:03+08:00',\n        updatedAt: '2020-02-03T21:43:03+08:00',\n      } \n    ]\n  }\n}\n```\n",
+      "auth": "admin",
+      "group": "权限控制"
+    },
+    {
+      "name": "groupPermissionList",
+      "type": "query",
+      "description": "查询分组中包含的权限",
+      "query": "query QueryRBACGroupPermissionList($_id: String!) {\n\trbacGroup(_id: $_id) {\n\t\tpermissions {\n\t\t\ttotalCount\n\t\t\tlist {\n\t\t\t\t_id\n\t\t\t\tname\n\t\t\t\tdescription\n\t\t\t\tcreatedAt\n\t\t\t\tupdatedAt\n\t\t\t}\n\t\t}\n\t}\n}\n",
+      "doc": "此接口用于查询分组中包含的权限。\n\n> Authing 支持基于角色的访问控制（RBAC），请先务必了解[分组和角色的区别](https://docs.authing.cn/authing/authorization/authorization/rbac#fen-zu-vs-quan-xian)，[点此了解如何接入](https://docs.authing.cn/authing/authorization/intergrate-rbac)。\n\n#### 1. 说明\n\n分组用于管理用户，角色用于配置权限；分组可以同时拥有一个或多个角色，加入到该分组中的用户会继承此分组内所有角色的权限。\n\n<br/>\n\n分组中包含的权限为：**分组包含的所有角色的权限的并集**。\n\n#### 2. 参数\n\n* _id: 分组 ID\n\n#### 3. 返回数据\n\n* permissions:\n  * totalCount: 角色总数\n  * list: 权限列表\n\n```javascript\n{\n  roles: {\n    totalCount: 1,\n    list: [\n      {\n        _id: '5e3823671655601485c7f8a2',\n        name: 'email:login',\n        description: '登录邮箱权限',\n        createdAt: '2020-02-03T21:43:03+08:00',\n        updatedAt: '2020-02-03T21:43:03+08:00',\n      }\n    ]\n  }\n}\n```\n",
+      "auth": "admin",
+      "group": "权限控制"
+    },
+    {
+      "name": "addRoleToRBACGroup",
+      "type": "mutation",
+      "description": "分组添加角色",
+      "query": "mutation addRoleToRBACGroup($input: AddRoleToRBACGroupInput!) {\n\taddRoleToRBACGroup(input: $input) {\n\t\t_id\n\t\tname\n\t\tdescription\n\t\tcreatedAt\n\t\tupdatedAt\n\t}\n}\n",
+      "doc": "此接口用于分组添加角色。\n\n> Authing 支持基于角色的访问控制（RBAC），请先务必了解[分组和角色的区别](https://docs.authing.cn/authing/authorization/authorization/rbac#fen-zu-vs-quan-xian)，[点此了解如何接入](https://docs.authing.cn/authing/authorization/intergrate-rbac)。\n\n#### 1. 说明\n\n分组用于管理用户，角色用于配置权限；分组可以同时拥有一个或多个角色，加入到该分组中的用户会继承此分组内所有角色的权限。\n\n#### 2. 参数\n\n* input: AddRoleToRBACGroupInput\n  * roleId: 必填，角色 ID。\n  * groupId: 必填，分组 ID。\n\n#### 3. 返回数据\n\n* _id: 分组 ID\n\n```javascript\n{\n  _id: '5e3823671655601485c7f8a2',\n  name: '非凡科技有限公司',\n  description: '非凡科技有限公司',\n  createdAt: '2020-02-03T21:43:03+08:00',\n  updatedAt: '2020-02-03T21:43:03+08:00',\n},\n```\n",
+      "auth": "admin",
+      "group": "权限控制"
+    },
+    {
+      "name": "addRoleToRBACGroupBatch",
+      "type": "mutation",
+      "description": "分组批量添加角色",
+      "query": "mutation addRoleToRBACGroupBatch($input: AddRoleToRBACGroupBatchInput!) {\n\taddRoleToRBACGroupBatch(input: $input) {\n\t\t_id\n\t\tname\n\t\tdescription\n\t\tcreatedAt\n\t\tupdatedAt\n\t}\n}\n",
+      "doc": "此接口用于分组批量添加角色。\n\n> Authing 支持基于角色的访问控制（RBAC），请先务必了解[分组和角色的区别](https://docs.authing.cn/authing/authorization/authorization/rbac#fen-zu-vs-quan-xian)，[点此了解如何接入](https://docs.authing.cn/authing/authorization/intergrate-rbac)。\n\n#### 1. 说明\n\n分组用于管理用户，角色用于配置权限；分组可以同时拥有一个或多个角色，加入到该分组中的用户会继承此分组内所有角色的权限。\n\n#### 2. 参数\n\n* input: AddRoleToRBACGroupBatchInput\n  * roleIdList: 必填，角色 ID 列表。\n  * groupId: 必填，分组 ID。\n\n#### 3. 返回数据\n\n* _id: 分组 ID\n\n```javascript\n{\n  _id: '5e3823671655601485c7f8a2',\n  name: '非凡科技有限公司',\n  description: '非凡科技有限公司',\n  createdAt: '2020-02-03T21:43:03+08:00',\n  updatedAt: '2020-02-03T21:43:03+08:00',\n},\n```\n",
+      "auth": "admin",
+      "group": "权限控制"
+    },
+    {
+      "name": "removeRoleFromRBACGroup",
+      "type": "mutation",
+      "description": "分组移除角色",
+      "query": "mutation removeRoleFromRBACGroup($input: RemoveRoleFromRBACGroupInput!) {\n\tremoveRoleFromRBACGroup(input: $input) {\n\t\t_id\n\t\tname\n\t\tdescription\n\t\tcreatedAt\n\t\tupdatedAt\n\t}\n}\n",
+      "doc": "此接口用于分组移除角色。\n\n> Authing 支持基于角色的访问控制（RBAC），请先务必了解[分组和角色的区别](https://docs.authing.cn/authing/authorization/authorization/rbac#fen-zu-vs-quan-xian)，[点此了解如何接入](https://docs.authing.cn/authing/authorization/intergrate-rbac)。\n\n#### 1. 说明\n\n分组用于管理用户，角色用于配置权限；分组可以同时拥有一个或多个角色，加入到该分组中的用户会继承此分组内所有角色的权限。\n\n#### 2. 参数\n\n* input: RemoveRoleFromRBACGroupInput\n  * roleId: 必填，角色 ID。\n  * groupId: 必填，分组 ID。\n\n#### 3. 返回数据\n\n* _id: 分组 ID\n\n```javascript\n{\n  _id: '5e3823671655601485c7f8a2',\n  name: '非凡科技有限公司',\n  description: '非凡科技有限公司',\n  createdAt: '2020-02-03T21:43:03+08:00',\n  updatedAt: '2020-02-03T21:43:03+08:00',\n},\n```\n",
+      "auth": "admin",
+      "group": "权限控制"
+    },
+    {
+      "name": "removeRoleFromRBACGroupBatch",
+      "type": "mutation",
+      "description": "分组批量移除角色",
+      "query": "mutation removeRoleFromRBACGroupBatch($input: RemoveRoleFromRBACGroupBatchInput!) {\n\tremoveRoleFromRBACGroupBatch(input: $input) {\n\t\t_id\n\t\tname\n\t\tdescription\n\t\tcreatedAt\n\t\tupdatedAt\n\t}\n}\n",
+      "doc": "此接口用于分组批量移除角色。\n\n> Authing 支持基于角色的访问控制（RBAC），请先务必了解[分组和角色的区别](https://docs.authing.cn/authing/authorization/authorization/rbac#fen-zu-vs-quan-xian)，[点此了解如何接入](https://docs.authing.cn/authing/authorization/intergrate-rbac)。\n\n#### 1. 说明\n\n分组用于管理用户，角色用于配置权限；分组可以同时拥有一个或多个角色，加入到该分组中的用户会继承此分组内所有角色的权限。\n\n#### 2. 参数\n\n* input: RemoveRoleFromRBACGroupBatchInput\n  * roleIdList: 必填，角色 ID。\n  * groupId: 必填，分组 ID。\n\n#### 3. 返回数据\n\n* _id: 分组 ID\n\n```javascript\n{\n  _id: '5e3823671655601485c7f8a2',\n  name: '非凡科技有限公司',\n  description: '非凡科技有限公司',\n  createdAt: '2020-02-03T21:43:03+08:00',\n  updatedAt: '2020-02-03T21:43:03+08:00',\n},\n```\n",
+      "auth": "admin",
+      "group": "权限控制"
+    },
+    {
+      "name": "groupUserList",
+      "type": "query",
+      "description": "查询分组中包含的用户",
+      "query": "query QueryRBACGroupUserList($_id: String!, $sortBy: SortByEnum = CREATEDAT_DESC, $page: Int = 0, $count: Int = 10) {\n\trbacGroup(_id: $_id) {\n\t\tusers(sortBy: $sortBy, page: $page, count: $count) {\n\t\t\ttotalCount\n\t\t\tlist {\n\t\t\t\t_id\n\t\t\t\tunionid\n\t\t\t\temail\n\t\t\t\temailVerified\n\t\t\t\tusername\n\t\t\t\tnickname\n\t\t\t\tcompany\n\t\t\t\tphoto\n\t\t\t\tphone\n\t\t\t\tbrowser\n\t\t\t\tregisterInClient\n\t\t\t\tregisterMethod\n\t\t\t\toauth\n\t\t\t\ttoken\n\t\t\t\ttokenExpiredAt\n\t\t\t\tloginsCount\n\t\t\t\tlastLogin\n\t\t\t\tlastIP\n\t\t\t\tsignedUp\n\t\t\t\tblocked\n\t\t\t\tisDeleted\n\t\t\t\tuserLocation {\n\t\t\t\t\t_id\n\t\t\t\t\twhen\n\t\t\t\t\twhere\n\t\t\t\t}\n\t\t\t\tuserLoginHistory {\n\t\t\t\t\ttotalCount\n\t\t\t\t\tlist {\n\t\t\t\t\t\t_id\n\t\t\t\t\t\twhen\n\t\t\t\t\t\tsuccess\n\t\t\t\t\t\tip\n\t\t\t\t\t\tresult\n\t\t\t\t\t}\n\t\t\t\t}\n\t\t\t}\n\t\t}\n\t}\n}\n",
+      "doc": "此接口用于查询分组中包含的用户.\n\n> Authing 支持基于角色的访问控制（RBAC），请先务必了解[分组和角色的区别](https://docs.authing.cn/authing/authorization/authorization/rbac#fen-zu-vs-quan-xian)，[点此了解如何接入](https://docs.authing.cn/authing/authorization/intergrate-rbac)。\n\n#### 1. 说明\n\n分组用于管理用户，角色用于配置权限；分组可以同时拥有一个或多个角色，加入到该分组中的用户会继承此分组内所有角色的权限。\n\n<br/>\n\n此接口支持**分页、排序**。\n\n#### 2. 参数\n\n* _id: 必填，分组 ID。\n* sortBy: 选填，排序方式。默认为 CREATEDAT_DESC ，表示按照创建时间降序，即最新创建的排在最前面。全部的可选值为：\n  * CREATEDAT_DESC：按照创建时间降序。\n  * CREATEDAT_ASC ：按照创建时间升序。\n  * UPDATEDAT_DESC：按照修改时间降序。\n  * UPDATEDAT_ASC：按照修改时间排序。\n* page: 选填，页码数。默认为 0，**zero-based**。\n* count: 选填，每页数目，默认为 10。\n\n#### 3. 返回数据\n\n- users:\n  - totalCount: 总数目。\n  - list: 当前页用户列表。\n\n```javascript\n{\n  users: {\n    totalCount: 1,\n    list: [\n      {\n        _id: '5e3823671655601485c7f8a2',\n        name: 'test@test.com',\n        email: \"test@test.com\"\n      }\n    ]\n  }\n}\n```\n",
+      "auth": "admin",
+      "group": "权限控制"
+    },
+    {
+      "name": "addUserToRBACGroup",
+      "type": "mutation",
+      "description": "分组添加用户",
+      "query": "mutation addUserToRBACGroup($input: AddUserToRBACGroupInput!) {\n\taddUserToRBACGroup(input: $input) {\n\t\t_id\n\t\tname\n\t\tdescription\n\t\tcreatedAt\n\t\tupdatedAt\n\t}\n}\n",
+      "doc": "此接口用于分组添加用户。\n\n> Authing 支持基于角色的访问控制（RBAC），请先务必了解[分组和角色的区别](https://docs.authing.cn/authing/authorization/authorization/rbac#fen-zu-vs-quan-xian)，[点此了解如何接入](https://docs.authing.cn/authing/authorization/intergrate-rbac)。\n\n#### 1. 说明\n\n分组用于管理用户，角色用于配置权限；分组可以同时拥有一个或多个角色，加入到该分组中的用户会继承此分组内所有角色的权限。\n\n#### 2. 参数\n\n* input: AddUserToRBACGroupInput\n  * userId: 必填，用户 ID。\n  * groupId: 必填，分组 ID。\n\n#### 3. 返回数据\n\n* _id: 分组 ID\n\n```javascript\n{\n  _id: '5e3823671655601485c7f8a2',\n  name: '非凡科技有限公司',\n  description: '非凡科技有限公司',\n  createdAt: '2020-02-03T21:43:03+08:00',\n  updatedAt: '2020-02-03T21:43:03+08:00',\n},\n```\n",
+      "auth": "admin",
+      "group": "权限控制"
+    },
+    {
+      "name": "addUserToRBACGroupBatch",
+      "type": "mutation",
+      "description": "分组批量添加用户",
+      "query": "mutation addUserToRBACGroupBatch($input: AddUserToRBACGroupBatchInput!) {\n\taddUserToRBACGroupBatch(input: $input) {\n\t\t_id\n\t\tname\n\t\tdescription\n\t\tcreatedAt\n\t\tupdatedAt\n\t}\n}\n",
+      "doc": "此接口用于分组批量添加用户。\n\n> Authing 支持基于角色的访问控制（RBAC），请先务必了解[分组和角色的区别](https://docs.authing.cn/authing/authorization/authorization/rbac#fen-zu-vs-quan-xian)，[点此了解如何接入](https://docs.authing.cn/authing/authorization/intergrate-rbac)。\n\n#### 1. 说明\n\n分组用于管理用户，角色用于配置权限；分组可以同时拥有一个或多个角色，加入到该分组中的用户会继承此分组内所有角色的权限。\n\n#### 2. 参数\n\n* input: AddUserToRBACGroupBatchInput\n  * userIdList: 必填，用户 ID 列表。\n  * groupId: 必填，分组 ID。\n\n#### 3. 返回数据\n\n* _id: 分组 ID\n\n```javascript\n{\n  _id: '5e3823671655601485c7f8a2',\n  name: '非凡科技有限公司',\n  description: '非凡科技有限公司',\n  createdAt: '2020-02-03T21:43:03+08:00',\n  updatedAt: '2020-02-03T21:43:03+08:00',\n},\n```\n",
+      "auth": "admin",
+      "group": "权限控制"
+    },
+    {
+      "name": "removeUserFromRBACGroup",
+      "type": "mutation",
+      "description": "分组移除用户",
+      "query": "mutation removeUserFromRBACGroup($input: RemoveUserFromRBACGroupInput!) {\n\tremoveUserFromRBACGroup(input: $input) {\n\t\t_id\n\t\tname\n\t\tdescription\n\t\tcreatedAt\n\t\tupdatedAt\n\t}\n}\n",
+      "doc": "此接口用于分组移除用户。\n\n> Authing 支持基于角色的访问控制（RBAC），请先务必了解[分组和角色的区别](https://docs.authing.cn/authing/authorization/authorization/rbac#fen-zu-vs-quan-xian)，[点此了解如何接入](https://docs.authing.cn/authing/authorization/intergrate-rbac)。\n\n#### 1. 说明\n\n分组用于管理用户，角色用于配置权限；分组可以同时拥有一个或多个角色，加入到该分组中的用户会继承此分组内所有角色的权限。\n\n#### 2. 参数\n\n* input: RemoveUserFromRBACGroupInput\n  * userId: 必填，用户 ID。\n  * groupId: 必填，分组 ID。\n\n#### 3. 返回数据\n\n* _id: 分组 ID\n\n```javascript\n{\n  _id: '5e3823671655601485c7f8a2',\n  name: '非凡科技有限公司',\n  description: '非凡科技有限公司',\n  createdAt: '2020-02-03T21:43:03+08:00',\n  updatedAt: '2020-02-03T21:43:03+08:00',\n},\n```\n",
+      "auth": "admin",
+      "group": "权限控制"
+    },
+    {
+      "name": "removeUserFromRBACGroupBatch",
+      "type": "mutation",
+      "description": "分组批量移除用户",
+      "query": "mutation removeUserFromRBACGroupBatch($input: RemoveUserFromRBACGroupBatchInput!) {\n\tremoveUserFromRBACGroupBatch(input: $input) {\n\t\t_id\n\t\tname\n\t\tdescription\n\t\tcreatedAt\n\t\tupdatedAt\n\t}\n}\n",
+      "doc": "此接口用于分组批量移除用户。\n\n> Authing 支持基于角色的访问控制（RBAC），请先务必了解[分组和角色的区别](https://docs.authing.cn/authing/authorization/authorization/rbac#fen-zu-vs-quan-xian)，[点此了解如何接入](https://docs.authing.cn/authing/authorization/intergrate-rbac)。\n\n#### 1. 说明\n\n分组用于管理用户，角色用于配置权限；分组可以同时拥有一个或多个角色，加入到该分组中的用户会继承此分组内所有角色的权限。\n\n#### 2. 参数\n\n* input: RemoveUserFromRBACGroupBatchInput\n  * userIdList: 必填，用户 ID。\n  * groupId: 必填，分组 ID。\n\n#### 3. 返回数据\n\n* _id: 分组 ID\n\n```javascript\n{\n  _id: '5e3823671655601485c7f8a2',\n  name: '非凡科技有限公司',\n  description: '非凡科技有限公司',\n  createdAt: '2020-02-03T21:43:03+08:00',\n  updatedAt: '2020-02-03T21:43:03+08:00',\n},\n```\n",
+      "auth": "admin",
+      "group": "权限控制"
+    },
+    {
+      "name": "roleUserList",
+      "type": "query",
+      "description": "查询角色中包含的用户",
+      "query": "query QueryRBACRoleUserList($_id: String!, $sortBy: SortByEnum = CREATEDAT_DESC, $page: Int = 0, $count: Int = 10) {\n\trbacRole(_id: $_id) {\n\t\tusers(sortBy: $sortBy, page: $page, count: $count) {\n\t\t\ttotalCount\n\t\t\tlist {\n\t\t\t\t_id\n\t\t\t\tunionid\n\t\t\t\temail\n\t\t\t\temailVerified\n\t\t\t\tusername\n\t\t\t\tnickname\n\t\t\t\tcompany\n\t\t\t\tphoto\n\t\t\t\tphone\n\t\t\t\tbrowser\n\t\t\t\tregisterInClient\n\t\t\t\tregisterMethod\n\t\t\t\toauth\n\t\t\t\ttoken\n\t\t\t\ttokenExpiredAt\n\t\t\t\tloginsCount\n\t\t\t\tlastLogin\n\t\t\t\tlastIP\n\t\t\t\tsignedUp\n\t\t\t\tblocked\n\t\t\t\tisDeleted\n\t\t\t\tuserLocation {\n\t\t\t\t\t_id\n\t\t\t\t\twhen\n\t\t\t\t\twhere\n\t\t\t\t}\n\t\t\t\tuserLoginHistory {\n\t\t\t\t\ttotalCount\n\t\t\t\t\tlist {\n\t\t\t\t\t\t_id\n\t\t\t\t\t\twhen\n\t\t\t\t\t\tsuccess\n\t\t\t\t\t\tip\n\t\t\t\t\t\tresult\n\t\t\t\t\t}\n\t\t\t\t}\n\t\t\t}\n\t\t}\n\t}\n}\n",
+      "doc": "此接口用于查询角色中包含的用户.\n\n> Authing 支持基于角色的访问控制（RBAC），请先务必了解[分组和角色的区别](https://docs.authing.cn/authing/authorization/authorization/rbac#fen-zu-vs-quan-xian)，[点此了解如何接入](https://docs.authing.cn/authing/authorization/intergrate-rbac)。\n\n#### 1. 说明\n\n分组用于管理用户，角色用于配置权限；分组可以同时拥有一个或多个角色，加入到该分组中的用户会继承此分组内所有角色的权限。\n\n<br/>\n\n此接口支持**分页、排序**。\n\n#### 2. 参数\n\n* _id: 必填，分组 ID。\n* sortBy: 选填，排序方式。默认为 CREATEDAT_DESC ，表示按照创建时间降序，即最新创建的排在最前面。全部的可选值为：\n  * CREATEDAT_DESC：按照创建时间降序。\n  * CREATEDAT_ASC ：按照创建时间升序。\n  * UPDATEDAT_DESC：按照修改时间降序。\n  * UPDATEDAT_ASC：按照修改时间排序。\n* page: 选填，页码数。默认为 0，**zero-based**。\n* count: 选填，每页数目，默认为 10。\n\n#### 3. 返回数据\n\n- users:\n  - totalCount: 总数目。\n  - list: 当前页用户列表。\n\n```javascript\n{\n  users: {\n    totalCount: 1,\n    list: [\n      {\n        _id: '5e3823671655601485c7f8a2',\n        name: 'test@test.com',\n        email: \"test@test.com\"\n      }\n    ]\n  }\n}\n```\n",
+      "auth": "admin",
+      "group": "权限控制"
+    },
+    {
+      "name": "assignRBACRoleToUser",
+      "type": "mutation",
+      "description": "赋予用户角色",
+      "query": "mutation assignRBACRoleToUser($input: AssignUserToRBACRoleInput!) {\n\tassignRBACRoleToUser(input: $input) {\n\t\t_id\n\t\tname\n\t\tdescription\n\t\tcreatedAt\n\t\tupdatedAt\n\t}\n}\n",
+      "doc": "此接口用于赋予用户角色。\n\n> Authing 支持基于角色的访问控制（RBAC），请先务必了解[分组和角色的区别](https://docs.authing.cn/authing/authorization/authorization/rbac#fen-zu-vs-quan-xian)，[点此了解如何接入](https://docs.authing.cn/authing/authorization/intergrate-rbac)。\n\n#### 1. 说明\n\n分组用于管理用户，角色用于配置权限；分组可以同时拥有一个或多个角色，加入到该分组中的用户会继承此分组内所有角色的权限。\n\n#### 2. 参数\n\n* input: AssignUserToRBACRoleInput\n  * userId: 必填，用户 ID。\n  * roleId: 必填，角色 ID。\n\n#### 3. 返回数据\n\n* _id: 分组 ID\n\n```javascript\n{\n  _id: '5e3823671655601485c7f8a2',\n  name: 'Invoice Submitter',\n  description: '具备开具发票相关权限',\n  createdAt: '2020-02-03T21:43:03+08:00',\n  updatedAt: '2020-02-03T21:43:03+08:00',\n}\n```\n",
+      "auth": "admin",
+      "group": "权限控制"
+    },
+    {
+      "name": "assignRBACRoleToUserBatch",
+      "type": "mutation",
+      "description": "批量赋予用户角色",
+      "query": "mutation assignRBACRoleToUserBatch($input: AssignUserToRBACRoleBatchInput!) {\n\tassignRBACRoleToUserBatch(input: $input) {\n\t\t_id\n\t\tname\n\t\tdescription\n\t\tcreatedAt\n\t\tupdatedAt\n\t}\n}\n",
+      "doc": "此接口用于批量赋予用户角色。\n\n> Authing 支持基于角色的访问控制（RBAC），请先务必了解[分组和角色的区别](https://docs.authing.cn/authing/authorization/authorization/rbac#fen-zu-vs-quan-xian)，[点此了解如何接入](https://docs.authing.cn/authing/authorization/intergrate-rbac)。\n\n#### 1. 说明\n\n分组用于管理用户，角色用于配置权限；分组可以同时拥有一个或多个角色，加入到该分组中的用户会继承此分组内所有角色的权限。\n\n#### 2. 参数\n\n* input: AssignUserToRBACRoleBatchInput\n  * userIdList: 必填，用户 ID 列表。\n  * roleId: 必填，角色 ID。\n\n#### 3. 返回数据\n\n* _id: 分组 ID\n\n```javascript\n{\n  _id: '5e3823671655601485c7f8a2',\n  name: 'Invoice Submitter',\n  description: '具备开具发票相关权限',\n  createdAt: '2020-02-03T21:43:03+08:00',\n  updatedAt: '2020-02-03T21:43:03+08:00',\n}\n```\n",
+      "auth": "admin",
+      "group": "权限控制"
+    },
+    {
+      "name": "revokeRBACRoleFromUser",
+      "type": "mutation",
+      "description": "撤回用户某角色",
+      "query": "mutation revokeRBACRoleFromUser($input: RevokeRBACRoleFromUserInput!) {\n\trevokeRBACRoleFromUser(input: $input) {\n\t\t_id\n\t\tname\n\t\tdescription\n\t\tcreatedAt\n\t\tupdatedAt\n\t}\n}\n",
+      "doc": "此接口用于撤回用户某角色。\n\n> Authing 支持基于角色的访问控制（RBAC），请先务必了解[分组和角色的区别](https://docs.authing.cn/authing/authorization/authorization/rbac#fen-zu-vs-quan-xian)，[点此了解如何接入](https://docs.authing.cn/authing/authorization/intergrate-rbac)。\n\n#### 1. 说明\n\n分组用于管理用户，角色用于配置权限；分组可以同时拥有一个或多个角色，加入到该分组中的用户会继承此分组内所有角色的权限。\n\n#### 2. 参数\n\n* input: RevokeRBACRoleFromUserInput\n  * userId: 必填，用户 ID。\n  * roleId: 必填，角色 ID。\n\n#### 3. 返回数据\n\n* _id: 分组 ID\n\n```javascript\n{\n  _id: '5e3823671655601485c7f8a2',\n  name: 'Invoice Submitter',\n  description: '具备开具发票相关权限',\n  createdAt: '2020-02-03T21:43:03+08:00',\n  updatedAt: '2020-02-03T21:43:03+08:00',\n}\n```\n",
+      "auth": "admin",
+      "group": "权限控制"
+    },
+    {
+      "name": "revokeRBACRoleFromUserBatch",
+      "type": "mutation",
+      "description": "批量撤回用户某角色",
+      "query": "mutation revokeRBACRoleFromUserBatch($input: RevokeRBACRoleFromUserBatchInput!) {\n\trevokeRBACRoleFromUserBatch(input: $input) {\n\t\t_id\n\t\tname\n\t\tdescription\n\t\tcreatedAt\n\t\tupdatedAt\n\t}\n}\n",
+      "doc": "此接口用于批量撤回用户角色。\n\n> Authing 支持基于角色的访问控制（RBAC），请先务必了解[分组和角色的区别](https://docs.authing.cn/authing/authorization/authorization/rbac#fen-zu-vs-quan-xian)，[点此了解如何接入](https://docs.authing.cn/authing/authorization/intergrate-rbac)。\n\n#### 1. 说明\n\n分组用于管理用户，角色用于配置权限；分组可以同时拥有一个或多个角色，加入到该分组中的用户会继承此分组内所有角色的权限。\n\n#### 2. 参数\n\n* input: RevokeRBACRoleFromUserBatchInput\n  * userIdList: 必填，用户 ID 列表。\n  * roleId: 必填，角色 ID。\n\n#### 3. 返回数据\n\n* _id: 分组 ID\n\n```javascript\n{\n  _id: '5e3823671655601485c7f8a2',\n  name: 'Invoice Submitter',\n  description: '具备开具发票相关权限',\n  createdAt: '2020-02-03T21:43:03+08:00',\n  updatedAt: '2020-02-03T21:43:03+08:00',\n}\n```\n",
+      "auth": "admin",
+      "group": "权限控制"
+    },
+    {
+      "name": "rolePermissionList",
+      "type": "query",
+      "description": "查询角色中包含的权限",
+      "query": "query QueryRBACRolePermissionList($_id: String!) {\n\trbacRole(_id: $_id) {\n\t\tpermissions {\n\t\t\ttotalCount\n\t\t\tlist {\n\t\t\t\t_id\n\t\t\t\tname\n\t\t\t\tdescription\n\t\t\t\tcreatedAt\n\t\t\t\tupdatedAt\n\t\t\t}\n\t\t}\n\t}\n}\n",
+      "doc": "此接口用于查询角色中包含的权限.\n\n> Authing 支持基于角色的访问控制（RBAC），请先务必了解[分组和角色的区别](https://docs.authing.cn/authing/authorization/authorization/rbac#fen-zu-vs-quan-xian)，[点此了解如何接入](https://docs.authing.cn/authing/authorization/intergrate-rbac)。\n\n#### 1. 说明\n\n分组用于管理用户，角色用于配置权限；分组可以同时拥有一个或多个角色，加入到该分组中的用户会继承此分组内所有角色的权限。\n\n<br/>\n\n#### 2. 参数\n\n* _id: 必填，角色 ID。\n\n#### 3. 返回数据\n\n- permissions:\n  - totalCount: 总数目。\n  - list: 当前页权限列表。\n\n```javascript\n{\n  permissions: {\n    totalCount: 1,\n    list: [\n      {\n        _id: '5e3823671655601485c7f8a2',\n        name: 'email:login',\n        description: '登录邮箱权限',\n        createdAt: '2020-02-03T21:43:03+08:00',\n        updatedAt: '2020-02-03T21:43:03+08:00',\n      }\n    ]\n  }\n}\n```\n",
+      "auth": "admin",
+      "group": "权限控制"
+    },
+    {
+      "name": "addPermissionToRBACRole",
+      "type": "mutation",
+      "description": "角色添加权限",
+      "query": "mutation addPermissionToRBACRole($input: AddPermissionToRBACRoleInput!) {\n\taddPermissionToRBACRole(input: $input) {\n\t\t_id\n\t\tname\n\t\tdescription\n\t\tcreatedAt\n\t\tupdatedAt\n\t}\n}\n",
+      "doc": "此接口用于角色添加权限。\n\n> Authing 支持基于角色的访问控制（RBAC），请先务必了解[分组和角色的区别](https://docs.authing.cn/authing/authorization/authorization/rbac#fen-zu-vs-quan-xian)，[点此了解如何接入](https://docs.authing.cn/authing/authorization/intergrate-rbac)。\n\n#### 1. 说明\n\n分组用于管理用户，角色用于配置权限；分组可以同时拥有一个或多个角色，加入到该分组中的用户会继承此分组内所有角色的权限。\n\n#### 2. 参数\n\n* input: AddPermissionToRBACRoleInput\n  * permissionId: 必填，用户 ID。\n  * roleId: 必填，角色 ID。\n\n#### 3. 返回数据\n\n* _id: 分组 ID\n\n```javascript\n{\n  _id: '5e3823671655601485c7f8a2',\n  name: 'Invoice Submitter',\n  description: '具备开具发票相关权限',\n  createdAt: '2020-02-03T21:43:03+08:00',\n  updatedAt: '2020-02-03T21:43:03+08:00',\n}\n```\n",
+      "auth": "admin",
+      "group": "权限控制"
+    },
+    {
+      "name": "addPermissionToRBACRoleBatch",
+      "type": "mutation",
+      "description": "角色批量添加权限",
+      "query": "mutation addPermissionToRBACRoleBatch($input: AddPermissionToRBACRoleBatchInput) {\n\taddPermissionToRBACRoleBatch(input: $input) {\n\t\t_id\n\t\tname\n\t\tdescription\n\t\tcreatedAt\n\t\tupdatedAt\n\t}\n}\n",
+      "doc": "此接口用于角色批量添加权限。\n\n> Authing 支持基于角色的访问控制（RBAC），请先务必了解[分组和角色的区别](https://docs.authing.cn/authing/authorization/authorization/rbac#fen-zu-vs-quan-xian)，[点此了解如何接入](https://docs.authing.cn/authing/authorization/intergrate-rbac)。\n\n#### 1. 说明\n\n分组用于管理用户，角色用于配置权限；分组可以同时拥有一个或多个角色，加入到该分组中的用户会继承此分组内所有角色的权限。\n\n#### 2. 参数\n\n* input: AddPermissionToRBACRoleBatchInput\n  * permissionIdList: 必填，用户 ID。\n  * roleId: 必填，角色 ID。\n\n#### 3. 返回数据\n\n* _id: 分组 ID\n\n```javascript\n{\n  _id: '5e3823671655601485c7f8a2',\n  name: 'Invoice Submitter',\n  description: '具备开具发票相关权限',\n  createdAt: '2020-02-03T21:43:03+08:00',\n  updatedAt: '2020-02-03T21:43:03+08:00',\n}\n```\n",
+      "auth": "admin",
+      "group": "权限控制"
+    },
+    {
+      "name": "removePermissionFromRBACRole",
+      "type": "mutation",
+      "description": "角色删除权限",
+      "query": "mutation removePermissionFromRBACRole($input: RemovePermissionFromRBACRoleInput!) {\n\tremovePermissionFromRBACRole(input: $input) {\n\t\t_id\n\t\tname\n\t\tdescription\n\t\tcreatedAt\n\t\tupdatedAt\n\t}\n}\n",
+      "doc": "此接口用于角色删除权限。\n\n> Authing 支持基于角色的访问控制（RBAC），请先务必了解[分组和角色的区别](https://docs.authing.cn/authing/authorization/authorization/rbac#fen-zu-vs-quan-xian)，[点此了解如何接入](https://docs.authing.cn/authing/authorization/intergrate-rbac)。\n\n#### 1. 说明\n\n分组用于管理用户，角色用于配置权限；分组可以同时拥有一个或多个角色，加入到该分组中的用户会继承此分组内所有角色的权限。\n\n#### 2. 参数\n\n* input: RemovePermissionFromRBACRoleInput\n  * permissionId: 必填，用户 ID。\n  * roleId: 必填，角色 ID。\n\n#### 3. 返回数据\n\n* _id: 分组 ID\n\n```javascript\n{\n  _id: '5e3823671655601485c7f8a2',\n  name: 'Invoice Submitter',\n  description: '具备开具发票相关权限',\n  createdAt: '2020-02-03T21:43:03+08:00',\n  updatedAt: '2020-02-03T21:43:03+08:00',\n}\n```\n",
+      "auth": "admin",
+      "group": "权限控制"
+    },
+    {
+      "name": "removePermissionFromRBACRoleBatch",
+      "type": "mutation",
+      "description": "角色批量移除权限",
+      "query": "mutation removePermissionFromRBACRoleBatch($input: RemovePermissionFromRBACRoleBatchInput!) {\n\tremovePermissionFromRBACRoleBatch(input: $input) {\n\t\t_id\n\t\tname\n\t\tdescription\n\t\tcreatedAt\n\t\tupdatedAt\n\t}\n}\n",
+      "doc": "此接口用于角色批量移除权限。\n\n> Authing 支持基于角色的访问控制（RBAC），请先务必了解[分组和角色的区别](https://docs.authing.cn/authing/authorization/authorization/rbac#fen-zu-vs-quan-xian)，[点此了解如何接入](https://docs.authing.cn/authing/authorization/intergrate-rbac)。\n\n#### 1. 说明\n\n分组用于管理用户，角色用于配置权限；分组可以同时拥有一个或多个角色，加入到该分组中的用户会继承此分组内所有角色的权限。\n\n#### 2. 参数\n\n* input: RemovePermissionFromRBACRoleBatchInput\n  * permissionIdList: 必填，用户 ID。\n  * roleId: 必填，角色 ID。\n\n#### 3. 返回数据\n\n* _id: 分组 ID\n\n```javascript\n{\n  _id: '5e3823671655601485c7f8a2',\n  name: 'Invoice Submitter',\n  description: '具备开具发票相关权限',\n  createdAt: '2020-02-03T21:43:03+08:00',\n  updatedAt: '2020-02-03T21:43:03+08:00',\n}\n```\n",
+      "auth": "admin",
+      "group": "权限控制"
+    },
+    {
+      "name": "userPermissionList",
+      "type": "query",
+      "description": "查询用户拥有的权限列表",
+      "query": "query userPermissionList($_id: String!){\n    userPermissionList(_id: $_id){\n        totalCount\n        list{\n            _id\n            name\n            userPoolId\n            createdAt\n            updatedAt\n            description\n        }\n        rawList\n    }\n}",
+      "doc": "此接口用于查询用户拥有的权限列表。\n\n> Authing 支持基于角色的访问控制（RBAC），请先务必了解[分组和角色的区别](https://docs.authing.cn/authing/authorization/authorization/rbac#fen-zu-vs-quan-xian)，[点此了解如何接入](https://docs.authing.cn/authing/authorization/intergrate-rbac)。\n\n#### 1. 说明\n\n分组用于管理用户，角色用于配置权限；分组可以同时拥有一个或多个角色，**加入到该分组中的用户会继承此分组内所有角色的权限**。\n\n#### 2. 参数\n\n* _id: 必填，用户 ID。\n\n#### 3. 返回数据\n\n* totalCount: 总数\n* list: 权限列表\n* rawList: 权限列表，只包含 name 字段\n\n```javascript\n{\n    totalCount: 1,\n    list: [\n      {\n        _id: '5e20082f4b6419665991fa57',\n        name: \"invoice:submit\",\n        description: '提交发票报销申请。'\n      }\n    ],\n    rawList: ['invoice:submit']\n}\n```\n",
+      "auth": "user",
+      "group": "权限控制"
+    },
+    {
+      "name": "userGroupList",
+      "type": "query",
+      "description": "查询用户拥有的分组列表",
+      "query": "query userGroupList($sortBy: SortByEnum, $page: Int, $count: Int, $_id: String!) {\n\tuserGroupList(_id: $_id) {\n\t\ttotalCount\n\t\tlist {\n\t\t\t_id\n\t\t\tname\n\t\t\tdescription\n\t\t\tcreatedAt\n\t\t\tupdatedAt\n\t\t}\n\t\trawList\n\t}\n}\n",
+      "doc": "此接口用于查询用户拥有的分组列表。\n\n> Authing 支持基于角色的访问控制（RBAC），请先务必了解[分组和角色的区别](https://docs.authing.cn/authing/authorization/authorization/rbac#fen-zu-vs-quan-xian)，[点此了解如何接入](https://docs.authing.cn/authing/authorization/intergrate-rbac)。\n\n#### 1. 说明\n\n分组用于管理用户，角色用于配置权限；分组可以同时拥有一个或多个角色，**加入到该分组中的用户会继承此分组内所有角色的权限**。\n\n#### 2. 参数\n\n* _id: 必填，用户 ID。\n\n#### 3. 返回数据\n\n* totalCount: 总数\n* list: 分组列表\n* rawList: 分组列表，只包含 name 字段\n\n```javascript\n{\n  totalCount: 2,\n  list: [\n    {\n      _id: '5e1fff324b6419665991f6b4',\n      name: 'employee',\n      description: '正式员工。'\n    },\n    {\n      _id: '5e1edcb34b6419665991f5d9',\n      name: 'intern',\n      description: '实习生。'\n    },\n  ],\n  rawList: [\"employee\", \"intern\"]\n}\n```\n",
+      "auth": "user",
+      "group": "权限控制"
+    },
+    {
+      "name": "userRoleList",
+      "type": "query",
+      "description": "查询用户拥有的角色列表",
+      "query": "query userRoleList($_id: String!) {\n\tuserRoleList(_id: $_id) {\n\t\ttotalCount\n\t\tlist {\n\t\t\t_id\n\t\t\tname\n\t\t\tdescription\n\t\t\tcreatedAt\n\t\t\tupdatedAt\n\t\t}\n\t\trawList\n\t}\n}\n",
+      "doc": "此接口用于查询用户拥有的权限列表。\n\n> Authing 支持基于角色的访问控制（RBAC），请先务必了解[分组和角色的区别](https://docs.authing.cn/authing/authorization/authorization/rbac#fen-zu-vs-quan-xian)，[点此了解如何接入](https://docs.authing.cn/authing/authorization/intergrate-rbac)。\n\n#### 1. 说明\n\n分组用于管理用户，角色用于配置权限；分组可以同时拥有一个或多个角色，**加入到该分组中的用户会继承此分组内所有角色的权限**。\n\n#### 2. 参数\n\n* _id: 必填，用户 ID。\n\n#### 3. 返回数据\n\n* totalCount: 总数\n* list: 角色列表\n* rawList: 角色列表，只包含 name 字段\n\n```javascript\n{\n  totalCount: 2,\n  list: [\n    {\n      _id: '5e20082f4b6419665991fa57',\n      name: 'Invoice Submitter',\n      description: '能使用发票工具创建并读取发票工具记录。'\n    },\n    {\n      _id: '5e20082f4b6419665991fa58',\n      name: 'Vacation Requester',\n      description: '能使用假期申请工具申请假期。'\n    },\n  ],\n  rawList: [\n    \"Invoice Submitter\",\n    \"Vacation Requester\"\n  ]\n}\n```\n",
+      "auth": "user",
+      "group": "权限控制"
+    },
+    {
+      "name": "createOrg",
+      "type": "mutation",
+      "description": "创建组织机构",
+      "query": "mutation createOrg($input: CreateOrgInput!){\n    createOrg(input: $input){\n        _id\n        nodes{\n            _id\n            name\n            description\n            createdAt\n            updatedAt\n            children\n            root\n        }\n    }\n}",
+      "doc": "> [点此了解如何接入组织机构管理](https://docs.authing.cn/authing/authorization/intergrate-organization-structure)。\n\n<br/>\n\n此接口用于创建组织机构。\n\n#### 1.说明\n一个组织结构是一棵树状的 Group 集合，此接口需要指定根节点的 Group ID。\n> 了解如何创建、管理 Group，请见 「权限控制」。\n\n<br/>\n\n#### 2.返回数据示例\n\n<br/>\n\n- _id: 组织机构 ID\n- nodes: 节点列表\n  - _id: 节点对应 Group ID\n  - name: Group 名称\n  - description: Group 描述\n  - children: 子节点对应的 Group ID\n  - root: 是否为根节点\n\n<br/>\n\n```javascript\n{\n  _id: '5e3823671655601485c7f8a8',\n  nodes: [\n    {\n      _id: '5e3823671655601485c7f8a2',\n      name: '公司A',\n      description: '',\n      createdAt: '2020-02-03T21:43:03+08:00',\n      updatedAt: '2020-02-03T21:43:03+08:00',\n      children: [ '5e3823671655601485c7f8a3', '5e3823671655601485c7f8a4' ],\n      root: true\n    },\n    {\n      _id: '5e3823671655601485c7f8a3',\n      name: '技术部门',\n      description: '',\n      createdAt: '2020-02-03T21:43:03+08:00',\n      updatedAt: '2020-02-03T21:43:03+08:00',\n      children: [ '5e3823671655601485c7f8a5' ],\n      root: false\n    },\n    {\n      _id: '5e3823671655601485c7f8a4',\n      name: '销售部',\n      description: '',\n      createdAt: '2020-02-03T21:43:03+08:00',\n      updatedAt: '2020-02-03T21:43:03+08:00',\n      children: [ '5e3823671655601485c7f8a6' ],\n      root: false\n    },\n    {\n      _id: '5e3823671655601485c7f8a5',\n      name: 'CTO',\n      description: '',\n      createdAt: '2020-02-03T21:43:03+08:00',\n      updatedAt: '2020-02-03T21:43:03+08:00',\n      children: [],\n      root: false\n    },\n    {\n      _id: '5e3823671655601485c7f8a6',\n      name: '销售经理',\n      description: '',\n      createdAt: '2020-02-03T21:43:03+08:00',\n      updatedAt: '2020-02-03T21:43:03+08:00',\n      children: [],\n      root: false\n    }\n  ]\n}\n```\n\n<br/>\n\n对应的组织机构图：\n```\n   组织架构\n    公司A \n  /      \\\n技术部门  销售部\n  /          \\\nCTO         销售经理\n```\n",
+      "auth": "admin",
+      "group": "组织机构管理"
+    },
+    {
+      "name": "addOrgNode",
+      "type": "mutation",
+      "description": "添加节点",
+      "query": "mutation addOrgNode($input: AddOrgNodeInput!){\n    addOrgNode(input: $input){\n        _id\n        nodes{\n            _id\n            name\n            description\n            createdAt\n            updatedAt\n            children\n            root\n        }\n    }\n}",
+      "doc": "> [点此了解如何接入组织机构管理](https://docs.authing.cn/authing/authorization/intergrate-organization-structure)。\n\n此接口用于添加组织机构节点。\n\n在 Authing 中，组织结构的一个节点对应一个 Group，所以此接口需要：\n- 指定此节点对应的 Group ID\n- 为了确定此节点在组织机构树中的位置，需要指定其父节点的 Group ID\n\n> 了解如何创建、管理 Group，请见 「权限控制」。",
+      "auth": "admin",
+      "group": "组织机构管理"
+    },
+    {
+      "name": "removeOrgNode",
+      "type": "mutation",
+      "description": "删除节点",
+      "query": "mutation removeOrgNode($input: RemoveOrgNodeInput!){\n    removeOrgNode(input: $input){\n        _id\n        nodes{\n            _id\n            name\n            description\n            createdAt\n            updatedAt\n            children\n            root\n        }\n    }\n}",
+      "doc": "> [点此了解如何接入组织机构管理](https://docs.authing.cn/authing/authorization/intergrate-organization-structure)。\n\n此接口用于删除组织机构节点。\n\n在 Authing 中，组织结构的一个节点对应一个 Group，所以此接口需要：\n- 指定此节点对应的 Group ID\n\n> 了解如何创建、管理 Group，请见 「权限控制」。",
+      "auth": "admin",
+      "group": "组织机构管理"
+    },
+    {
+      "name": "deleteOrg",
+      "type": "mutation",
+      "description": "删除组织机构",
+      "query": "mutation deleteOrg($_id: String!){\n    deleteOrg(_id: $_id){\n        message\n        code\n        status\n    }\n}",
+      "doc": "> [点此了解如何接入组织机构管理](https://docs.authing.cn/authing/authorization/intergrate-organization-structure)。\n\n此接口用于删除组织机构。",
+      "auth": "admin",
+      "group": "组织机构管理"
+    },
+    {
+      "name": "org",
+      "type": "query",
+      "description": "查询组织结构详情",
+      "query": "query org($_id: String!){\n    org(_id: $_id){\n        _id\n        nodes{\n            _id\n            name\n            description\n            createdAt\n            updatedAt\n            children\n            root\n        }\n    }\n}",
+      "doc": "> [点此了解如何接入组织机构管理](https://docs.authing.cn/authing/authorization/intergrate-organization-structure)。\n\n此接口用于查询组织机构详情。\n\n#### 1.说明\n\n通过组织结构 ID 查询组织机构。\n<br/>\n\n#### 2.返回数据示例\n\n<br/>\n\n- _id: 组织机构 ID\n- nodes: 节点列表\n  - _id: 节点对应 Group ID\n  - name: Group 名称\n  - description: Group 描述\n  - children: 子节点对应的 Group ID\n  - root: 是否为根节点\n\n<br/>\n\n```javascript\n{\n  _id: '5e3823671655601485c7f8a8',\n  nodes: [\n    {\n      _id: '5e3823671655601485c7f8a2',\n      name: '公司A',\n      description: '',\n      createdAt: '2020-02-03T21:43:03+08:00',\n      updatedAt: '2020-02-03T21:43:03+08:00',\n      children: [ '5e3823671655601485c7f8a3', '5e3823671655601485c7f8a4' ],\n      root: true\n    },\n    {\n      _id: '5e3823671655601485c7f8a3',\n      name: '技术部门',\n      description: '',\n      createdAt: '2020-02-03T21:43:03+08:00',\n      updatedAt: '2020-02-03T21:43:03+08:00',\n      children: [ '5e3823671655601485c7f8a5' ],\n      root: false\n    },\n    {\n      _id: '5e3823671655601485c7f8a4',\n      name: '销售部',\n      description: '',\n      createdAt: '2020-02-03T21:43:03+08:00',\n      updatedAt: '2020-02-03T21:43:03+08:00',\n      children: [ '5e3823671655601485c7f8a6' ],\n      root: false\n    },\n    {\n      _id: '5e3823671655601485c7f8a5',\n      name: 'CTO',\n      description: '',\n      createdAt: '2020-02-03T21:43:03+08:00',\n      updatedAt: '2020-02-03T21:43:03+08:00',\n      children: [],\n      root: false\n    },\n    {\n      _id: '5e3823671655601485c7f8a6',\n      name: '销售经理',\n      description: '',\n      createdAt: '2020-02-03T21:43:03+08:00',\n      updatedAt: '2020-02-03T21:43:03+08:00',\n      children: [],\n      root: false\n    }\n  ]\n}\n```\n\n<br/>\n\n对应的组织机构图：\n```\n   组织架构\n    公司A \n  /      \\\n技术部门  销售部\n  /          \\\nCTO         销售经理\n```\n",
+      "auth": "admin",
+      "group": "组织机构管理"
+    },
+    {
+      "name": "orgs",
+      "type": "query",
+      "description": "查询用户池组织结构列表",
+      "query": "query orgs($userPoolId: String!){\n    orgs(userPoolId: $userPoolId){\n        totalCount\n        list{\n            _id\n            nodes{\n                _id\n                name\n                description\n                createdAt\n                updatedAt\n                children\n                root\n            }\n        }\n    }\n}",
+      "doc": "> [点此了解如何接入组织机构管理](https://docs.authing.cn/authing/authorization/intergrate-organization-structure)。\n\n此接口用于查询用户池组织机构列表。\n\n#### 1.说明\n\n通过用户池 ID 查询组织机构列表。\n<br/>\n\n#### 2.返回数据示例\n\n组织机构数据接口请见 **查询组织机构详情** 接口。\n",
+      "auth": "admin",
+      "group": "组织机构管理"
+    },
+    {
+      "name": "orgChildrenNodes",
+      "type": "query",
+      "description": "查询某节点子节点",
+      "query": "query orgChildrenNodes($input: OrgChildrenNodesInput!) {\n\torgChildrenNodes(input: $input) {\n\t\tgroup {\n\t\t\t_id\n\t\t\tname\n\t\t\tdescription\n\t\t\tcreatedAt\n\t\t\tupdatedAt\n\t\t}\n\t\tdepth\n\t}\n}\n",
+      "doc": "> [点此了解如何接入组织机构管理](https://docs.authing.cn/authing/authorization/intergrate-organization-structure)。\n\n此接口用于查询查询某节点的子节点列表。\n\n#### 1.说明\n\n一个组织结构节点是一个 Group，此接口需要指定该节点的 Group ID。\n> 了解如何创建、管理 Group，请见 「权限控制」。\n\n\n<br/>\n\n#### 2.返回数据示例\n\nGroup 列表：\n- group: 对应 Group 数据\n  - _id: Group ID\n  - name: Group 名称\n- depth: 距离查询节点的深度，为 1 表示为直接子节点。\n\n```javascript\n[\n  {\n    group: {\n      _id: '5e38291b1655601485c7f9d6',\n      name: '分组q4nns79nea',\n      description: '',\n      createdAt: '2020-02-03T22:07:23+08:00',\n      updatedAt: '2020-02-03T22:07:23+08:00'\n    },\n    depth: 1\n  },\n  {\n    group: {\n      _id: '5e38291b1655601485c7f9d9',\n      name: '分组64cb9g24yuv',\n      description: '',\n      createdAt: '2020-02-03T22:07:23+08:00',\n      updatedAt: '2020-02-03T22:07:23+08:00'\n    },\n    depth: 1\n  }\n]\n```",
+      "auth": "admin",
+      "group": "组织机构管理"
+    },
+    {
+      "name": "isRootNodeOfOrg",
+      "type": "query",
+      "description": "判断某一节点是否为根节点",
+      "query": "query isRootNodeOfOrg($input: IsRootNodeOfOrgInput!){\n    isRootNodeOfOrg(input: $input)\n}",
+      "doc": "> [点此了解如何接入组织机构管理](https://docs.authing.cn/authing/authorization/intergrate-organization-structure)。\n\n此接口用于判断某个 Group 是否为某组织机构的根节点。\n\n#### 1.说明\n\n一个组织结构节点是一个 Group，参数：\n- input:\n  - groupId: 该节点的 Group ID。\n  - orgId: 组织机构 ID\n> 了解如何创建、管理 Group，请见 「权限控制」。\n\n<br/>\n\n#### 2.返回数据\n\n一个布尔值。\n",
+      "auth": "admin",
+      "group": "组织机构管理"
+    },
+    {
+      "name": "orgRootNode",
+      "type": "query",
+      "description": "查询组织结构根节点",
+      "query": "query orgRootNode($_id: String!) {\n\torgRootNode(_id: $_id) {\n\t\t_id\n\t\tuserPoolId\n\t\tname\n\t\tdescription\n\t\tcreatedAt\n\t\tupdatedAt\n\t}\n}\n",
+      "doc": "> [点此了解如何接入组织机构管理](https://docs.authing.cn/authing/authorization/intergrate-organization-structure)。\n\n此接口用于查询某组织结构的的根节点。\n\n#### 1.说明\n\n参数：\n- _id: 组织结构 ID\n> 了解如何创建、管理 Group，请见 「权限控制」。\n\n\n<br/>\n\n#### 2.返回数据示例\n\n一个组织结构节点是一个 Group。\n\n- _id: Group ID\n- name: Group 名称\n\n```javascript\n{\n  _id: '5e38291b1655601485c7f9d6',\n  name: '非凡科技有限公司',\n  description: '非凡科技有限公司',\n  createdAt: '2020-02-03T22:07:23+08:00',\n  updatedAt: '2020-02-03T22:07:23+08:00'\n}\n```",
+      "auth": "admin",
+      "group": "组织机构管理"
+    },
+    {
+      "name": "clientRoles",
+      "type": "query",
+      "description": "获取应用下所有角色",
+      "query": "query clientRoles($client: String!, $page: Int, $count: Int){\n    clientRoles(client: $client, page: $page, count: $count){\n        list{\n            _id\n            name\n            descriptions\n            client\n            permissions\n            createdAt\n        }\n        totalCount\n    }\n}",
+      "doc": "此接口用来获取应用下所有角色。\n\n> 此接口已经废弃，请使用新版的权限管理模块：[https://docs.authing.cn/authing/sdk/sdk-for-node/rbac](https://docs.authing.cn/authing/sdk/sdk-for-node/rbac)\n\n> 点击查看[此接口 Node SDK 文档地址](https://learn.authing.cn/authing/sdk/sdk-for-node/update-user-permissions#huo-qu-ying-yong-xia-suo-you-jiao-se)\n\n1. 用户角色有什么用？\n用户角色是 Authing 管理用户的一种手段，你可以为角色设定任意的权限字符串，可以是 JSON 或数组；之后通过 Authing 的 API 获取设置的权限既而实现自己的业务逻辑。如下图所示：在 Authing 后台为用户池配置了一个名为“管理员”的角色，\n你可以使用 Authing 提供的接口和 [SDK](https://learn.authing.cn/authing/sdk/sdk-for-node/update-user-permissions) 获取到对应的权限：\\`[\"删除用户\"]\\`\n之后便能够很好地和你的实际业务结合起来。\n\n![](http://lcjim-img.oss-cn-beijing.aliyuncs.com/2019-11-12-120145.png)\n\n2. 角色和用户的关系\n\n- 一个角色具备特定的权限，可以包含一个或多个用户。\n\n- 一个用户可以同时拥有多个角色。\n\n3. 如何查看用户池的用户角色列表？\n\n访问 **用户池** -> **用户中心** -> **用户角色**",
+      "auth": "admin",
+      "group": "权限控制「废弃」"
+    },
+    {
+      "name": "queryRoleByUserId",
+      "type": "query",
+      "description": "获取用户权限和角色",
+      "query": "query QueryRoleByUserId($user: String!, $client: String!) {\n\tqueryRoleByUserId(client: $client, user: $user) {\n\t\ttotalCount\n\t\tlist {\n\t\t\tgroup {\n\t\t\t\t_id\n\t\t\t\tname\n\t\t\t\tdescriptions\n\t\t\t\tclient\n\t\t\t\tpermissions\n\t\t\t\tcreatedAt\n\t\t\t}\n\t\t}\n\t}\n}\n",
+      "doc": "此接口用来获取特定用户拥有的角色和权限。\n\n> 此接口已经废弃，请使用新版的权限管理模块：[https://docs.authing.cn/authing/sdk/sdk-for-node/rbac](https://docs.authing.cn/authing/sdk/sdk-for-node/rbac)\n\n> 点击查看[此接口 Node SDK 文档地址](https://learn.authing.cn/authing/sdk/sdk-for-node/update-user-permissions#huo-qu-yong-hu-quan-xian-he-jiao-se)\n\n1. 参数说明：\n- client: 用户池 ID\n- user: 用户 ID\n\n2. 返回数据示例：\n```\n{\n    \"totalCount\": 1,\n    \"list\": [\n      {\n        \"group\": {\n          \"name\": \"管理员\",\n          \"permissions\": \"[\"删除用户\"]\"\n        }\n      },\n    ]\n}\n```",
+      "auth": "user",
+      "group": "权限控制「废弃」"
+    },
+    {
+      "name": "createRole",
+      "type": "mutation",
+      "description": "创建用户角色",
+      "query": "mutation createRole($client: String!, $name: String!, $descriptions: String){\n    createRole(client: $client, name: $name, descriptions: $descriptions){\n        _id\n        name\n        descriptions\n        client\n        permissions\n        createdAt\n    }\n}",
+      "doc": "此接口用来创建用户角色。\n\n> 此接口已经废弃，请使用新版的权限管理模块：[https://docs.authing.cn/authing/sdk/sdk-for-node/rbac](https://docs.authing.cn/authing/sdk/sdk-for-node/rbac)\n\n> 点击查看[此接口 Node SDK 文档地址](https://learn.authing.cn/authing/sdk/sdk-for-node/update-user-permissions#chuang-jian-yong-hu-jiao-se)\n\n\n返回数据示例：\n```\n{\n    \"_id\": \"5ca5c5dd8a61c7ffbfb129a9\",\n    \"name\": \"测试角色\",\n    \"client\": \"5c9c659cb9440b05cb2570e6\",\n    \"descriptions\": \"测试角色的描述\",\n    \"permissions\": \"[\"权限点1\"]\"\n}\n```",
+      "auth": "admin",
+      "group": "权限控制「废弃」"
+    },
+    {
+      "name": "updateRole",
+      "type": "mutation",
+      "description": "修改用户角色",
+      "query": "mutation updateRole($_id: String!, $client: String!, $name: String!, $descriptions: String, $permissions: String){\n    updateRole(_id: $_id, client: $client, name: $name, descriptions: $descriptions, permissions: $permissions){\n        _id\n        name\n        descriptions\n        client\n        permissions\n        createdAt\n    }\n}",
+      "doc": "此接口用来修改用户角色。\n\n> 点击查看[此接口 Node SDK 文档地址](https://learn.authing.cn/authing/sdk/sdk-for-node/update-user-permissions#xiu-gai-jiao-se-quan-xian)\n\n\n1. 参数说明：\n- 角色 ID（`_id`）是必传的。\n\n2. 返回数据示例：\n```\n{\n    \"_id\": \"5ca5c5dd8a61c7ffbfb129a9\",\n    \"name\": \"测试角色\",\n    \"client\": \"5c9c659cb9440b05cb2570e6\",\n    \"descriptions\": \"测试角色的描述\",\n    \"permissions\": \"[\"权限点1\"]\"\n}\n```",
+      "auth": "admin",
+      "group": "权限控制「废弃」"
+    },
+    {
+      "name": "assignUserToRole",
+      "type": "mutation",
+      "description": "指派用户到某角色",
+      "query": "mutation assignUserToRole($client: String!, $user: String!, $group: String!) {\n\tassignUserToRole(client: $client, user: $user, group: $group) {\n\t\ttotalCount\n\t\tlist {\n\t\t\tgroup {\n\t\t\t\t_id\n\t\t\t\tname\n\t\t\t\tdescriptions\n\t\t\t\tclient\n\t\t\t\tpermissions\n\t\t\t\tcreatedAt\n\t\t\t}\n\t\t}\n\t}\n}\n",
+      "doc": "此接口用来指派用户到某角色。\n\n> 点击查看[此接口 Node SDK 文档地址](https://learn.authing.cn/authing/sdk/sdk-for-node/update-user-permissions#zhi-pai-yong-hu-dao-mou-jiao-se)\n\n1. 如何在后台指派用户到某角色？\n![](http://lcjim-img.oss-cn-beijing.aliyuncs.com/2019-11-12-125809.png)\n\n2. 参数说明：\n- client: 必填，用户池 ID。\n- user: 必填，用户 ID。\n- group: 必填，角色 ID。",
+      "auth": "admin",
+      "group": "权限控制「废弃」"
+    },
+    {
+      "name": "removeUserFromGroup",
+      "type": "mutation",
+      "description": "将用户从某角色中移除",
+      "query": "mutation removeUserFromGroup($client: String!, $user: String!, $group: String!) {\n\tremoveUserFromGroup(client: $client, user: $user, group: $group) {\n\t\t_id\n\t\tuser {\n\t\t\t_id\n\t\t\tname\n\t\t}\n\t\tclient {\n\t\t\t_id\n\t\t\tname\n\t\t}\n\t\tgroup {\n\t\t\t_id\n\t\t\tname\n\t\t}\n\t\tcreatedAt\n\t}\n}\n",
+      "doc": "此接口用来将用户从某角色中移除。\n\n> 点击查看[此接口 Node SDK 文档地址](https://learn.authing.cn/authing/sdk/sdk-for-node/update-user-permissions#jiang-yong-hu-cong-mou-jiao-se-zhong-yi-chu)\n\n1. 参数说明：\n- client: 必填，用户池 ID。\n- user: 必填，用户 ID。\n- group: 必填，角色 ID。",
+      "auth": "admin",
+      "group": "权限控制「废弃」"
+    },
+    {
+      "name": "usersInGroup",
+      "type": "query",
+      "description": "获取某角色下全部用户",
+      "query": "query usersInGroup($group: String, $page: Int, $count: Int){\n    usersInGroup(group: $group, page: $page, count: $count){\n        list{\n            email\n            username\n            _id\n            upgrade\n        }\n        totalCount\n    }\n}",
+      "doc": "此接口用来获取某角色下全部用户。\n\n> 点击查看[此接口 Node SDK 文档地址](https://learn.authing.cn/authing/sdk/sdk-for-node/update-user-permissions#huo-qu-mou-jiao-se-xia-quan-bu-yong-hu)\n\n1. 参数说明：\n- group: 必填，角色 ID。\n- page: 选填，默认为 1。\n- count: 选填，默认为 10。\n\n2. 返回数据示例：\n```\n{\n    \"totalCount\": 2,\n    \"list\": [\n        {\n            \"_id\": \"5dc9695999128a6baf15e44b\",\n            \"group\": {\n                \"_id\": \"5da9c92a2a24432643a33969\"\n            },\n            \"client\": {\n                \"_id\": \"5c95905578fce5000166f853\"\n            },\n            \"user\": {\n                \"_id\": \"5dc8c6b7ebafee83c95b9c8b\",\n                \"photo\": \"https://usercontents.authing.cn/authing-avatar.png\",\n                \"username\": \"hrpw0awin7d@test.com\",\n                \"email\": \"hrpw0awin7d@test.com\"\n            },\n            \"createdAt\": \"2019-11-11 21:59:53\"\n        }\n    ]\n}\n```",
+      "auth": "admin",
+      "group": "权限控制「废弃」"
+    },
+    {
+      "name": "userClients",
+      "type": "query",
+      "description": "用户池列表",
+      "query": "query getUserClients($userId: String!, $page: Int, $count: Int) {\n\tuserClients(userId: $userId, page: $page, count: $count) {\n\t\ttotalCount\n\t\tlist {\n\t\t\t_id\n\t\t\tname\n\t\t\tdescriptions\n\t\t\tjwtExpired\n\t\t\tcreatedAt\n\t\t\tisDeleted\n\t\t\tsecret\n\t\t\tlogo\n\t\t\tclientType {\n\t\t\t\t_id\n\t\t\t\tname\n\t\t\t\tdescription\n\t\t\t\timage\n\t\t\t\texample\n\t\t\t}\n\t\t}\n\t}\n}\n",
+      "doc": "此接口用来获取用户池列表，支持分页。\n1. 请求参数说明\n    - 必填参数\n        - userId: 用户 ID, 只能填开发者自己的用户 ID, 填其他人的会报权限错误。\n    - 可选参数\n        - page: 页数\n        - count: 每页数目\n        - computeUsersCount: 布尔值没，是否计算用户总数。\n\n2. 返回数据说明\n- totalCount: 用户池总数\n- list：用户池列表，列表元素字段含义请见 用户池详情 接口。",
+      "auth": "admin",
+      "group": "用户池管理"
+    },
+    {
+      "name": "client",
+      "type": "query",
+      "description": "用户池详情",
+      "query": "query client($id: String!, $userId: String!) {\n\tclient(id: $id, userId: $userId) {\n\t\t_id\n\t\tname\n\t\tdescriptions\n\t\tjwtExpired\n\t\tcreatedAt\n\t\tsecret\n\t\tisDeleted\n\t\tlogo\n\t\temailVerifiedDefault\n\t\tregisterDisabled\n\t\tshowWXMPQRCode\n\t\tuseMiniLogin\n\t\tallowedOrigins\n\t\tuser {\n\t\t\t_id\n\t\t\temail\n\t\t\tusername\n\t\t\temailVerified\n\t\t}\n\t\tclientType {\n\t\t\t_id\n\t\t\tname\n\t\t\tdescription\n\t\t\timage\n\t\t\texample\n\t\t}\n\t\tfrequentRegisterCheck {\n\t\t\ttimeInterval\n\t\t\tlimit\n\t\t\tenable\n\t\t}\n\t\tloginFailCheck {\n\t\t\ttimeInterval\n\t\t\tlimit\n\t\t\tenable\n\t\t}\n\t\tenableEmail\n\t}\n}\n",
+      "doc": "此接口用来获取用户池详情。\n1. 请求参数\n- 必填参数\n    - id: 用户池 ID\n    - userId: 用户池创建者 ID\n\n2. 部分返回数据说明\n- user: 用户池创建者。\n- usersCount: 用户总数\n- emailVerifiedDefault: 布尔值， 注册时邮箱需不需要验证。true 无需验证，false 表示需要验证。\n- registerDisabled: 布尔值，true 为应用池已关闭注册，false 为未关闭注册。\n- showWXMPQRCode: 布尔值，是否显示微信小程序扫码登录。\n- useMiniLogin: 是否使用微信小程序“小登录”。\n- allowedOrigins: 安全域（Allowed Origins） 是允许从 JavaScript 向 Authing API 发出请求的 URL（通常与 CORS 一起使用）。 默认情况下，系统会允许你使用所有网址。 如果需要，此字段允许你输入其他来源。 你可以通过逐行分隔多个有效 URL，并在子域级别使用通配符（例如：https://*.sample.com）。 验证这些 URL 时不考虑查询字符串和哈希信息，如果带上了查询字符串和哈希信息系统会自动忽略整个域名。\n- secret: 用户池密钥，通过 **用户池** -> **基础配置** 可以查看。\n- jwtExpired: JWT Token 过期时间\n- frequentRegisterCheck: 注册频率限制。",
+      "auth": "admin",
+      "group": "用户池管理"
+    },
+    {
+      "name": "userClientTypes",
+      "type": "query",
+      "description": "获取用户池类型",
+      "query": "query userClientTypes{\n    userClientTypes{\n        _id\n        name\n        description\n        image\n        example\n    }\n}",
+      "doc": "此接口用来获取用户池类型。\n目前 Authing 支持 Web, IOS, Andoid, 小程序 四种用户池。",
+      "auth": "admin",
+      "group": "用户池管理"
+    },
+    {
+      "name": "queryPermissionList",
+      "type": "query",
+      "description": "用户池权限列表",
+      "query": "query queryPermissionList{\n    queryPermissionList{\n        list{\n            _id\n            name\n            affect\n            description\n        }\n        totalCount\n    }\n}",
+      "doc": "此接口用来查询用户池权限列表。\n\nAuthing 目前支持以下权限点：你可以向协作者开放其所需要的权限。\n![](http://lcjim-img.oss-cn-beijing.aliyuncs.com/2019-10-24-102003.png)",
+      "auth": "admin",
+      "group": "用户池管理"
+    },
+    {
+      "name": "isClientBelongToUser",
+      "type": "query",
+      "description": "是否具备用户池相关权限",
+      "query": "query isClientBelongToUser($userId: String, $clientId: String, $permissionDescriptors: [PermissionDescriptorsListInputType]){\n    isClientBelongToUser(userId: $userId, clientId: $clientId, permissionDescriptors: $permissionDescriptors)\n}",
+      "doc": "此接口用来查看是否具备用户池相关权限。\n1. 请求参数说明\n- userId: 用户 ID\n- clientId: 用户池 ID\n- permissionDescriptors: 权限描述列表\n\n2. 用户池可以配置哪些权限点？\n\nAuthing 目前支持以下权限点：你可以向协作者开放其所需要的权限。\n![](http://lcjim-img.oss-cn-beijing.aliyuncs.com/2019-10-24-102003.png)\n",
+      "auth": "guest",
+      "group": "用户池管理"
+    },
+    {
+      "name": "removeUserClients",
+      "type": "mutation",
+      "description": "批量删除用户池",
+      "query": "mutation removeUserClients($ids: [String]) {\n\tremoveUserClients(ids: $ids) {\n\t\t_id\n\t}\n}\n",
+      "doc": "此接口用来删除用户池，支持批量操作。\n\n请求参数说明\n- ids: 用户池 ID 列表。",
+      "auth": "admin",
+      "group": "用户池管理"
+    },
+    {
+      "name": "updateUserClient",
+      "type": "mutation",
+      "description": "修改用户池",
+      "query": "mutation updateUserClient(\n\t$_id: String!\n\t$name: String\n\t$userId: String!\n\t$descriptions: String\n\t$allowedOrigins: String\n\t$jwtExpired: Int\n\t$registerDisabled: Boolean\n\t$showWXMPQRCode: Boolean\n\t$useMiniLogin: Boolean\n\t$emailVerifiedDefault: Boolean\n\t$frequentRegisterCheck: FrequentRegisterCheckConfigInput\n\t$loginFailCheck: LoginFailCheckConfigInput\n\t$enableEmail: Boolean\n\t$logo: String\n) {\n\tupdateUserClient(\n\t\tclient: {\n\t\t\t_id: $_id\n\t\t\tname: $name\n\t\t\tuserId: $userId\n\t\t\tdescriptions: $descriptions\n\t\t\tjwtExpired: $jwtExpired\n\t\t\tallowedOrigins: $allowedOrigins\n\t\t\tregisterDisabled: $registerDisabled\n\t\t\tshowWXMPQRCode: $showWXMPQRCode\n\t\t\tuseMiniLogin: $useMiniLogin\n\t\t\temailVerifiedDefault: $emailVerifiedDefault\n\t\t\tfrequentRegisterCheck: $frequentRegisterCheck\n\t\t\tloginFailCheck: $loginFailCheck\n\t\t\tenableEmail: $enableEmail\n\t\t\tlogo: $logo\n\t\t}\n\t) {\n\t\t_id\n\t\tname\n\t\tdescriptions\n\t\tjwtExpired\n\t\tcreatedAt\n\t\tisDeleted\n\t\tallowedOrigins\n\t\tregisterDisabled\n\t\tshowWXMPQRCode\n\t\tuseMiniLogin\n\t\temailVerifiedDefault\n\t\tlogo\n\t\tclientType {\n\t\t\t_id\n\t\t\tname\n\t\t\tdescription\n\t\t\timage\n\t\t\texample\n\t\t}\n\t\tuser {\n\t\t\t_id\n\t\t\temail\n\t\t\tusername\n\t\t\temailVerified\n\t\t}\n\t\tfrequentRegisterCheck {\n\t\t\tenable\n\t\t\tlimit\n\t\t\ttimeInterval\n\t\t}\n\t\tloginFailCheck {\n\t\t\ttimeInterval\n\t\t\tlimit\n\t\t\tenable\n\t\t}\n\t\tenableEmail\n\t}\n}\n",
+      "doc": "此接口用来修改用户池资料。\n请求参数说明\n- client\n    - _id: 用户池 ID，必填。\n    - 其他字段均可选，只需要填你想要修改的字段。",
+      "auth": "admin",
+      "group": "用户池管理"
+    },
+    {
+      "name": "bindOtherOAuth",
+      "type": "mutation",
+      "description": "绑定社会化登录",
+      "query": "mutation bindOtherOAuth($type: String!, $unionid: String!, $userInfo: String!, $client: String, $user: String){\n    bindOtherOAuth(type: $type, unionid: $unionid, userInfo: $userInfo, client: $client, user: $user){\n        _id\n        user\n        client\n        type\n        unionid\n        userInfo\n        createdAt\n    }\n}",
+      "doc": "此接口用来绑定第三方社会化账号, Authing 目前支持微信和 GitHub 两种。\n请求参数说明\n- user: 用户 ID\n- client: 用户池 ID\n- type: 第三方社会化账号平台，选项为 \"github\" 和 \"wechat\"。\n- unionid: 第三方社会化账号在此平台的 unionid\n- userInfo: 第三方社会化账号的资料,可以是任意字符串。",
+      "auth": "user",
+      "group": "社会化登录"
+    },
+    {
+      "name": "unbindOtherOAuth",
+      "type": "mutation",
+      "description": "取消绑定社会化登录",
+      "query": "mutation unbindOtherOAuth($type: String!, $client: String, $user: String){\n    unbindOtherOAuth(type: $type, client: $client, user: $user){\n        _id\n        user\n        client\n        type\n        unionid\n        userInfo\n        createdAt\n    }\n}",
+      "doc": "此接口用来解绑社会化登录。\n请求参数说明\n- user: 用户 ID\n- client: 用户池 ID\n- type: 第三方社会化账号平台，选项为 \"github\" 和 \"wechat\"。",
+      "auth": "user",
+      "group": "社会化登录"
+    },
+    {
+      "name": "createRule",
+      "type": "mutation",
+      "description": "创建 Pipeline 函数",
+      "query": "mutation createRule($input: CreateRuleInput!) {\n\tcreateRule(input: $input) {\n\t\t_id\n\t\tname\n\t\tdescription\n\t\ttype\n\t\tenabled\n\t\tfaasUrl\n\t\tcode\n\t\tcreatedAt\n\t\tupdatedAt\n\t}\n}\n",
+      "doc": "> [点此了解如何使用 Authing Pipeline 自定义认证流程](https://docs.authing.cn/authing/extensibility/pipeline)。\n\n<br/>\n\n此接口用于创建自定义 Authing Pipeline 函数。\n\n#### 1.说明\n\nAuthing Pipeline 是一组运行在云端的用户自定义 JavaScript 代码，属于 Authing 扩展能力的重要部分，可以让开发者扩展、自定义 Authing 的能力。Pipeline 作为一组函数，和普通 Hooks 的区别在于，Pipeline 整个流程中的函数数据可以相互传递，实现工业流水线一样的效果。这种设计模式，可以使得开发者的自定义函数更加模块化，便于管理。同时我们还提供了[丰富的函数模版](https://github.com/authing/pipeline)，帮助开发者快速上手开发。\n\n<br/>\n\n借助 Authing Pipeline，开发者可以实现以下功能：\n‌\n- 白名单机制：如注册邮箱域名白名单、注册 IP 白名单等。\n- 事件通知：如用户注册之后发送群通知、用户登录 IP 异常通知等。\n- 权限控制：如用户登录之后根据邮箱将其加入某用户组等。\n- 扩展用户字段：如往修改默认头像、添加自定义 metadata 等。\n- 自定义  token：如往 token 中加入自定义字段等。\n- ... 还有更多，想象空间是无穷的。\n\n#### 2.参数\n\n> 参数名后面的 `!` 表示必填，无 `!` 即为选填。\n\n* input: CreateRuleInput!\n  * userPoolId!: 用户池 ID。\n  * name!: 名称。\n  * description: 描述。\n  * type!: Rule 类型，当前可选值为:\n    * PRE_REGISTER: 注册前，可用于实现注册邮箱域名白名单、注册 IP 白名单等。\n    * POST_REGISTER: 注册后，可用于用户成功注册后往数据库写入自定义字段等。\n    * POST_AUTHENTICATION: 登录完成后，可用于访问控制、扩展用户字段等。\n  * code!: 代码。详情请见：[如何编写自定义 Rule 函数](https://docs.authing.cn/authing/extensibility/rules/how-to-write-pipe-function)\n\n\n#### 2.返回数据\n\n<br/>\n\n* _id: Rule ID\n* code: 代码\n* enabled: 是否开启\n* faasUrl: 函数链接\n* name: 名称\n* type: Rule 类型。\n\n<br/>\n\n```javascript\n{\n  _id: '5e3b95aa57eb747394154432',\n  code: `function pipe(request, callback) {␊\n    const body = JSON.parse(request.body)␊\n    const email = body.email␊\n    const whitelist = ['example.com']; //authorized domains␊\n    const userHasAccess = whitelist.some(␊\n      function (domain) {␊\n        const emailSplit = email.split('@');␊\n        return emailSplit[emailSplit.length - 1].toLowerCase() === domain;␊\n      });␊\n  ␊\n    if (!userHasAccess) {␊\n      return callback(new UnauthorizedError('Access denied.'));␊\n    }␊\n  ␊\n    return callback(null);␊\n  }`,\n  createdAt: '2020-02-06T12:27:22+08:00',\n  description: null,\n  enabled: true,\n  faasUrl: 'https://1390279131788301.cn-beijing.fc.aliyuncs.com/2016-08-15/proxy/authing-rules-pipeline/nodejs8-a5171b70-dc73-485e-b480-302eb9faee94/',\n  name: 'Rule - 6d4rz5rjt7j',\n  type: 'PRE_REGISTER',\n  updatedAt: '2020-02-06T12:27:22+08:00',\n}\n```\n\n<br/>",
+      "auth": "admin",
+      "group": "扩展能力"
+    },
+    {
+      "name": "updateRule",
+      "type": "mutation",
+      "description": "修改 Pipeline 函数",
+      "query": "mutation updateRule($input: UpdateRuleInput!) {\n\tupdateRule(input: $input) {\n\t\t_id\n\t\tname\n\t\tdescription\n\t\ttype\n\t\tenabled\n\t\tcode\n\t\tfaasUrl\n\t\tcreatedAt\n\t\tupdatedAt\n\t}\n}\n",
+      "doc": "> [点此了解如何使用 Authing Pipeline 自定义认证流程](https://docs.authing.cn/authing/extensibility/pipeline)。\n\n<br/>\n\n此接口用于修改 Rule。\n\n#### 1.说明\n\nAuthing Pipeline 是一组运行在云端的用户自定义 JavaScript 代码，属于 Authing 扩展能力的重要部分，可以让开发者扩展、自定义 Authing 的能力。Pipeline 作为一组函数，和普通 Hooks 的区别在于，Pipeline 整个流程中的函数数据可以相互传递，实现工业流水线一样的效果。这种设计模式，可以使得开发者的自定义函数更加模块化，便于管理。同时我们还提供了[丰富的函数模版](https://github.com/authing/pipeline)，帮助开发者快速上手开发。\n\n<br/>\n\n借助 Authing Pipeline，开发者可以实现以下功能：\n‌\n- 白名单机制：如注册邮箱域名白名单、注册 IP 白名单等。\n- 事件通知：如用户注册之后发送群通知、用户登录 IP 异常通知等。\n- 权限控制：如用户登录之后根据邮箱将其加入某用户组等。\n- 扩展用户字段：如往修改默认头像、添加自定义 metadata 等。\n- 自定义  token：如往 token 中加入自定义字段等。\n- ... 还有更多，想象空间是无穷的。\n\n#### 2.参数\n\n> 参数名后面的 `!` 表示必填，无 `!` 即为选填。\n\n* input: UpdateRuleInput!\n  * _id!: Rule ID.\n  * name: 名称。\n  * description: 描述。\n  * type: Rule 类型，当前可选值为:\n    * PRE_REGISTER: 注册前，可用于实现注册邮箱域名白名单、注册 IP 白名单等。\n    * POST_REGISTER: 注册后，可用于用户成功注册后往数据库写入自定义字段等。\n    * POST_AUTHENTICATION: 登录完成后，可用于访问控制、扩展用户字段等。\n  * code: 代码。详情请见：[如何编写自定义 Rule 函数](https://docs.authing.cn/authing/extensibility/rules/how-to-write-pipe-function)\n  * enabled: 是否开启。\n\n\n#### 2.返回数据\n\n<br/>\n\n* _id: Rule ID\n* code: 代码\n* enabled: 是否开启\n* faasUrl: 函数链接\n* name: 名称\n* type: Rule 类型。\n\n<br/>\n\n```javascript\n{\n  _id: '5e3b95aa57eb747394154432',\n  code: `function pipe(request, callback) {␊\n    const body = JSON.parse(request.body)␊\n    const email = body.email␊\n    const whitelist = ['example.com']; //authorized domains␊\n    const userHasAccess = whitelist.some(␊\n      function (domain) {␊\n        const emailSplit = email.split('@');␊\n        return emailSplit[emailSplit.length - 1].toLowerCase() === domain;␊\n      });␊\n  ␊\n    if (!userHasAccess) {␊\n      return callback(new UnauthorizedError('Access denied.'));␊\n    }␊\n  ␊\n    return callback(null);␊\n  }`,\n  createdAt: '2020-02-06T12:27:22+08:00',\n  description: null,\n  enabled: true,\n  faasUrl: 'https://1390279131788301.cn-beijing.fc.aliyuncs.com/2016-08-15/proxy/authing-rules-pipeline/nodejs8-a5171b70-dc73-485e-b480-302eb9faee94/',\n  name: 'Rule - 6d4rz5rjt7j',\n  type: 'PRE_REGISTER',\n  updatedAt: '2020-02-06T12:27:22+08:00',\n}\n```\n\n<br/>",
+      "auth": "admin",
+      "group": "扩展能力"
+    },
+    {
+      "name": "deleteRule",
+      "type": "mutation",
+      "description": "删除 Pipeline 函数",
+      "query": "mutation deleteRule($_id: String!) {\n\tdeleteRule(_id: $_id) {\n\t\tcode\n\t\tmessage\n\t}\n}\n",
+      "doc": "> [点此了解如何使用 Authing Pipeline 自定义认证流程](https://docs.authing.cn/authing/extensibility/pipeline)。\n\n<br/>\n\n此接口用于删除自定义 Pipeline 函数。\n\nAuthing Pipeline 是一组运行在云端的用户自定义 JavaScript 代码，属于 Authing 扩展能力的重要部分，可以让开发者扩展、自定义 Authing 的能力。Pipeline 作为一组函数，和普通 Hooks 的区别在于，Pipeline 整个流程中的函数数据可以相互传递，实现工业流水线一样的效果。这种设计模式，可以使得开发者的自定义函数更加模块化，便于管理。同时我们还提供了[丰富的函数模版](https://github.com/authing/pipeline)，帮助开发者快速上手开发。\n\n<br/>\n\n借助 Authing Pipeline，开发者可以实现以下功能：\n‌\n- 白名单机制：如注册邮箱域名白名单、注册 IP 白名单等。\n- 事件通知：如用户注册之后发送群通知、用户登录 IP 异常通知等。\n- 权限控制：如用户登录之后根据邮箱将其加入某用户组等。\n- 扩展用户字段：如往修改默认头像、添加自定义 metadata 等。\n- 自定义  token：如往 token 中加入自定义字段等。\n- ... 还有更多，想象空间是无穷的。\n\n\n#### 2.参数\n\n> 参数名后面的 `!` 表示必填，无 `!` 即为选填。\n\n* _id!: Rule ID.\n\n#### 2.返回数据\n\n<br/>\n\n* code: 业务状态码，200 表示成功。\n* message: 提示信息。\n\n<br/>\n\n```javascript\n{\n  code: 200,\n  message: '操作成功！'\n}\n```\n\n<br/>",
+      "auth": "admin",
+      "group": "扩展能力"
+    },
+    {
+      "name": "ruleById",
+      "type": "query",
+      "description": "通过 ID 查询 Pipeline 函数",
+      "query": "query ruleById($_id: String!) {\n\truleById(_id: $_id) {\n\t\t_id\n\t\tname\n\t\tdescription\n\t\ttype\n\t\tenabled\n\t\tfaasUrl\n\t\tcode\n\t\tcreatedAt\n\t\tupdatedAt\n\t}\n}\n",
+      "doc": "> [点此了解如何使用 Authing Pipeline 自定义认证流程](https://docs.authing.cn/authing/extensibility/pipeline)。\n\n<br/>\n\n此接口用于通过 ID 查询 Pipeline 函数。\n\n#### 1.说明\n\n此接口用于删除自定义 Pipeline 函数。\n\nAuthing Pipeline 是一组运行在云端的用户自定义 JavaScript 代码，属于 Authing 扩展能力的重要部分，可以让开发者扩展、自定义 Authing 的能力。Pipeline 作为一组函数，和普通 Hooks 的区别在于，Pipeline 整个流程中的函数数据可以相互传递，实现工业流水线一样的效果。这种设计模式，可以使得开发者的自定义函数更加模块化，便于管理。同时我们还提供了[丰富的函数模版](https://github.com/authing/pipeline)，帮助开发者快速上手开发。\n\n<br/>\n\n借助 Authing Pipeline，开发者可以实现以下功能：\n‌\n- 白名单机制：如注册邮箱域名白名单、注册 IP 白名单等。\n- 事件通知：如用户注册之后发送群通知、用户登录 IP 异常通知等。\n- 权限控制：如用户登录之后根据邮箱将其加入某用户组等。\n- 扩展用户字段：如往修改默认头像、添加自定义 metadata 等。\n- 自定义  token：如往 token 中加入自定义字段等。\n- ... 还有更多，想象空间是无穷的。\n\n#### 2.参数\n\n> 参数名后面的 `!` 表示必填，无 `!` 即为选填。\n\n* _id!: Rule ID\n\n\n#### 2.返回数据\n\n<br/>\n\n* _id: Rule ID\n* code: 代码\n* enabled: 是否开启\n* faasUrl: 函数链接\n* name: 名称\n* type: Rule 类型。\n\n<br/>\n\n```javascript\n{\n  _id: '5e3b95aa57eb747394154432',\n  code: `function pipe(request, callback) {␊\n    const body = JSON.parse(request.body)␊\n    const email = body.email␊\n    const whitelist = ['example.com']; //authorized domains␊\n    const userHasAccess = whitelist.some(␊\n      function (domain) {␊\n        const emailSplit = email.split('@');␊\n        return emailSplit[emailSplit.length - 1].toLowerCase() === domain;␊\n      });␊\n  ␊\n    if (!userHasAccess) {␊\n      return callback(new UnauthorizedError('Access denied.'));␊\n    }␊\n  ␊\n    return callback(null);␊\n  }`,\n  createdAt: '2020-02-06T12:27:22+08:00',\n  description: null,\n  enabled: true,\n  faasUrl: 'https://1390279131788301.cn-beijing.fc.aliyuncs.com/2016-08-15/proxy/authing-rules-pipeline/nodejs8-a5171b70-dc73-485e-b480-302eb9faee94/',\n  name: 'Rule - 6d4rz5rjt7j',\n  type: 'PRE_REGISTER',\n  updatedAt: '2020-02-06T12:27:22+08:00',\n}\n```\n\n<br/>",
+      "auth": "admin",
+      "group": "扩展能力"
+    },
+    {
+      "name": "rules",
+      "type": "query",
+      "description": "查询用户池 Pipeline 函数列表",
+      "query": "query rules($userPoolId: String!) {\n\trules(userPoolId: $userPoolId) {\n\t\ttotalCount\n\t\tlist {\n\t\t\t_id\n\t\t\tname\n\t\t\tdescription\n\t\t\ttype\n\t\t\tenabled\n\t\t\tfaasUrl\n\t\t\tcode\n\t\t\tcreatedAt\n\t\t\tupdatedAt\n\t\t}\n\t}\n}\n",
+      "doc": "> [点此了解如何使用 Authing Pipeline 自定义认证流程](https://docs.authing.cn/authing/extensibility/pipeline)。\n\n<br/>\n\n此接口用于查询用户池内 Pipeline 函数列表。\n\n#### 1.说明\n\nAuthing Pipeline 是一组运行在云端的用户自定义 JavaScript 代码，属于 Authing 扩展能力的重要部分，可以让开发者扩展、自定义 Authing 的能力。Pipeline 作为一组函数，和普通 Hooks 的区别在于，Pipeline 整个流程中的函数数据可以相互传递，实现工业流水线一样的效果。这种设计模式，可以使得开发者的自定义函数更加模块化，便于管理。同时我们还提供了[丰富的函数模版](https://github.com/authing/pipeline)，帮助开发者快速上手开发。\n\n<br/>\n\n借助 Authing Pipeline，开发者可以实现以下功能：\n‌\n- 白名单机制：如注册邮箱域名白名单、注册 IP 白名单等。\n- 事件通知：如用户注册之后发送群通知、用户登录 IP 异常通知等。\n- 权限控制：如用户登录之后根据邮箱将其加入某用户组等。\n- 扩展用户字段：如往修改默认头像、添加自定义 metadata 等。\n- 自定义  token：如往 token 中加入自定义字段等。\n- ... 还有更多，想象空间是无穷的。\n\n#### 2.参数\n\n> 参数名后面的 `!` 表示必填，无 `!` 即为选填。\n\n* userPoolId!: 用户池 ID\n\n\n#### 2.返回数据\n\n<br/>\n\n* totalCount: 总数\n* list: **所有** Rule 列表，其中的每个元素格式如下：\n  * _id: Rule ID\n  * code: 代码\n  * enabled: 是否开启\n  * faasUrl: 函数链接\n  * name: 名称\n  * type: Rule 类型。\n\n<br/>\n\n```javascript\n{\n  _id: '5e3b95aa57eb747394154432',\n  code: `function pipe(request, callback) {␊\n    const body = JSON.parse(request.body)␊\n    const email = body.email␊\n    const whitelist = ['example.com']; //authorized domains␊\n    const userHasAccess = whitelist.some(␊\n      function (domain) {␊\n        const emailSplit = email.split('@');␊\n        return emailSplit[emailSplit.length - 1].toLowerCase() === domain;␊\n      });␊\n  ␊\n    if (!userHasAccess) {␊\n      return callback(new UnauthorizedError('Access denied.'));␊\n    }␊\n  ␊\n    return callback(null);␊\n  }`,\n  createdAt: '2020-02-06T12:27:22+08:00',\n  description: null,\n  enabled: true,\n  faasUrl: 'https://1390279131788301.cn-beijing.fc.aliyuncs.com/2016-08-15/proxy/authing-rules-pipeline/nodejs8-a5171b70-dc73-485e-b480-302eb9faee94/',\n  name: 'Rule - 6d4rz5rjt7j',\n  type: 'PRE_REGISTER',\n  updatedAt: '2020-02-06T12:27:22+08:00',\n}\n```\n\n<br/>",
+      "auth": "admin",
+      "group": "扩展能力"
+    },
+    {
+      "name": "ruleEnv",
+      "type": "query",
+      "description": "查询用户池 Pipeline 环境变量",
+      "query": "query ruleEnv($userPoolId: String!) {\n\truleEnv(userPoolId: $userPoolId) {\n\t\ttotalCount\n\t\tlist {\n\t\t\tkey\n\t\t\tvalue\n\t\t}\n\t}\n}\n",
+      "doc": "> [点击了解如何在 Pipeline 函数中使用环境变量](https://docs.authing.cn/authing/extensibility/pipeline/env)\n\n此接口用于查询用户池 Pipeline 环境变量。\n\n#### 1. 说明\n\nPipeline 函数中的环境变量和操作系统里环境变量的概念一致，开发者可以通过全局变量 env 获取。环境变量对应用池内所有 Pipelien 函数全部可见。\n\n#### 2. 参数\n\n> 参数名后面的 `!` 表示必填，无 `!` 即为选填。\n\n* userPoolId!: 用户池 ID\n\n#### 3. 返回数据\n\n```javascript\n{\n    totalCount: 1,\n    list: [\n        {\n            key: \"KEY1\",\n            value: \"VALUE1\"\n        }\n    ]\n}\n```",
+      "auth": "admin",
+      "group": "扩展能力"
+    },
+    {
+      "name": "removeRuleEnv",
+      "type": "mutation",
+      "description": "删除 Pipeline 环境变量",
+      "query": "mutation removeRuleEnv($input: RemoveRuleEnvInput!) {\n\tremoveRuleEnv(input: $input) {\n\t\ttotalCount\n\t\tlist {\n\t\t\tkey\n\t\t\tvalue\n\t\t}\n\t}\n}\n",
+      "doc": "> [点击了解如何在 Pipeline 函数中使用环境变量](https://docs.authing.cn/authing/extensibility/pipeline/env)\n\n此接口用于删除 Pipeline 环境变量。\n\n#### 1. 说明\n\nPipeline 函数中的环境变量和操作系统里环境变量的概念一致，开发者可以通过全局变量 env 获取。环境变量对应用池内所有 Pipelien 函数全部可见。\n\n#### 2. 参数\n\n> 参数名后面的 `!` 表示必填，无 `!` 即为选填。\n\n* input!: RemoveRuleEnvInput\n  * userPoolId!: 用户池 ID。\n  * key!: key\n\n#### 3. 返回数据\n\n最新的环境变量列表。\n\n```javascript\n{\n    totalCount: 1,\n    list: [\n        {\n            key: \"KEY1\",\n            value: \"VALUE1\"\n        }\n    ]\n}\n```",
+      "auth": "admin",
+      "group": "扩展能力"
+    },
+    {
+      "name": "setRuleEnv",
+      "type": "mutation",
+      "description": "设置 Pipeline 环境变量",
+      "query": "mutation setRuleEnv($input: SetRuleEnvInput!) {\n\tsetRuleEnv(input: $input) {\n\t\ttotalCount\n\t\tlist {\n\t\t\tkey\n\t\t\tvalue\n\t\t}\n\t}\n}\n",
+      "doc": "> [点击了解如何在 Pipeline 函数中使用环境变量](https://docs.authing.cn/authing/extensibility/pipeline/env)\n\n此接口用于添加 Pipeline 环境变量。\n\n#### 1. 说明\n\nPipeline 函数中的环境变量和操作系统里环境变量的概念一致，开发者可以通过全局变量 env 获取。环境变量对应用池内所有 Pipelien 函数全部可见。\n\n#### 2. 参数\n\n> 参数名后面的 `!` 表示必填，无 `!` 即为选填。\n\n* input!: RemoveRuleEnvInput\n  * userPoolId!: 用户池 ID。\n  * key!: key\n  * value!: value\n\n#### 3. 返回数据\n\n最新的环境变量列表。\n\n```javascript\n{\n    totalCount: 1,\n    list: [\n        {\n            key: \"KEY1\",\n            value: \"VALUE1\"\n        }\n    ]\n}\n```",
+      "auth": "admin",
+      "group": "扩展能力"
+    },
+    {
+      "name": "userMetadata",
+      "type": "query",
+      "description": "查询用户自定义 Metadata",
+      "query": "query userMetadata($_id: String!) {\n\tuserMetadata(_id: $_id) {\n\t\ttotalCount\n\t\tlist {\n\t\t\tkey\n\t\t\tvalue\n\t\t}\n\t}\n}\n",
+      "doc": "此接口用于查询用户自定义 Metadata。\n\n#### 1. 说明\n\n用户自定义 Metadata 是除了 Authing 基础用户字段之外，开发者可以给用户添加的额外字段，属于 Authing 扩展能力的一部分。\n\n#### 2. 参数\n\n> 参数名后面的 `!` 表示必填，无 `!` 即为选填。\n\n- _id!: 用户 ID。 \n\n#### 3. 返回数据\n\n```javascript\n{\n  list: [\n    {\n      key: 'KEY',\n      value: 'VALUE',\n    },\n  ],\n  totalCount: 1,\n}\n```",
+      "auth": "user",
+      "group": "扩展能力"
+    },
+    {
+      "name": "setUserMetadata",
+      "type": "mutation",
+      "description": "设置用户自定义 Metadata",
+      "query": "mutation setUserMetadata($input: SetUserMetadataInput!) {\n\tsetUserMetadata(input: $input) {\n\t\ttotalCount\n\t\tlist {\n\t\t\tkey\n\t\t\tvalue\n\t\t}\n\t}\n}\n",
+      "doc": "此接口用于设置用户自定义 Metadata。\n\n#### 1. 说明\n\n用户自定义 Metadata 是除了 Authing 基础用户字段之外，开发者可以给用户添加的额外字段，属于 Authing 扩展能力的一部分。\n\n#### 2. 参数\n\n> 参数名后面的 `!` 表示必填，无 `!` 即为选填。\n\n- input!: SetUserMetadataInput\n  - _id!: 用户 ID。 \n  - key!: key\n  - value!: value\n\n#### 3. 返回数据\n\n```javascript\n{\n  list: [\n    {\n      key: 'KEY',\n      value: 'VALUE',\n    },\n  ],\n  totalCount: 1,\n}\n```",
+      "auth": "user",
+      "group": "扩展能力"
+    },
+    {
+      "name": "removeUserMetadata",
+      "type": "mutation",
+      "description": "删除用户自定义 Metadata",
+      "query": "mutation removeUserMetadata($input: RemoveUserMetadataInput!) {\n\tremoveUserMetadata(input: $input) {\n\t\ttotalCount\n\t\tlist {\n\t\t\tkey\n\t\t\tvalue\n\t\t}\n\t}\n}\n",
+      "doc": "此接口用于删除用户自定义 Metadata。\n\n#### 1. 说明\n\n用户自定义 Metadata 是除了 Authing 基础用户字段之外，开发者可以给用户添加的额外字段，属于 Authing 扩展能力的一部分。\n\n#### 2. 参数\n\n> 参数名后面的 `!` 表示必填，无 `!` 即为选填。\n\n- input!: RemoveUserMetadataInput\n  - _id!: 用户 ID。 \n  - key!: key\n\n#### 3. 返回数据\n\n```javascript\n{\n  list: [\n    {\n      key: 'KEY',\n      value: 'VALUE',\n    },\n  ],\n  totalCount: 1,\n}\n```",
+      "auth": "user",
+      "group": "扩展能力"
+    },
+    {
+      "name": "setInvitationState",
+      "type": "mutation",
+      "description": "开启/关闭注册白名单限制",
+      "query": "mutation setInvitationState($client: String!, $enablePhone: Boolean){\n    setInvitationState(client: $client, enablePhone: $enablePhone){\n        client\n        enablePhone\n        createdAt\n        updatedAt\n    }\n}",
+      "doc": "此接口用来开启/关闭注册白名单限制。\n> 目前只支持手机号白名单，后续会慢慢支持更多。\n\n请求参数说明：\n\n- client: 用户池 ID。\n- enablePhone: 布尔值，是否开启手机号白名单机制。",
+      "auth": "admin",
+      "group": "注册白名单"
+    },
+    {
+      "name": "queryInvitationState",
+      "type": "query",
+      "description": "查看白名单机制开启状态",
+      "query": "query queryInvitationState($client: String!){\n    queryInvitationState(client: $client){\n        client\n        enablePhone\n        createdAt\n        updatedAt\n    }\n}",
+      "doc": "此接口用来查看白名单机制开启状态。\n请求参数说明：\n- client: 用户池ID",
+      "auth": "admin",
+      "group": "注册白名单"
+    },
+    {
+      "name": "addToInvitation",
+      "type": "mutation",
+      "description": "增加手机号到白名单",
+      "query": "mutation addToInvitation($client: String!, $phone: String){\n    addToInvitation(client: $client, phone: $phone){\n        client\n        phone\n        isDeleted\n        createdAt\n        updatedAt\n    }\n}",
+      "doc": "此接口用来增加手机号到白名单。\n请求参数说明：\n- client: 用户池 ID\n- phone: 手机号",
+      "auth": "admin",
+      "group": "注册白名单"
+    },
+    {
+      "name": "removeFromInvitation",
+      "type": "mutation",
+      "description": "从白名单中删除手机号",
+      "query": "mutation removeFromInvitation($client: String!, $phone: String){\n    removeFromInvitation(client: $client, phone: $phone){\n        client\n        phone\n        isDeleted\n        createdAt\n        updatedAt\n    }\n}",
+      "doc": "此接口用来从白名单中删除手机号。\n请求参数说明：\n- client: 用户池 ID\n- phone: 手机号",
+      "auth": "admin",
+      "group": "注册白名单"
+    },
+    {
+      "name": "queryInvitation",
+      "type": "query",
+      "description": "查看白名单中的手机号",
+      "query": "query queryInvitation($client: String!){\n    queryInvitation(client: $client){\n        client\n        phone\n        isDeleted\n        createdAt\n        updatedAt\n    }\n}",
+      "doc": "此接口用来查看白名单中的手机号列表。\n请求参数说明：\n- client: 用户池 ID",
+      "auth": "admin",
+      "group": "注册白名单"
+    },
+    {
+      "name": "queryMFA",
+      "type": "query",
+      "description": "查询 MFA 配置",
+      "query": "query queryMFA($_id: String, $userId: String, $userPoolId: String){\n    queryMFA(_id: $_id, userId: $userId, userPoolId: $userPoolId){\n        _id\n        userId\n        userPoolId\n        enable\n        shareKey\n    }\n}",
+      "doc": "此接口用来查询 MFA 配置。\n多因素身份验证（MFA）是一种安全系统，是为了验证一项操作合法性而实行多种身份验证。例如银行的 U 盾，异地登录要求手机短信验证。开发者可以基于 Authing 的 MFA 功能进行定制化开发。\n前往 [Authing官网文档 - MFA](https://learn.authing.cn/authing/mfa/configure-mfa) 查看更多相关内容。 \n查询 MFA 信息有两种方式：通过 MFA 主体 id 或者用户 ID 加用户池 ID。\n请求参数：\n- 通过 MFA 主体 ID 查询\n    - _id: MFA 主体 ID\n- 通过用户 ID 加用户池 ID 查询\n    - userId: 用户ID\n    - userPoolId: 用户池ID\n- enabled: 是否开启",
+      "auth": "user",
+      "group": "MFA 多因素认证"
+    },
+    {
+      "name": "changeMFA",
+      "type": "mutation",
+      "description": "修改 MFA 信息",
+      "query": "mutation changeMFA($enable: Boolean!, $userId: String, $userPoolId: String, $_id: String, $refreshKey: Boolean){\n    changeMFA(enable: $enable, userId: $userId, userPoolId: $userPoolId, _id: $_id, refreshKey: $refreshKey){\n        _id\n        userId\n        userPoolId\n        enable\n        shareKey\n    }\n}",
+      "doc": "此接口用来修改 MFA 信息。\n\n和“查询  MFA 信息” 一样，修改也有两种方式：通过 MFA 主体 ID 或者用户 ID 加用户池 ID。\n请求参数：\n- enabled: 布尔值，是否开启。\n- refreshKey: 布尔值，是否刷新 MFA 的 shareKey。",
+      "auth": "user",
+      "group": "MFA 多因素认证"
+    },
+    {
+      "name": "addClientWebhook",
+      "type": "mutation",
+      "description": "添加 Webhook",
+      "query": "mutation addClientWebhook($client: String!, $events: [String!]!, $url: String!, $contentType: String!, $enable: Boolean!, $secret: String, $isLastTimeSuccess: Boolean){\n    addClientWebhook(client: $client, events: $events, url: $url, contentType: $contentType, enable: $enable, secret: $secret, isLastTimeSuccess: $isLastTimeSuccess){\n        _id\n        client\n        events{\n            name\n            label\n            description\n        }\n        url\n        isLastTimeSuccess\n        contentType\n        secret\n        enable\n    }\n}",
+      "doc": "此接口用来添加 Webhook。相关文档请查看 [Authing官方文档](https://learn.authing.cn/authing/advanced/use-webhook)\n1. Webhook 有什么用\n\nWebhooks 允许你对用户注册、登录等**事件**进行监听，从而对其做一些自定义处理。这能让 Authing 和你的业务更好地联动起来。\nAuthing 内置了丰富的事件，目前包含注册、登录、修改密码、修改用户信息、用户邮箱被验证五种。\n开发者可以在后台 **基础配置** -> **Webhook** 里面管理自己的 Webhook。\n\n![](http://lcjim-img.oss-cn-beijing.aliyuncs.com/2019-10-24-102435.png)\n\n2. 支持事件列表\n\n> 支持的事件列表可以通过 “获取 Webhook 配置项” 接口获取。\n\n- register: 注册\n- change-user-info: 修改用户信息\n- login: 登录\n- change-password: 修改密码\n- email-verified: 用户邮箱被验证\n\n\n3. 有哪些应用场景？\n\n假设你的应用有 “用户验证邮箱可获积分” 这个业务需求，你可以添加一个监控 \\`email-verified\\` 事件的 Webhook, 每次有用户成功验证邮箱之后，\nAuthing 将会向你定义的 Webhook 地址发送携带该名用户ID的请求，然后你可以通过此用户的 ID 完成相关操作。\n\n4. Authing 的回调请求包含哪些数据？\n\n详情见“发送 Webhook 测试”部分的文档。\n\n5. 请求参数说明\n- 必填项\n    - client: 用户池 ID\n    - events: 监听的事件列表，具体的事件名称见上文。\n    - url: Webhook 回调地址\n    - contentType: 指定发起 Webhook 请求时 Request body 的数据格式，可选值有 \\`application/json\\` 和 \\`application/x-www-form-urlencoded\\`\n    - enable: 是否启用。\n- 可选参数\n    - secret: 请求秘钥。如果设置, Authing将会在向 Webhook 回调地址发起请求时，带上\\`X-Authing-Token\\` 的请求头。开发者可以对此秘钥进行验证，用来防止第三方的恶意请求。\n",
+      "auth": "admin",
+      "group": "WebHook API"
+    },
+    {
+      "name": "getAllWebhooks",
+      "type": "query",
+      "description": "获取用户池 WebHook 列表",
+      "query": "query getAllWebhooks($client: String!){\n    getAllWebhooks(client: $client){\n        _id\n        client\n        events{\n            name\n            label\n            description\n        }\n        url\n        isLastTimeSuccess\n        contentType\n        secret\n        enable\n    }\n}",
+      "doc": "此接口用来查看配置的 WebHook 列表。\n请求参数：\n- client: 必填。用户池 ID。",
+      "auth": "admin",
+      "group": "WebHook API"
+    },
+    {
+      "name": "getWebhookLogs",
+      "type": "query",
+      "description": "获取 Webhook 日志列表",
+      "query": "query getWebhookLogs($webhook: String!){\n    getWebhookLogs(webhook: $webhook){\n        _id\n        webhook\n        client\n        event\n        request{\n            headers\n            payload\n        }\n        response{\n            headers\n            body\n            statusCode\n        }\n        errorMessage\n        when\n    }\n}",
+      "doc": "此接口用来获取 webhook 日志列表。\n1. 请求参数：\n- webhook: Webhook ID\n\n2. 返回数据示例\n\n```\n{ \n    \"data\":{ \n       \"getWebhookLogs\":[ \n          { \n             \"_id\":\"5db1027291e5e68013xxxxxxx\",\n             \"event\":\"login\", // 触发的事件为 login\n             \"response\":{ \n                \"statusCode\":null,\n                \"__typename\":\"WebhookResponseType\"\n             },\n             \"errorMessage\":\"Request failed with status code 404\",\n             \"when\":\"2019-10-24 09:46:26\",\n             \"__typename\":\"WebhookLog\"\n          }\n       ]\n    }\n }\n```",
+      "auth": "admin",
+      "group": "WebHook API"
+    },
+    {
+      "name": "getWebhookLogDetail",
+      "type": "query",
+      "description": "获取 Webhook 日志详情",
+      "query": "query getWebhookLogDetail($id: String!){\n    getWebhookLogDetail(id: $id){\n        _id\n        webhook\n        client\n        event\n        request{\n            headers\n            payload\n        }\n        response{\n            headers\n            body\n            statusCode\n        }\n        errorMessage\n        when\n    }\n}",
+      "doc": "此接口用来获取 Webhook 日志详情。\n1. 请求参数\n- id：日志 ID。\n2. 返回数据示例\n\n- 日志详情里面包含了具体的 \\`response\\` 和 \\`request\\`。\n\n```\n{ \n    \"data\":{ \n       \"getWebhookLogDetail\":{ \n          \"_id\":\"5dad7b85ca72c4d67c146c9d\",\n          \"request\":{ \n             \"headers\":\"{\\\"Accept\\\":\\\"application/json, text/plain, */*\\\",\\\"Content-Type\\\":\\\"application/json\\\",\\\"User-Agent\\\":\\\"Authing-hook\\\",\\\"X-Authing-Token\\\":\\\"\\\",\\\"X-Authing-Event\\\":\\\"register\\\",\\\"Content-Length\\\":1416}\",\n             \"payload\":\"{\\\"success\\\":1,\\\"message\\\":\\\"注册成功\\\",\\\"executedAt\\\":1571650437755,\\\"params\\\":{\\\"phone\\\":\\\"\\\",\\\"emailVerified\\\":true,\\\"phoneVerfified\\\":false,\\\"username\\\":null,\\\"nickname\\\":\\\"Nikola Tesla\\\",\\\"company\\\":\\\"\\\",\\\"photo\\\":\\\"https://usercontents.authing.cn/authing-avatar.png\\\",\\\"browser\\\":\\\"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/76.0.3809.132 Safari/537.36\\\",\\\"device\\\":\\\"\\\",\\\"password\\\":\\\"\\\",\\\"loginsCount\\\":0,\\\"registerMethod\\\":\\\"ldap:default::from-undefined\\\",\\\"blocked\\\":false,\\\"isDeleted\\\":false,\\\"oauth\\\":\\\"{\\\\\\\"dn\\\\\\\":\\\\\\\"uid=tesla,dc=example,dc=com\\\\\\\",\\\\\\\"controls\\\\\\\":[],\\\\\\\"objectClass\\\\\\\":[\\\\\\\"inetOrgPerson\\\\\\\",\\\\\\\"organizationalPerson\\\\\\\",\\\\\\\"person\\\\\\\",\\\\\\\"top\\\\\\\",\\\\\\\"posixAccount\\\\\\\"],\\\\\\\"cn\\\\\\\":\\\\\\\"Nikola Tesla\\\\\\\",\\\\\\\"sn\\\\\\\":\\\\\\\"Tesla\\\\\\\",\\\\\\\"uid\\\\\\\":\\\\\\\"tesla\\\\\\\",\\\\\\\"mail\\\\\\\":\\\\\\\"tesla@ldap.forumsys.com\\\\\\\",\\\\\\\"uidNumber\\\\\\\":\\\\\\\"88888\\\\\\\",\\\\\\\"gidNumber\\\\\\\":\\\\\\\"99999\\\\\\\",\\\\\\\"homeDirectory\\\\\\\":\\\\\\\"home\\\\\\\"}\\\",\\\"phoneCode\\\":\\\"\\\",\\\"name\\\":\\\"\\\",\\\"givenName\\\":\\\"\\\",\\\"familyName\\\":\\\"\\\",\\\"middleName\\\":\\\"\\\",\\\"profile\\\":\\\"\\\",\\\"preferredUsername\\\":\\\"\\\",\\\"website\\\":\\\"\\\",\\\"gender\\\":\\\"\\\",\\\"birthdate\\\":\\\"\\\",\\\"zoneinfo\\\":\\\"\\\",\\\"locale\\\":\\\"\\\",\\\"address\\\":\\\"\\\",\\\"formatted\\\":\\\"\\\",\\\"streetAddress\\\":\\\"\\\",\\\"locality\\\":\\\"\\\",\\\"region\\\":\\\"\\\",\\\"postalCode\\\":\\\"\\\",\\\"country\\\":\\\"\\\",\\\"updatedAt\\\":\\\"\\\",\\\"_id\\\":\\\"5dad7b85ca72c4411f146c94\\\",\\\"email\\\":\\\"tesla@ldap.forumsys.com\\\",\\\"unionid\\\":\\\"uid=tesla,dc=example,dc=com\\\",\\\"lastIP\\\":\\\"124.204.56.98\\\",\\\"registerInClient\\\":\\\"5d11dcc331f4173231ed6a8d\\\",\\\"salt\\\":\\\"973i1gi516oe\\\",\\\"lastLogin\\\":\\\"2019-10-21T09:33:57.215Z\\\",\\\"signedUp\\\":\\\"2019-10-21T09:33:57.215Z\\\",\\\"__v\\\":0}}\",\n             \"__typename\":\"WebhookRequestType\"\n          },\n          \"response\":{ \n             \"headers\":\"{\\\"server\\\":\\\"Tengine\\\",\\\"content-type\\\":\\\"text/html; charset=utf-8\\\",\\\"content-length\\\":\\\"151\\\",\\\"connection\\\":\\\"close\\\",\\\"date\\\":\\\"Mon, 21 Oct 2019 09:33:57 GMT\\\",\\\"set-cookie\\\":[\\\"acw_tc=2a51cb1915716504377745773e1485a843311545077f946adc7ec8485a;path=/;HttpOnly;Max-Age=2678401\\\",\\\"connect.sid=s%3AcFJ7sVEU-BZS7HO-3FbcP88psRLo4TS7.RJNHX5OKSpO1lcHQrYJR3B872epYWQz8BwFJhxRqANU; Path=/; HttpOnly\\\"],\\\"access-control-allow-origin\\\":\\\"*\\\",\\\"x-frame-options\\\":\\\"SAMEORIGIN\\\",\\\"x-dns-prefetch-control\\\":\\\"off\\\",\\\"strict-transport-security\\\":\\\"max-age=15552000; includeSubDomains\\\",\\\"x-download-options\\\":\\\"noopen\\\",\\\"x-content-type-options\\\":\\\"nosniff\\\",\\\"x-xss-protection\\\":\\\"1; mode=block\\\",\\\"content-security-policy\\\":\\\"default-src 'none'\\\",\\\"ali-swift-global-savetime\\\":\\\"1571650437\\\",\\\"via\\\":\\\"cache2.l2cn1793[28,404-1280,M], cache2.l2cn1793[28,0], vcache5.cn2020[88,404-1280,M], vcache5.cn2020[90,0]\\\",\\\"x-swift-error\\\":\\\"orig response 4XX error, orig response 4XX error\\\",\\\"x-cache\\\":\\\"MISS TCP_MISS dirn:-2:-2\\\",\\\"x-swift-savetime\\\":\\\"Mon, 21 Oct 2019 09:33:57 GMT\\\",\\\"x-swift-cachetime\\\":\\\"0\\\",\\\"timing-allow-origin\\\":\\\"*\\\",\\\"eagleid\\\":\\\"2a51cb1915716504377745773e\\\"}\",\n             \"body\":\"\\\"<!DOCTYPE html>\\\\n<html lang=\\\\\\\"en\\\\\\\">\\\\n<head>\\\\n<meta charset=\\\\\\\"utf-8\\\\\\\">\\\\n<title>Error</title>\\\\n</head>\\\\n<body>\\\\n<pre>Cannot POST /auth/xcx-sm</pre>\\\\n</body>\\\\n</html>\\\\n\\\"\",\n             \"statusCode\":null,\n             \"__typename\":\"WebhookResponseType\"\n          },\n          \"errorMessage\":\"\",\n          \"when\":\"2019-10-21 17:33:57\",\n          \"__typename\":\"WebhookLog\"\n       }\n    }\n}\n```",
+      "auth": "admin",
+      "group": "WebHook API"
+    },
+    {
+      "name": "getWebhookSettingOptions",
+      "type": "query",
+      "description": "获取 Webhook 配置项",
+      "query": "query getWebhookSettingOptions{\n    getWebhookSettingOptions{\n        webhookEvents{\n            name\n            label\n            description\n        }\n        contentTypes{\n            name\n            label\n        }\n    }\n}",
+      "doc": "此接口用来获取 Webhook 配置项。此接口无需参数。\n\n返回数据：\n```javascript\n{\n    \"data\": {\n      \"getWebhookSettingOptions\": {\n        \"contentTypes\": [\n          {\n            \"name\": \"application/json\",\n            \"label\": \"application/json\"\n          },\n          {\n            \"name\": \"application/x-www-form-urlencoded\",\n            \"label\": \"application/x-www-form-urlencoded\"\n          }\n        ],\n        \"webhookEvents\": [\n          {\n            \"name\": \"register\",\n            \"label\": \"注册\",\n            \"description\": \"注册事件\"\n          },\n          {\n            \"name\": \"login\",\n            \"label\": \"登录\",\n            \"description\": \"登录事件\"\n          },\n          {\n            \"name\": \"change-password\",\n            \"label\": \"修改密码\",\n            \"description\": \"修改密码事件\"\n          },\n          {\n            \"name\": \"change-user-info\",\n            \"label\": \"修改用户信息\",\n            \"description\": \"修改用户信息事件\"\n          },\n          {\n            \"name\": \"email-verified\",\n            \"label\": \"用户邮箱被验证\",\n            \"description\": \"用户邮箱被验证事件\"\n          }\n        ]\n      }\n    }\n  }\n```",
+      "auth": "admin",
+      "group": "WebHook API"
+    },
+    {
+      "name": "updateClientWebhook",
+      "type": "mutation",
+      "description": "修改 Webhook",
+      "query": "mutation updateClientWebhook($id: String!, $events: [String!]!, $url: String!, $contentType: String!, $enable: Boolean!, $secret: String, $isLastTimeSuccess: Boolean){\n    updateClientWebhook(id: $id, events: $events, url: $url, contentType: $contentType, enable: $enable, secret: $secret, isLastTimeSuccess: $isLastTimeSuccess){\n        _id\n        client\n        events{\n            name\n            label\n            description\n        }\n        url\n        isLastTimeSuccess\n        contentType\n        secret\n        enable\n    }\n}",
+      "doc": "此接口用来修改 Webhook。\n请求参数：\n- 必填项\n    - id: Webhook ID\n    - events: 监听的事件列表，具体的事件名称见“添加 Webhook”接口。\n    - url: webhook 回调地址\n    - contentType: 指定发起 Webhook 请求时 Request body 的数据格式，可选值有 \\`application/json\\` 和 \\`application/x-www-form-urlencoded\\`\n    - enable: 是否启用。\n- 可选参数\n    - secret: 请求秘钥。如果设置, Authing将会在向 Webhook 回调地址发起请求时，带上\\`X-Authing-Token\\` 的请求头。开发者可以对此秘钥进行验证，用来防止第三方的恶意请求。",
+      "auth": "admin",
+      "group": "WebHook API"
+    },
+    {
+      "name": "deleteClientWebhook",
+      "type": "mutation",
+      "description": "删除 Webhook",
+      "query": "mutation deleteClientWebhook($id: String!){\n    deleteClientWebhook(id: $id){\n        _id\n        client\n        events{\n            name\n            label\n            description\n        }\n        url\n        isLastTimeSuccess\n        contentType\n        secret\n        enable\n    }\n}",
+      "doc": "此接口用来删除 Webhook。\n请求参数：\n- 必填项\n    - id: Webhook ID",
+      "auth": "admin",
+      "group": "WebHook API"
+    },
+    {
+      "name": "SendWebhookTest",
+      "type": "mutation",
+      "description": "发送 Webhook 测试请求",
+      "query": "mutation SendWebhookTest($id: String!){\n    SendWebhookTest(id: $id)\n}",
+      "doc": "发送 Webhook 测试请求。\n\nAuthing 将会向该 Webhook 配置的 url 发起 **POST** 请求。\n- 请求格式: `application/json` 或 `application/x-www-form-urlencoded`，开发者可配置（具体查看 \"添加 Webhook\" 部分）。\n- 请求体 body:\n```\n{\n    \"description\": \"A test from Authing Webhook\"\n}\n```",
+      "auth": "admin",
+      "group": "WebHook API"
+    },
+    {
+      "name": "LoginByLDAP",
+      "type": "mutation",
+      "description": "使用 LDAP 登录",
+      "query": "mutation LoginByLDAP($username: String!, $password: String!, $clientId: String!, $browser: String){\n    LoginByLDAP(username: $username, password: $password, clientId: $clientId, browser: $browser){\n        _id\n        username\n        email\n        unionid\n        openid\n        emailVerified\n        phone\n        phoneVerified\n        nickname\n        company\n        photo\n        browser\n        password\n        registerInClient\n        registerMethod\n        oauth\n        token\n        tokenExpiredAt\n        loginsCount\n        lastLogin\n        lastIP\n        signedUp\n        blocked\n        isDeleted\n        device\n        name\n        givenName\n        familyName\n        middleName\n        profile\n        preferredUsername\n        website\n        gender\n        birthdate\n        zoneinfo\n        locale\n        address\n        formatted\n        streetAddress\n        locality\n        region\n        postalCode\n        country\n        updatedAt\n        oldPassword\n    }\n}",
+      "doc": "此接口使用 LDAP 登录，登录后返回的 Token 需要在客户端维护。\nLDAP 是一个树型的用来存储用户和组织信息的数据库，常被用来做单点登录和组织架构管理。前往[Authing官方文档 - LDAP](https://learn.authing.cn/authing/advanced/ldap)了解更多。 \n\n1. 请求参数：\n- 必填项\n    - username: 用户名\n    - password: 密码\n    - clientId: 用户池 ID\n- 选填项\n    - browser: 访问浏览器\n\n2. 返回数据\n\n登录成功之后会返回登录用户的详细数据，其中包含 \\`token\\`(登录凭证)，客户端需要妥善保存。",
+      "auth": "guest",
+      "group": "OAuth API"
+    },
+    {
+      "name": "GetUserAuthorizedApps",
+      "type": "query",
+      "description": "查询用户授权过的 SSO 应用列表",
+      "query": "query GetUserAuthorizedApps($clientId: String, $userId: String, $page: Int, $count: Int){\n    GetUserAuthorizedApps(clientId: $clientId, userId: $userId, page: $page, count: $count){\n        totalCount\n        OAuthApps{\n            _id\n            name\n            domain\n            image\n            redirectUris\n            appSecret\n            client_id\n            clientId\n            grants\n            description\n            homepageURL\n            isDeleted\n            when\n            css\n            loginUrl\n            casExpire\n        }\n        OIDCApps{\n            _id\n            name\n            domain\n            image\n            redirect_uris\n            client_id\n            client_secret\n            token_endpoint_auth_method\n            id_token_signed_response_alg\n            jwks_uri\n            jwks\n            clientId\n            grant_types\n            response_types\n            description\n            homepageURL\n            isDeleted\n            isDefault\n            when\n            css\n            authorization_code_expire\n            id_token_expire\n            access_token_expire\n            cas_expire\n            loginUrl\n            customStyles{\n                forceLogin\n                hideQRCode\n                hideUP\n                hideUsername\n                hideRegister\n                hidePhone\n                hideSocial\n                hideClose\n                placeholder{\n                    username\n                    email\n                    password\n                    confirmPassword\n                    verfiyCode\n                    newPassword\n                    phone\n                    phoneCode\n                }\n                qrcodeScanning{\n                    redirect\n                    interval\n                    tips\n                }\n            }\n        }\n    }\n}",
+      "doc": "此接口用来查询用户授权过的 SSO 应用列表。此接口需要携带登录凭证 \\`token\\`，支持分页。\n请求参数:\n- clientId: 用户池ID\n- userId: 用户ID\n- page\n- count",
+      "auth": "user",
+      "group": "OAuth API"
+    },
+    {
+      "name": "RevokeUserAuthorizedApp",
+      "type": "mutation",
+      "description": "撤回用户对 SSO 应用的授权",
+      "query": "mutation RevokeUserAuthorizedApp($appId: String, $userPoolId: String, $userId: String){\n    RevokeUserAuthorizedApp(appId: $appId, userPoolId: $userPoolId, userId: $userId){\n        _id\n        appId\n        userId\n        scope\n        type\n        isRevoked\n        when\n    }\n}",
+      "doc": "此接口用来撤回一个用户池内，某个用户对该用户池下的某个 SSO 应用的授权。撤回授权后，用户在 SSO 登录页面登录时，会再次显示确权页面。\n请求参数：\n- userId: 用户 ID\n- userPoolId: 用户池I D\n- appId: SSO 应用 ID",
+      "auth": "user",
+      "group": "OAuth API"
+    }
+  ],
+  "metadata": {
+    "groups": [
+      {
+        "name": "用户池鉴权",
+        "name-en": "init",
+        "children": [
+          "getClientWhenSdkInit"
+        ]
+      },
+      {
+        "name": "用户鉴权",
+        "name-en": "auth",
+        "children": [
+          "register",
+          "login",
+          "decodeJwtToken",
+          "refreshToken"
+        ]
+      },
+      {
+        "name": "用户管理",
+        "name-en": "user",
+        "children": [
+          "user",
+          "users",
+          "checkLoginStatus",
+          "removeUsers",
+          "updateUser",
+          "sendResetPasswordEmail",
+          "verifyResetPasswordVerifyCode",
+          "sendVerifyEmail",
+          "changePassword",
+          "unbindEmail"
+        ]
+      },
+      {
+        "name": "权限控制",
+        "name-en": "rbac",
+        "children": [
+          "createRBACGroup",
+          "updateRBACGroup",
+          "deleteRBACGroup",
+          "deleteRBACGroupBatch",
+          "rbacGroup",
+          "rbacGroupList",
+          "createRBACRole",
+          "updateRBACRole",
+          "deleteRBACRole",
+          "deleteRBACRoleBatch",
+          "rbacRole",
+          "rbacRoleList",
+          "createRBACPermission",
+          "updateRBACPermission",
+          "deleteRBACPermission",
+          "deleteRBACPermissionBatch",
+          "rbacPermission",
+          "rbacPermissionList",
+          "groupRoleList",
+          "groupPermissionList",
+          "addRoleToRBACGroup",
+          "addRoleToRBACGroupBatch",
+          "removeRoleFromRBACGroup",
+          "removeRoleFromRBACGroupBatch",
+          "groupUserList",
+          "addUserToRBACGroup",
+          "addUserToRBACGroupBatch",
+          "removeUserFromRBACGroup",
+          "removeUserFromRBACGroupBatch",
+          "roleUserList",
+          "assignRBACRoleToUser",
+          "assignRBACRoleToUserBatch",
+          "revokeRBACRoleFromUser",
+          "revokeRBACRoleFromUserBatch",
+          "rolePermissionList",
+          "addPermissionToRBACRole",
+          "addPermissionToRBACRoleBatch",
+          "removePermissionFromRBACRole",
+          "removePermissionFromRBACRoleBatch",
+          "userPermissionList",
+          "userGroupList",
+          "userRoleList"
+        ]
+      },
+      {
+        "name": "组织机构管理",
+        "name-en": "org",
+        "children": [
+          "createOrg",
+          "addOrgNode",
+          "removeOrgNode",
+          "deleteOrg",
+          "org",
+          "orgs",
+          "orgChildrenNodes",
+          "isRootNodeOfOrg",
+          "orgRootNode"
+        ]
+      },
+      {
+        "name": "权限控制「废弃」",
+        "name-en": "role",
+        "children": [
+          "clientRoles",
+          "queryRoleByUserId",
+          "createRole",
+          "updateRole",
+          "assignUserToRole",
+          "removeUserFromGroup",
+          "usersInGroup"
+        ]
+      },
+      {
+        "name": "用户池管理",
+        "name-en": "userpool",
+        "children": [
+          "userClients",
+          "client",
+          "userClientTypes",
+          "queryPermissionList",
+          "isClientBelongToUser",
+          "removeUserClients",
+          "updateUserClient"
+        ]
+      },
+      {
+        "name": "社会化登录",
+        "name-en": "social",
+        "children": [
+          "bindOtherOAuth",
+          "unbindOtherOAuth"
+        ]
+      },
+      {
+        "name": "扩展能力",
+        "name-en": "extensibility",
+        "children": [
+          "createRule",
+          "updateRule",
+          "deleteRule",
+          "ruleById",
+          "rules",
+          "ruleEnv",
+          "removeRuleEnv",
+          "setRuleEnv",
+          "userMetadata",
+          "setUserMetadata",
+          "removeUserMetadata"
+        ]
+      },
+      {
+        "name": "注册白名单",
+        "name-en": "invitation",
+        "children": [
+          "setInvitationState",
+          "queryInvitationState",
+          "addToInvitation",
+          "removeFromInvitation",
+          "queryInvitation"
+        ]
+      },
+      {
+        "name": "MFA 多因素认证",
+        "name-en": "mfa",
+        "children": [
+          "queryMFA",
+          "changeMFA"
+        ]
+      },
+      {
+        "name": "WebHook API",
+        "name-en": "webhook",
+        "children": [
+          "addClientWebhook",
+          "getAllWebhooks",
+          "getWebhookLogs",
+          "getWebhookLogDetail",
+          "getWebhookSettingOptions",
+          "updateClientWebhook",
+          "deleteClientWebhook",
+          "SendWebhookTest"
+        ]
+      },
+      {
+        "name": "OAuth API",
+        "name-en": "oauth",
+        "children": [
+          "LoginByLDAP",
+          "GetUserAuthorizedApps",
+          "RevokeUserAuthorizedApp"
+        ]
+      }
+    ],
+    "auth": {
+      "admin": [
+        "users",
+        "removeUsers",
+        "clientRoles",
+        "createRole",
+        "updateRole",
+        "assignUserToRole",
+        "removeUserFromGroup",
+        "usersInGroup",
+        "userClients",
+        "client",
+        "userClientTypes",
+        "queryPermissionList",
+        "removeUserClients",
+        "updateUserClient",
+        "setInvitationState",
+        "queryInvitationState",
+        "addToInvitation",
+        "removeFromInvitation",
+        "queryInvitation",
+        "addClientWebhook",
+        "getAllWebhooks",
+        "getWebhookLogs",
+        "getWebhookLogDetail",
+        "getWebhookSettingOptions",
+        "updateClientWebhook",
+        "deleteClientWebhook",
+        "SendWebhookTest",
+        "createOrg",
+        "addOrgNode",
+        "removeOrgNode",
+        "deleteOrg",
+        "org",
+        "orgs",
+        "orgChildrenNodes",
+        "isRootNodeOfOrg",
+        "orgRootNode",
+        "createRBACGroup",
+        "updateRBACGroup",
+        "deleteRBACGroup",
+        "deleteRBACGroupBatch",
+        "rbacGroup",
+        "rbacGroupList",
+        "createRBACRole",
+        "updateRBACRole",
+        "deleteRBACRole",
+        "deleteRBACRoleBatch",
+        "rbacRole",
+        "rbacRoleList",
+        "createRBACPermission",
+        "updateRBACPermission",
+        "deleteRBACPermission",
+        "deleteRBACPermissionBatch",
+        "rbacPermission",
+        "rbacPermissionList",
+        "groupRoleList",
+        "groupPermissionList",
+        "addRoleToRBACGroup",
+        "addRoleToRBACGroupBatch",
+        "removeRoleFromRBACGroup",
+        "removeRoleFromRBACGroupBatch",
+        "groupUserList",
+        "addUserToRBACGroup",
+        "addUserToRBACGroupBatch",
+        "removeUserFromRBACGroup",
+        "removeUserFromRBACGroupBatch",
+        "roleUserList",
+        "assignRBACRoleToUser",
+        "assignRBACRoleToUserBatch",
+        "revokeRBACRoleFromUser",
+        "revokeRBACRoleFromUserBatch",
+        "rolePermissionList",
+        "addPermissionToRBACRole",
+        "addPermissionToRBACRoleBatch",
+        "removePermissionFromRBACRole",
+        "removePermissionFromRBACRoleBatch",
+        "createRule",
+        "updateRule",
+        "deleteRule",
+        "ruleById",
+        "rules",
+        "ruleEnv",
+        "removeRuleEnv",
+        "setRuleEnv"
+      ],
+      "user": [
+        "refreshToken",
+        "user",
+        "updateUser",
+        "sendResetPasswordEmail",
+        "unbindEmail",
+        "queryRoleByUserId",
+        "bindOtherOAuth",
+        "unbindOtherOAuth",
+        "queryMFA",
+        "changeMFA",
+        "GetUserAuthorizedApps",
+        "RevokeUserAuthorizedApp",
+        "userPermissionList",
+        "userGroupList",
+        "userRoleList",
+        "userMetadata",
+        "setUserMetadata",
+        "removeUserMetadata"
+      ],
+      "guest": [
+        "getClientWhenSdkInit",
+        "register",
+        "login",
+        "decodeJwtToken",
+        "checkLoginStatus",
+        "verifyResetPasswordVerifyCode",
+        "sendVerifyEmail",
+        "changePassword",
+        "isClientBelongToUser",
+        "LoginByLDAP"
+      ]
+    }
+  }
+}
