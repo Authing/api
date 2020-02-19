@@ -8,8 +8,8 @@ const query = fs.readFileSync(path.join(__dirname, 'query.gql'), 'utf8')
 
 module.exports = {
   name: 'setUserMetadata',
-  type: '',
-  description: '',
+  type: 'mutation',
+  description: '设置用户自定义 Metadata',
   query,
   doc
 }

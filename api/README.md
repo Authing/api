@@ -195,9 +195,13 @@ Table of Contents
 - [删除自定义 Pipeline 函数](./deleteRule)
 - [通过 ID 查询自定义 Pipeline 函数](./ruleById/)
 - [查询用户池自定义 Pipeline 函数](./rules)
-- [添加环境变量](./setRuleEnv)
-- [删除环境变量](./removeRuleEnv)
-- [查询用户池环境变量](./ruleEnv)
+- [添加 Pipleine 环境变量](./setRuleEnv)
+- [删除 Pipleine 环境变量](./removeRuleEnv)
+- [查询用户池 Pipleine 环境变量](./ruleEnv)
+- [查询用户自定义 Metadata](./userMetadata)
+- [添加用户自定义 Metadata](./setUserMetadata)
+- [删除用户自定义 Metadata](./removeUserMetadata)
+
 
 ### 完整列表 - Full List
 

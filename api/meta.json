@@ -131,7 +131,10 @@
 				"rules",
 				"ruleEnv",
 				"removeRuleEnv",
-				"setRuleEnv"
+				"setRuleEnv",
+				"userMetadata",
+				"setUserMetadata",
+				"removeUserMetadata"
 			]
 		},
 		{
@@ -271,7 +274,10 @@
 			"RevokeUserAuthorizedApp",
 			"userPermissionList",
 			"userGroupList",
-			"userRoleList"
+			"userRoleList",
+			"userMetadata",
+			"setUserMetadata",
+			"removeUserMetadata"
 		],
 		"guest": [
 			"getClientWhenSdkInit",
