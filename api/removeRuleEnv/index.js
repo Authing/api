@@ -9,7 +9,7 @@ const query = fs.readFileSync(path.join(__dirname, 'query.gql'), 'utf8')
 module.exports = {
   name: 'removeRuleEnv',
   type: 'mutation',
-  description: '删除 Rule 环境变量',
+  description: '删除 Pipeline 环境变量',
   query,
   doc
 }

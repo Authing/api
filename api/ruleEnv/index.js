@@ -9,7 +9,7 @@ const query = fs.readFileSync(path.join(__dirname, 'query.gql'), 'utf8')
 module.exports = {
   name: 'ruleEnv',
   type: 'query',
-  description: '查询用户池 Rule 环境变量',
+  description: '查询用户池 Pipeline 环境变量',
   query,
   doc
 }
