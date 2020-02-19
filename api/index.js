@@ -1,3 +1,9 @@
+const userMetadata = require('./userMetadata')
+const removeUserMetadata = require('./removeUserMetadata')
+const setUserMetadata = require('./setUserMetadata')
+const setRuleEnv = require('./setRuleEnv')
+const removeRuleEnv = require('./removeRuleEnv')
+const ruleEnv = require('./ruleEnv')
 const rules = require('./rules')
 const ruleById = require('./ruleById')
 const deleteRule = require('./deleteRule')
@@ -493,4 +499,10 @@ module.exports = {
   deleteRule,
   ruleById,
   rules,
+  ruleEnv,
+  removeRuleEnv,
+  setRuleEnv,
+  setUserMetadata,
+  removeUserMetadata,
+  userMetadata,
 }

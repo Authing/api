@@ -186,11 +186,15 @@ Table of Contents
 
 ### 扩展能力 - Extensibility
 
-- [创建 Rule - createRule](./createRule)
-- [更新 Rule - updateRule](./updateRule)
-- [删除 Rule - deleteRule](./deleteRule)
-- [查询 Rule - ruleById](./ruleById/)
-- [查询用户池 Rule 列表 - rules](./rules) 
+> [点此了解如何使用 Authing Pipeline 自定义认证流程](https://docs.authing.cn/authing/extensibility/pipeline)。
+
+> [点击了解如何在 Pipeline 函数中使用环境变量](https://docs.authing.cn/authing/extensibility/pipeline/env)
+
+- [创建自定义 Pipeline 函数](./createRule)
+- [修改自定义 Pipeline 函数](./updateRule)
+- [删除自定义 Pipeline 函数](./deleteRule)
+- [通过 ID 查询自定义 Pipeline 函数](./ruleById/)
+- [查询用户池自定义 Pipeline 函数](./rules)
 
 ### 完整列表 - Full List
 

@@ -9,7 +9,7 @@ const query = fs.readFileSync(path.join(__dirname, 'query.gql'), 'utf8')
 module.exports = {
   name: 'updateRule',
   type: 'mutation',
-  description: '修改 Rule',
+  description: '修改 Pipeline 函数',
   query,
   doc
 }

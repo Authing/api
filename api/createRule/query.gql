@@ -1,5 +1,6 @@
 mutation createRule($input: CreateRuleInput!) {
 	createRule(input: $input) {
+		_id
 		name
 		description
 		type
