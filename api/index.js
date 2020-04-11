@@ -1,3 +1,14 @@
+const checkAdConnectorStatus = require('./checkAdConnectorStatus')
+const providerListByADConnector = require('./providerListByADConnector')
+const disableAdConnectorForProvider = require('./disableAdConnectorForProvider')
+const enableAdConnectorForProvider = require('./enableAdConnectorForProvider')
+const refreshAdConnectorSecret = require('./refreshAdConnectorSecret')
+const disableAdConnector = require('./disableAdConnector')
+const enableAdConnector = require('./enableAdConnector')
+const removeAdConnector = require('./removeAdConnector')
+const updateAdConnector = require('./updateAdConnector')
+const createAdConnector = require('./createAdConnector')
+const adConnectorList = require('./adConnectorList')
 const userMetadata = require('./userMetadata')
 const removeUserMetadata = require('./removeUserMetadata')
 const setUserMetadata = require('./setUserMetadata')
@@ -505,4 +516,15 @@ module.exports = {
   setUserMetadata,
   removeUserMetadata,
   userMetadata,
+  adConnectorList,
+  createAdConnector,
+  updateAdConnector,
+  removeAdConnector,
+  enableAdConnector,
+  disableAdConnector,
+  refreshAdConnectorSecret,
+  enableAdConnectorForProvider,
+  disableAdConnectorForProvider,
+  providerListByADConnector,
+  checkAdConnectorStatus,
 }

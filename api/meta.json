@@ -168,6 +168,23 @@
 			]
 		},
 		{
+			"name": "AD 连接",
+			"name-en": "ADConnector",
+			"children": [
+				"adConnectorEnabledProvider",
+				"adConnectorList",
+				"createAdConnector",
+				"updateAdConnector",
+				"removeAdConnector",
+				"enableAdConnector",
+				"disableAdConnector",
+				"refreshAdConnectorSecret",
+				"enableAdConnectorForProvider",
+				"disableAdConnectorForProvider",
+				"providerListByADConnector"
+			]
+		},
+		{
 			"name": "OAuth API",
 			"name-en": "oauth",
 			"children": [ "LoginByLDAP", "GetUserAuthorizedApps", "RevokeUserAuthorizedApp" ]
@@ -257,7 +274,18 @@
 			"rules",
 			"ruleEnv",
 			"removeRuleEnv",
-			"setRuleEnv"
+			"setRuleEnv",
+			"adConnectorEnabledProvider",
+			"adConnectorList",
+			"createAdConnector",
+			"updateAdConnector",
+			"removeAdConnector",
+			"enableAdConnector",
+			"disableAdConnector",
+			"refreshAdConnectorSecret",
+			"enableAdConnectorForProvider",
+			"disableAdConnectorForProvider",
+			"providerListByADConnector"
 		],
 		"user": [
 			"refreshToken",

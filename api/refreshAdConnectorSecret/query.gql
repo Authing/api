@@ -1,0 +1,12 @@
+mutation refreshAdConnectorSecret($_id: String!) {
+	refreshAdConnectorSecret(_id: $_id) {
+    _id
+    name
+    secret
+    salt
+    logo
+    enabled
+    userPoolId
+    createdAt
+  }
+}
